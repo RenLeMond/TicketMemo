@@ -1,0 +1,155 @@
+<view class="page-container st-page">
+
+  <view class="st-hero">
+    <view class="st-cover">
+      <image class="st-cover-img" src="/assets/icons/func/settings@3x.png" mode="aspectFit" />
+    </view>
+    <view class="st-hero-title">设置</view>
+    <view class="st-hero-sub">一切都按你喜欢的样子来</view>
+  </view>
+
+  <!-- 隐私 -->
+  <view class="section-title">隐私安全</view>
+  <view class="card menu-card">
+    <view class="menu-row">
+      <view class="icon-circle icon-circle-pink">
+        <image class="st-menu-ico" src="/assets/icons/func/encrypt@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">启动密码</view>
+        <view class="menu-sub">{{settings.passwordEnabled ? '已开启' : '关闭中'}}</view>
+      </view>
+      <switch checked="{{settings.passwordEnabled}}" bindchange="onTogglePassword" color="#8FAE85" />
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="onPermissionTip">
+      <view class="icon-circle icon-circle-blue">
+        <image class="st-menu-ico" src="/assets/icons/func/settings@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">权限说明</view>
+        <view class="menu-sub">仅核心权限，绝无多余</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 通用 -->
+  <view class="section-title">通用</view>
+  <view class="card menu-card">
+    <view class="menu-row">
+      <view class="icon-circle icon-circle-green">
+        <image class="st-menu-ico" src="/assets/icons/func/backup@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">自动本地备份</view>
+        <view class="menu-sub">每周自动加密备份一次</view>
+      </view>
+      <switch checked="{{settings.autoBackup}}" bindchange="onToggleAutoBackup" color="#8FAE85" />
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row">
+      <view class="icon-circle icon-circle-orange">
+        <image class="st-menu-ico" src="/assets/icons/func/filter@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">小票图片压缩</view>
+        <view class="menu-sub">节省手机存储空间</view>
+      </view>
+      <switch checked="{{settings.compressImage}}" bindchange="onToggleCompress" color="#8FAE85" />
+    </view>
+  </view>
+
+  <!-- 主题 -->
+  <view class="section-title">主题外观</view>
+  <view class="card theme-card">
+    <view class="theme-row">
+      <view
+        class="theme-cell {{settings.theme === 'light' ? 'theme-cell-active' : ''}}"
+        bindtap="onPickTheme"
+        data-theme="light"
+      >
+        <view class="theme-preview theme-light">
+          <view class="theme-dot theme-dot-1"></view>
+          <view class="theme-dot theme-dot-2"></view>
+          <view class="theme-dot theme-dot-3"></view>
+        </view>
+        <view class="theme-name">米白手账</view>
+      </view>
+      <view
+        class="theme-cell {{settings.theme === 'green' ? 'theme-cell-active' : ''}}"
+        bindtap="onPickTheme"
+        data-theme="green"
+      >
+        <view class="theme-preview theme-green">
+          <view class="theme-dot theme-dot-g1"></view>
+          <view class="theme-dot theme-dot-g2"></view>
+          <view class="theme-dot theme-dot-g3"></view>
+        </view>
+        <view class="theme-name">薄荷小屋</view>
+      </view>
+      <view
+        class="theme-cell {{settings.theme === 'dark' ? 'theme-cell-active' : ''}}"
+        bindtap="onPickTheme"
+        data-theme="dark"
+      >
+        <view class="theme-preview theme-dark">
+          <view class="theme-dot theme-dot-d1"></view>
+          <view class="theme-dot theme-dot-d2"></view>
+          <view class="theme-dot theme-dot-d3"></view>
+        </view>
+        <view class="theme-name">夜读模式</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据 -->
+  <view class="section-title">数据</view>
+  <view class="card menu-card">
+    <view class="menu-row">
+      <view class="icon-circle icon-circle-coffee">
+        <image class="st-menu-ico" src="/assets/icons/func/calendar@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">最近一次备份</view>
+        <view class="menu-sub">{{lastBackupAt}}</view>
+      </view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="onWipe">
+      <view class="icon-circle icon-circle-pink">
+        <image class="st-menu-ico" src="/assets/icons/func/trash@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title" style="color: #C97B47;">清空所有数据</view>
+        <view class="menu-sub">不可恢复，请谨慎操作</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="bottom-tip">你的数据始终留在自己的手机里</view>
+</view>
+
+<!-- 设置密码弹窗 -->
+<view wx:if="{{showPwdModal}}" class="mask">
+  <view class="sheet">
+    <view class="sheet-handle"></view>
+    <view class="sheet-title">设置启动密码</view>
+
+    <view class="form-label">输入新密码（至少 6 位）</view>
+    <view class="input-wrap">
+      <input class="input" type="password" placeholder="••••" value="{{pwdInput}}" bindinput="onPwdInput" />
+    </view>
+
+    <view class="form-label">再次输入</view>
+    <view class="input-wrap">
+      <input class="input" type="password" placeholder="••••" value="{{pwdConfirm}}" bindinput="onPwdConfirm" />
+    </view>
+
+    <view class="sheet-actions">
+      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancelPassword">取消</view>
+      <view class="btn btn-primary flex-1" bindtap="onSavePassword">确认</view>
+    </view>
+  </view>
+</view>

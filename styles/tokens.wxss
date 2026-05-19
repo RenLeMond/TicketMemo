@@ -1,0 +1,51 @@
+/**
+ * TicketMemo / 小票日记 — Design Tokens
+ * 小程序基础库 ≥ 2.9.1 支持 page 级 CSS 变量，其他页面 wxss 可间接继承。
+ * 改主题时优先只改本文件。
+ */
+page {
+  /* 背景与表面 */
+  --tm-bg-page: #faf6ee;
+  --tm-bg-card: #fffcf7;
+  --tm-bg-soft-green: #dce9d1;
+  --tm-bg-soft-orange: #fae2cb;
+  --tm-bg-soft-coffee: #ebdfc8;
+
+  /* 文本 */
+  --tm-text: #5c4a3a;
+  --tm-text-muted: #a89c8a;
+  --tm-text-light: #c9bda8;
+  --tm-tab-inactive: #b5a88e;
+
+  /* 品牌 */
+  --tm-primary: #8fae85;
+  --tm-primary-deep: #6b8c5e;
+  --tm-accent: #e8a87c;
+  --tm-coffee: #b89968;
+
+  /* 描边与分割 */
+  --tm-border: #e8dfc9;
+  --tm-divider: #efe6d1;
+  --tm-border-card: rgba(232, 223, 201, 0.6);
+
+  /* TabBar（与 app.json 语义一致，自定义 tabBar 内可复用） */
+  --tm-tab-selected: #8fae85;
+
+  /* 圆角阶梯 */
+  --tm-radius-sm: 20rpx;
+  --tm-radius-md: 24rpx;
+  --tm-radius-lg: 28rpx;
+  --tm-radius-xl: 32rpx;
+  --tm-radius-pill: 40rpx;
+
+  /* 阴影 */
+  --tm-shadow-card: 0 4rpx 18rpx rgba(184, 153, 104, 0.08);
+  --tm-shadow-float: 0 6rpx 24rpx rgba(184, 153, 104, 0.06);
+
+  /* 展示标题：无网络字体时为「略手帐感」宋体类；可配合 app.js loadFontFace 替换 */
+  --tm-font-display: "Songti SC", "STSong", "STKaiti", "KaiTi", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --tm-font-body: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+}

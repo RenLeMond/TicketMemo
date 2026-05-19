@@ -1,0 +1,187 @@
+.detail-page { padding-bottom: 200rpx; }
+
+/* 小票纸张容器 */
+.receipt-paper {
+  position: relative;
+  margin: 16rpx 0 24rpx;
+  background-color: #FFFCF7;
+  -webkit-filter: drop-shadow(0 8rpx 22rpx rgba(184, 153, 104, 0.16));
+  filter: drop-shadow(0 8rpx 22rpx rgba(184, 153, 104, 0.16));
+}
+
+/* 上下撕纸边（用 mask 实现锯齿） */
+.paper-edge {
+  height: 24rpx;
+  background-color: #FFFCF7;
+}
+.paper-edge-top {
+  -webkit-mask-image: radial-gradient(circle at 12rpx 0, transparent 12rpx, #000 12rpx);
+  -webkit-mask-size: 24rpx 24rpx;
+  -webkit-mask-position: 0 -12rpx;
+}
+.paper-edge-bottom {
+  -webkit-mask-image: radial-gradient(circle at 12rpx 24rpx, transparent 12rpx, #000 12rpx);
+  -webkit-mask-size: 24rpx 24rpx;
+  -webkit-mask-position: 0 12rpx;
+}
+
+.paper-content {
+  background-color: #FFFCF7;
+  padding: 32rpx 30rpx 36rpx;
+}
+
+.paper-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8rpx 0 18rpx;
+}
+
+.paper-mascot {
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+.paper-mascot-img {
+  width: 58rpx;
+  height: 58rpx;
+}
+
+.paper-merchant {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #5C4A3A;
+  letter-spacing: 1rpx;
+}
+
+.paper-date {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #A89C8A;
+  font-family: "Courier New", monospace;
+}
+
+.paper-amount-block {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 16rpx 0;
+}
+.paper-amount-label {
+  font-size: 26rpx;
+  color: #8B7355;
+}
+.paper-amount {
+  font-size: 64rpx;
+  font-weight: 600;
+  color: #C97B47;
+  letter-spacing: 2rpx;
+}
+
+.paper-img-wrap {
+  position: relative;
+  margin: 14rpx 0 6rpx;
+  border-radius: 18rpx;
+  overflow: hidden;
+}
+.paper-img { width: 100%; height: 360rpx; display: block; }
+.paper-img-zoom {
+  position: absolute;
+  right: 14rpx;
+  bottom: 14rpx;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  background-color: rgba(60, 50, 40, 0.55);
+  padding: 6rpx 14rpx;
+  border-radius: 16rpx;
+}
+
+.paper-info { padding: 8rpx 0; }
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 14rpx 0;
+}
+.info-label {
+  width: 110rpx;
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: #A89C8A;
+  padding-top: 4rpx;
+}
+.info-value {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+.info-value .tag {
+  margin-right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.tag-ico {
+  width: 28rpx;
+  height: 28rpx;
+}
+.info-value-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #5C4A3A;
+  line-height: 1.6;
+}
+.note-text {
+  background-color: #FAF6EE;
+  border-radius: 16rpx;
+  padding: 14rpx 18rpx;
+  color: #8B7355;
+}
+
+.paper-tail {
+  text-align: center;
+  font-size: 22rpx;
+  color: #A89C8A;
+  padding-top: 8rpx;
+}
+.paper-tail-id {
+  margin-top: 8rpx;
+  font-family: "Courier New", monospace;
+  font-size: 20rpx;
+  color: #C9BDA8;
+}
+
+/* 底部操作 */
+.detail-actions {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  background-color: #FFFCF7;
+  padding: 18rpx 0 calc(36rpx + env(safe-area-inset-bottom)) 0;
+  box-shadow: 0 -2rpx 14rpx rgba(184, 153, 104, 0.08);
+  z-index: 10;
+}
+.action-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.action-cell .icon-circle {
+  width: 76rpx;
+  height: 76rpx;
+}
+.detail-act-ico {
+  width: 40rpx;
+  height: 40rpx;
+}
+.action-label {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #5C4A3A;
+}

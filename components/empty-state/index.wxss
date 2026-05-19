@@ -1,0 +1,19 @@
+.empty {
+  text-align: center;
+  padding: 80rpx 0 40rpx;
+}
+.empty-img {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto 18rpx;
+  display: block;
+}
+.empty-text {
+  font-size: 28rpx;
+  color: #8B7355;
+  margin-bottom: 8rpx;
+}
+.empty-sub {
+  font-size: 24rpx;
+  color: #B5A88E;
+}

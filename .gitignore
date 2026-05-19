@@ -1,0 +1,13 @@
+# IDE / local tooling
+.idea/
+.claude/
+.cut-tmp/
+
+# WeChat DevTools personal config
+project.private.config.json
+
+# Design docs & source sheets (kept locally, not shipped)
+images/
+
+# Icon pipeline preview
+assets/icons/_preview.png

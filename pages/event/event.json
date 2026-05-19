@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "事件",
+  "usingComponents": {
+    "ticket-card": "/components/ticket-card/index",
+    "empty-state": "/components/empty-state/index"
+  }
+}

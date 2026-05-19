@@ -1,0 +1,162 @@
+<view class="page-container">
+
+  <!-- 步骤 1：选择来源 -->
+  <block wx:if="{{step === 'pick'}}">
+    <view class="add-hero">
+      <view class="add-hero-mascot">
+        <image class="add-hero-img" src="/assets/icons/func/camera@3x.png" mode="aspectFit" />
+      </view>
+      <view class="add-hero-title">录入新小票</view>
+      <view class="add-hero-sub">把这张小票轻轻贴进日记里</view>
+    </view>
+
+    <view class="pick-row">
+      <view class="pick-card" bindtap="onPickCamera">
+        <image class="pick-ico" src="/assets/icons/func/camera@3x.png" mode="aspectFit" />
+        <view class="pick-title">拍照</view>
+        <view class="pick-sub">自动对焦 / 矫正</view>
+      </view>
+      <view class="pick-card pick-card-accent" bindtap="onPickAlbum">
+        <image class="pick-ico" src="/assets/icons/func/album@3x.png" mode="aspectFit" />
+        <view class="pick-title">相册</view>
+        <view class="pick-sub">从相册选取</view>
+      </view>
+    </view>
+
+    <view class="pick-skip" bindtap="onSkip">
+      <text>跳过拍照，仅手动录入 →</text>
+    </view>
+  </block>
+
+  <!-- 步骤 2：OCR 识别中 -->
+  <block wx:elif="{{step === 'scan'}}">
+    <view class="scan">
+      <view class="scan-img-wrap">
+        <image wx:if="{{image}}" class="scan-img" src="{{image}}" mode="aspectFit"></image>
+        <image wx:else class="scan-placeholder-img" src="/assets/icons/func/tag@3x.png" mode="aspectFit" />
+      </view>
+      <view class="scan-status">
+        <image class="scan-spin-img" src="/assets/icons/func/search@3x.png" mode="aspectFit" />
+        <view>本地 OCR 识别中…</view>
+        <view class="scan-tip">不会上传任何图片，请放心</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 步骤 3：编辑保存 -->
+  <block wx:elif="{{step === 'edit'}}">
+    <!-- 上方预览：图片 or 占位 -->
+    <view class="edit-preview">
+      <view wx:if="{{image}}" class="edit-img-wrap">
+        <image class="edit-img" src="{{image}}" mode="aspectFill"></image>
+      </view>
+      <view wx:else class="edit-placeholder-wrap">
+        <view class="icon-circle icon-circle-{{placeholderColor}} edit-placeholder-icon">
+          <image class="edit-ph-img" src="{{placeholder}}" mode="aspectFit" />
+        </view>
+        <view class="edit-placeholder-tip">未选择图片，挑一个小图标代替吧</view>
+        <view class="edit-placeholder-options">
+          <view
+            wx:for="{{placeholderOptions}}"
+            wx:key="src"
+            class="placeholder-cell icon-circle-{{item.color}}"
+            bindtap="onPickPlaceholder"
+            data-idx="{{index}}"
+          >
+            <image class="ph-opt-img" src="{{item.src}}" mode="aspectFit" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card edit-card">
+      <view class="ocr-tip">
+        <image class="ocr-ico" src="/assets/icons/func/edit@3x.png" mode="aspectFit" />
+        OCR 识别结果（可修改）
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">商家</view>
+        <view class="input-wrap">
+          <input class="input" placeholder="商家名称" value="{{merchant}}" bindinput="onMerchantInput" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">金额</view>
+        <view class="input-wrap">
+          <text class="amount-prefix">¥</text>
+          <input class="input" type="digit" placeholder="0.00" value="{{amount}}" bindinput="onAmountInput" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">消费日期</view>
+        <picker mode="date" value="{{dateText}}" bindchange="onDateChange">
+          <view class="input-wrap">
+            <text class="input">{{dateText || '选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">商品摘要</view>
+        <view class="input-wrap">
+          <input class="input" placeholder="例如 燕麦拿铁 *1" value="{{items}}" bindinput="onItemsInput" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">备注</view>
+        <view class="textarea-wrap">
+          <textarea
+            class="textarea"
+            placeholder="写点什么吧～"
+            placeholder-style="color:#C9BDA8;"
+            value="{{note}}"
+            bindinput="onNoteInput"
+            maxlength="100"
+          ></textarea>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-title">分类</view>
+    <view class="card pick-list">
+      <view class="cat-grid">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="cat-pick {{categoryId === item.id ? 'cat-pick-active' : ''}}"
+          bindtap="onPickCategory"
+          data-id="{{item.id}}"
+        >
+          <view class="icon-circle icon-circle-{{item.color}}">
+            <image wx:if="{{item._iconIsImg}}" class="cat-pick-img" src="{{item.icon}}" mode="aspectFit" />
+            <text wx:else class="cat-pick-emoji">{{item.icon}}</text>
+          </view>
+          <view class="cat-pick-name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-title">标签</view>
+    <view class="card pick-list">
+      <view class="tag-row">
+        <view
+          wx:for="{{tags}}"
+          wx:key="id"
+          class="tag tag-{{item.color}} tag-pick {{selectedTagIds.indexOf(item.id) >= 0 ? 'tag-pick-active' : ''}}"
+          bindtap="onToggleTag"
+          data-id="{{item.id}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="action-bar">
+      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancel">取消</view>
+      <view class="btn btn-primary flex-1" bindtap="onSave">保存小票</view>
+    </view>
+  </block>
+</view>

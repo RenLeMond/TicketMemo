@@ -1,0 +1,108 @@
+<view class="page-container">
+
+  <view class="stat-hero">
+    <view>
+      <view class="stat-hero-title font-display">统计</view>
+      <view class="stat-hero-sub">看看你这阵子的小开支～</view>
+    </view>
+  </view>
+
+  <!-- 周/月/年切换 -->
+  <view class="range-tabs">
+    <view
+      class="range-tab {{range === 'week' ? 'range-tab-active' : ''}}"
+      bindtap="switchRange" data-range="week"
+    >本周</view>
+    <view
+      class="range-tab {{range === 'month' ? 'range-tab-active' : ''}}"
+      bindtap="switchRange" data-range="month"
+    >本月</view>
+    <view
+      class="range-tab {{range === 'year' ? 'range-tab-active' : ''}}"
+      bindtap="switchRange" data-range="year"
+    >本年</view>
+  </view>
+
+  <!-- 总览卡 -->
+  <view class="overview-card">
+      <view class="overview-card-bg">
+        <image class="overview-card-bg-img" src="/assets/icons/func/stats@3x.png" mode="aspectFit" />
+      </view>
+    <view class="overview-card-row">
+      <view class="overview-card-label">{{rangeText}}消费</view>
+    </view>
+    <view class="overview-card-amount">¥{{monthTotal}}</view>
+    <view class="overview-card-row">
+      <view class="overview-card-meta">{{monthCount}} 笔小票</view>
+      <view class="overview-card-meta">日均 ¥{{avgDay}}</view>
+    </view>
+  </view>
+
+  <!-- 分类占比（环形 + 列表） -->
+  <view class="section-title">分类占比</view>
+  <view class="card pie-card">
+    <view class="pie-wrap">
+      <canvas type="2d" id="pieCanvas" class="pie-canvas"></canvas>
+      <view class="pie-center">
+        <view class="pie-center-label">总计</view>
+        <view class="pie-center-amount">¥{{monthTotal}}</view>
+      </view>
+    </view>
+    <view class="pie-legend">
+      <view wx:for="{{pieList}}" wx:key="id" class="pie-row">
+        <view class="pie-dot" style="background-color: {{item.hex}};"></view>
+        <image class="pie-cat-ico" src="{{item.icon}}" mode="aspectFit" />
+        <view class="pie-name">{{item.name}}</view>
+        <view class="pie-pct">{{item.pct}}%</view>
+        <view class="pie-amt">¥{{item.amount}}</view>
+      </view>
+      <view wx:if="{{pieList.length === 0}}" class="empty">
+        <image class="empty-ico" src="/assets/icons/tab/mine@3x.png" mode="aspectFit" />
+        <view class="empty-text">这段时间还没有小票</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 趋势（柱状） -->
+  <view class="section-title">消费趋势</view>
+  <view class="card trend-card">
+    <view class="trend-bars">
+      <view
+        wx:for="{{trendList}}"
+        wx:key="idx"
+        class="trend-col"
+      >
+        <view class="trend-bar-track">
+          <view class="trend-bar-fill" style="height: {{item.h}}%;"></view>
+        </view>
+        <view class="trend-label">{{item.label}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Top 分类 -->
+  <view class="section-title">本期 Top 分类</view>
+  <view class="card top-card" wx:if="{{topCats.length > 0}}">
+      <view wx:for="{{topCats}}" wx:key="id" class="top-row">
+      <view class="icon-circle icon-circle-{{item.color}}">
+        <image class="top-cat-img" src="{{item.icon}}" mode="aspectFit" />
+      </view>
+      <view class="top-body">
+        <view class="top-row-head">
+          <view class="top-name">{{item.name}}</view>
+          <view class="top-amt">¥{{item.amount}}</view>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{item.pct}}%;"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{pieList.length === 0 && monthCount === 0}}"
+    iconSrc="/assets/icons/tab/home@3x.png"
+    text="还没有数据呢"
+    sub="录入一些小票后再回来看看"
+  />
+</view>

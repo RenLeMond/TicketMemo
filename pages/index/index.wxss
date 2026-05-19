@@ -1,0 +1,209 @@
+.home-nav {
+  display: flex;
+  align-items: center;
+  padding-left: 8rpx;
+  color: #5c4a3a;
+}
+
+.home-nav-title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+/* 顶部 hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 8rpx 20rpx;
+}
+.hero-title {
+  font-size: 42rpx;
+  font-weight: 600;
+  color: #5C4A3A;
+  letter-spacing: 2rpx;
+}
+.hero-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #A89C8A;
+}
+.hero-mascot {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FAE2CB 0%, #EBDFC8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 14rpx rgba(232, 168, 124, 0.25);
+}
+
+.hero-mascot-img {
+  width: 62rpx;
+  height: 62rpx;
+}
+
+/* 搜索 */
+.search {
+  display: flex;
+  align-items: center;
+  background-color: #FFFCF7;
+  border: 1rpx solid #E8DFC9;
+  border-radius: 24rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(184, 153, 104, 0.04);
+}
+.search-icon-img {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 14rpx;
+  flex-shrink: 0;
+}
+.search-input { flex: 1; font-size: 28rpx; color: #5C4A3A; }
+.search-placeholder { color: #C9BDA8; }
+.search-clear {
+  width: 40rpx; height: 40rpx;
+  border-radius: 50%;
+  background-color: #EFE6D1;
+  color: #8B7355;
+  text-align: center;
+  line-height: 40rpx;
+  font-size: 32rpx;
+}
+
+/* 本月概览 */
+.overview {
+  position: relative;
+  padding: 34rpx 28rpx 24rpx;
+  border-radius: 28rpx;
+  background:
+    linear-gradient(135deg, rgba(255, 252, 247, 0.92) 0%, rgba(220, 233, 209, 0.86) 100%),
+    #fffcf7;
+  border: 2rpx solid rgba(232, 223, 201, 0.85);
+  box-shadow: 0 6rpx 22rpx rgba(143, 174, 133, 0.18);
+  overflow: hidden;
+  margin-bottom: 28rpx;
+}
+
+.overview::before {
+  content: "";
+  position: absolute;
+  top: -8rpx;
+  left: 36rpx;
+  width: 118rpx;
+  height: 30rpx;
+  border-radius: 6rpx;
+  background: rgba(250, 226, 203, 0.78);
+  border: 1rpx solid rgba(184, 153, 104, 0.22);
+  transform: rotate(-6deg);
+}
+
+.overview-bg-img {
+  position: absolute;
+  right: 24rpx;
+  top: 74rpx;
+  width: 146rpx;
+  height: 146rpx;
+  opacity: 0.78;
+}
+.overview-content { position: relative; z-index: 1; }
+
+.tape {
+  position: absolute;
+  width: 92rpx;
+  height: 26rpx;
+  border-radius: 6rpx;
+  background: rgba(250, 226, 203, 0.82);
+  border: 1rpx solid rgba(184, 153, 104, 0.18);
+}
+
+.tape-left {
+  left: -16rpx;
+  top: -32rpx;
+  transform: rotate(-12deg);
+}
+
+.tape-right {
+  right: 10rpx;
+  bottom: 82rpx;
+  transform: rotate(-8deg);
+}
+.overview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.overview-label { font-size: 26rpx; color: #6B8C5E; font-weight: 600; }
+.overview-date  { font-size: 22rpx; color: #8B7355; }
+.overview-amount {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #5C4A3A;
+  margin: 18rpx 0 16rpx;
+  max-width: 420rpx;
+}
+.overview-meta { font-size: 24rpx; color: #8B7355; }
+.overview-tip  { font-size: 22rpx; color: #6B8C5E; }
+
+/* 录入入口 */
+.entry-row {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 24rpx;
+}
+.entry {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 76rpx;
+  border-radius: 22rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #5C4A3A;
+  box-shadow: 0 4rpx 16rpx rgba(184, 153, 104, 0.08);
+}
+.entry-primary { background: #DCE9D1; }
+.entry-accent  { background: #FAE2CB; }
+.entry-ico {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}
+
+/* 快捷分类 */
+.quick-cats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18rpx 0;
+  background-color: #FFFCF7;
+  border-radius: 24rpx;
+  padding: 28rpx 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(184, 153, 104, 0.05);
+  margin-bottom: 8rpx;
+}
+.quick-cat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8rpx 0;
+}
+.quick-cat .icon-circle {
+  width: 76rpx;
+  height: 76rpx;
+  font-size: 38rpx;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.4);
+}
+.quick-cat-img {
+  width: 44rpx;
+  height: 44rpx;
+}
+.quick-cat-name {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #5C4A3A;
+}
+
+.quick-cat-emoji { font-size: 36rpx; }

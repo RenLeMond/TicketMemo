@@ -1,0 +1,146 @@
+.me-card {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 8rpx 26rpx;
+  margin-bottom: 12rpx;
+}
+
+.me-mascot {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 50%;
+  background-color: #fffcf7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 22rpx;
+  box-shadow: 0 4rpx 14rpx rgba(184, 153, 104, 0.16);
+}
+
+.me-mascot-img {
+  width: 72rpx;
+  height: 72rpx;
+}
+
+.me-body {
+  flex: 1;
+}
+
+.me-title {
+  font-size: 34rpx;
+  color: #5c4a3a;
+  font-weight: 600;
+}
+
+.me-sub {
+  font-size: 23rpx;
+  color: #8b7355;
+  margin-top: 8rpx;
+}
+
+.me-arrow {
+  color: #c9bda8;
+  font-size: 42rpx;
+  padding-right: 10rpx;
+}
+
+.safe-card {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #eef5df 0%, #fffcf7 100%);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(184, 153, 104, 0.06);
+  border: 1rpx solid rgba(232, 223, 201, 0.64);
+  margin-bottom: 24rpx;
+}
+
+.safe-icon {
+  width: 54rpx;
+  height: 54rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.safe-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #5c4a3a;
+  font-weight: 600;
+}
+
+.safe-arrow {
+  color: #8fae85;
+  font-size: 34rpx;
+}
+
+.menu-card {
+  padding: 0 24rpx;
+  margin-bottom: 24rpx;
+  border-radius: 22rpx;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  min-height: 94rpx;
+  padding: 14rpx 0;
+}
+
+.menu-icon {
+  width: 54rpx;
+  height: 54rpx;
+  border-radius: 16rpx;
+  background: #faf6ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 22rpx;
+}
+
+.mine-menu-ico {
+  width: 34rpx;
+  height: 34rpx;
+}
+
+.menu-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-title {
+  font-size: 28rpx;
+  color: #5c4a3a;
+}
+
+.menu-sub {
+  font-size: 22rpx;
+  color: #a89c8a;
+  margin-top: 6rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-arrow {
+  font-size: 36rpx;
+  color: #c9bda8;
+  margin-left: 16rpx;
+}
+
+.menu-divider {
+  height: 1rpx;
+  background-color: #efe6d1;
+  margin-left: 76rpx;
+}
+
+.bottom-quote {
+  margin-top: 54rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #a89c8a;
+  padding-bottom: 40rpx;
+}

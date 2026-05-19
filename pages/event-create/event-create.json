@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "新建事件",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/index"
+  }
+}

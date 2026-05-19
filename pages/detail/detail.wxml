@@ -1,0 +1,99 @@
+<view class="page-container detail-page">
+
+  <view wx:if="{{receipt}}" class="receipt-paper">
+    <!-- 上方撕纸边 -->
+    <view class="paper-edge paper-edge-top"></view>
+
+    <view class="paper-content">
+      <!-- 商家区 -->
+      <view class="paper-header">
+        <view class="paper-mascot icon-circle-{{receipt.color || 'coffee'}}">
+          <image class="paper-mascot-img" src="{{thumbSrc}}" mode="aspectFit" />
+        </view>
+        <view class="paper-merchant">{{receipt.merchant}}</view>
+        <view class="paper-date">{{dateText}}</view>
+      </view>
+
+      <view class="dotted-divider"></view>
+
+      <view class="paper-amount-block">
+        <view class="paper-amount-label">合计</view>
+        <view class="paper-amount">{{amountText}}</view>
+      </view>
+
+      <view class="dotted-divider"></view>
+
+      <!-- 图片预览 -->
+      <view wx:if="{{receipt.image}}" class="paper-img-wrap" bindtap="onPreviewImage">
+        <image class="paper-img" src="{{receipt.image}}" mode="aspectFill"></image>
+        <view class="paper-img-zoom">点击查看大图</view>
+      </view>
+
+      <!-- 信息项 -->
+      <view class="paper-info">
+        <view class="info-row">
+          <view class="info-label">分类</view>
+          <view class="info-value">
+            <view class="tag tag-{{category.color}}">
+              <image class="tag-ico" src="{{category.icon}}" mode="aspectFit" />
+              <text>{{category.name}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="info-row" wx:if="{{tags.length > 0}}">
+          <view class="info-label">标签</view>
+          <view class="info-value">
+            <view wx:for="{{tags}}" wx:key="id" class="tag tag-{{item.color}}">{{item.name}}</view>
+          </view>
+        </view>
+
+        <view class="info-row" wx:if="{{receipt.items}}">
+          <view class="info-label">商品</view>
+          <view class="info-value-text">{{receipt.items}}</view>
+        </view>
+
+        <view class="info-row" wx:if="{{receipt.note}}">
+          <view class="info-label">备注</view>
+          <view class="info-value-text note-text">{{receipt.note}}</view>
+        </view>
+      </view>
+
+      <view class="dotted-divider"></view>
+      <view class="paper-tail">
+        <view>谢谢惠顾，本张小票已存入小票日记</view>
+        <view class="paper-tail-id">No. {{receipt.id}}</view>
+      </view>
+    </view>
+
+    <view class="paper-edge paper-edge-bottom"></view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view wx:if="{{receipt}}" class="detail-actions">
+    <view class="action-cell" bindtap="onCopy">
+      <view class="icon-circle icon-circle-coffee">
+        <image class="detail-act-ico" src="/assets/icons/func/share@3x.png" mode="aspectFit" />
+      </view>
+      <view class="action-label">复制</view>
+    </view>
+    <view class="action-cell" bindtap="onEdit">
+      <view class="icon-circle icon-circle-green">
+        <image class="detail-act-ico" src="/assets/icons/func/edit@3x.png" mode="aspectFit" />
+      </view>
+      <view class="action-label">编辑</view>
+    </view>
+    <view class="action-cell" bindtap="onExport">
+      <view class="icon-circle icon-circle-orange">
+        <image class="detail-act-ico" src="/assets/icons/func/export@3x.png" mode="aspectFit" />
+      </view>
+      <view class="action-label">导出</view>
+    </view>
+    <view class="action-cell" bindtap="onDelete">
+      <view class="icon-circle icon-circle-pink">
+        <image class="detail-act-ico" src="/assets/icons/func/delete@3x.png" mode="aspectFit" />
+      </view>
+      <view class="action-label">删除</view>
+    </view>
+  </view>
+</view>

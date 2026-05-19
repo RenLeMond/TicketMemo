@@ -1,0 +1,120 @@
+@import "../styles/tokens.wxss";
+
+.tab-bar-outer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(255, 252, 247, 0.88);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1rpx solid rgba(232, 223, 201, 0.45);
+}
+
+.tab-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 12rpx 12rpx 8rpx;
+  min-height: 110rpx;
+}
+
+/* ── Tab item ── */
+.tab-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 4rpx;
+  -webkit-transition: all 0.22s ease;
+  transition: all 0.22s ease;
+}
+
+/* ── Icon container ── */
+.tab-icon-wrap {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4rpx;
+  background: transparent;
+  -webkit-transition: all 0.22s ease;
+  transition: all 0.22s ease;
+}
+
+.tab-bar-item-active .tab-icon-wrap {
+  background: linear-gradient(145deg, #e8efc8 0%, #d8e6cb 100%);
+  box-shadow: 0 4rpx 12rpx rgba(143, 174, 133, 0.18);
+}
+
+/* ── Icon image ── */
+.tab-icon-img {
+  width: 64rpx;
+  height: 64rpx;
+  opacity: 0.55;
+  -webkit-transition: opacity 0.22s ease;
+  transition: opacity 0.22s ease;
+}
+
+.tab-bar-item:nth-child(2) .tab-icon-img {
+  width: 76rpx;
+  height: 76rpx;
+}
+
+.tab-bar-item-active .tab-icon-img {
+  opacity: 1;
+}
+
+/* ── Text label ── */
+.tab-text {
+  font-size: 20rpx;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--tm-text-muted);
+  -webkit-transition: color 0.22s ease;
+  transition: color 0.22s ease;
+}
+
+.tab-bar-item-active .tab-text {
+  color: var(--tm-primary);
+  font-weight: 600;
+}
+
+/* ── Center action button (+) ── */
+.tab-bar-action {
+  justify-content: center;
+  -webkit-transform: translateY(-20rpx);
+  transform: translateY(-20rpx);
+}
+
+.tab-action-btn {
+  width: 96rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-transition: transform 0.15s ease;
+  transition: transform 0.15s ease;
+}
+
+.tab-action-img {
+  width: 96rpx;
+  height: 96rpx;
+  display: block;
+}
+
+.tab-action-btn:active {
+  -webkit-transform: scale(0.92);
+  transform: scale(0.92);
+}
+
+/* ── Safe area ── */
+.tab-bar-safe {
+  width: 100%;
+  background: rgba(255, 252, 247, 0.88);
+}

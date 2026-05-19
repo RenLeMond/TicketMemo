@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "ticket-card": "/components/ticket-card/index",
+    "empty-state": "/components/empty-state/index"
+  },
+  "enablePullDownRefresh": true
+}

@@ -1,0 +1,117 @@
+<view class="page-container">
+
+  <view class="me-card">
+    <view class="me-mascot">
+      <image class="me-mascot-img" src="/assets/icons/tab/mine@3x.png" mode="aspectFit" />
+    </view>
+    <view class="me-body">
+      <view class="me-title">小票日记</view>
+      <view class="me-sub">记录生活，留住时光</view>
+    </view>
+    <view class="me-arrow">›</view>
+  </view>
+
+  <view class="safe-card" bindtap="goSettings">
+    <view class="safe-icon icon-circle-green">
+      <image class="mine-menu-ico" src="/assets/icons/func/encrypt@3x.png" mode="aspectFit" />
+    </view>
+    <view class="safe-text">数据安全保护中</view>
+    <view class="safe-arrow">›</view>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-row" bindtap="goStats">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/stats@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">数据统计</view>
+        <view class="menu-sub">{{receiptCount}} 张小票 / {{eventCount}} 个事件</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="goExport">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/backup@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">数据备份</view>
+        <view class="menu-sub">本地加密备份</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="goExport">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/export@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">导出与打印</view>
+        <view class="menu-sub">PDF / Excel / 图片</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="goTrash">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/trash@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">回收站</view>
+        <view class="menu-sub">{{trashCount}} 项，30 天内可恢复</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-row" bindtap="goSettings">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/encrypt@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">隐私设置</view>
+        <view class="menu-sub">密码 / 指纹保护</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="goSettings">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/settings@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">偏好设置</view>
+        <view class="menu-sub">主题与清理缓存</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-row" bindtap="onPrivacy">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/pdf@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">帮助与反馈</view>
+        <view class="menu-sub">隐私协议与使用说明</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-row" bindtap="onAbout">
+      <view class="menu-icon">
+        <image class="mine-menu-ico" src="/assets/icons/func/favorite@3x.png" mode="aspectFit" />
+      </view>
+      <view class="menu-text">
+        <view class="menu-title">关于我们</view>
+        <view class="menu-sub">v1.0.0</view>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="bottom-quote">谢谢遇见，愿你每一张小票都温柔可爱</view>
+</view>

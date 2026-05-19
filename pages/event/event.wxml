@@ -1,0 +1,71 @@
+<view class="page-container">
+
+  <view class="ev-hero">
+    <view>
+      <view class="ev-hero-title">事件</view>
+      <view class="ev-hero-sub">把零碎的小票串成一段段故事</view>
+    </view>
+    <view class="ev-add" bindtap="goCreate">
+      <text class="ev-add-plus">＋</text>
+      <text class="ev-add-text">新建事件</text>
+    </view>
+  </view>
+
+  <!-- 事件贴纸卡片 -->
+  <view class="ev-list" wx:if="{{events.length > 0}}">
+    <view
+      wx:for="{{events}}"
+      wx:key="id"
+      class="ev-card {{selectedId === item.id ? 'ev-card-active' : ''}}"
+      bindtap="onSelectEvent"
+      bindlongpress="onLongPressEvent"
+      data-id="{{item.id}}"
+    >
+      <view class="ev-card-main">
+        <view class="ev-card-name">{{item.name}}</view>
+        <view class="ev-card-date">{{item.startText}} - {{item.endText}}</view>
+        <view class="ev-card-count">{{item.count}} 张小票</view>
+        <view class="ev-card-total">¥{{item.total}}</view>
+      </view>
+      <view class="ev-polaroid icon-circle-{{item.coverColor}}">
+        <image class="ev-cover-img" src="{{item.coverSrc}}" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 当前事件详情 -->
+  <view wx:if="{{selectedId && events.length > 0}}" class="ev-detail">
+    <view class="ev-detail-header">
+      <view class="section-title" style="margin: 0;">事件明细</view>
+      <view class="ev-anim-btn" bindtap="onPlayAnimation">
+        <text class="ev-anim-icon">▶</text>
+        <text>生成动画</text>
+      </view>
+    </view>
+
+    <view class="ev-summary">
+      <view class="ev-summary-item">
+        <view class="ev-summary-label">总消费</view>
+        <view class="ev-summary-value">¥{{selectedTotal}}</view>
+      </view>
+      <view class="ev-summary-divider"></view>
+      <view class="ev-summary-item">
+        <view class="ev-summary-label">小票</view>
+        <view class="ev-summary-value">{{selectedReceipts.length}} 张</view>
+      </view>
+    </view>
+
+    <ticket-card
+      wx:for="{{selectedReceipts}}"
+      wx:key="id"
+      receipt="{{item}}"
+    />
+  </view>
+
+  <empty-state
+    wx:if="{{events.length === 0}}"
+    iconSrc="/assets/icons/tab/event@3x.png"
+    text="还没有事件呢"
+    sub="试试把一次旅行整理成一个事件"
+  />
+</view>

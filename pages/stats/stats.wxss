@@ -1,0 +1,192 @@
+.stat-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 8rpx 18rpx;
+}
+.stat-hero-title { font-size: 44rpx; font-weight: 600; color: #5C4A3A; }
+.stat-hero-sub { font-size: 24rpx; color: #A89C8A; margin-top: 6rpx; }
+
+.range-tabs {
+  display: flex;
+  background-color: #FFFCF7;
+  border-radius: 32rpx;
+  padding: 8rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(184, 153, 104, 0.05);
+  border: 1rpx solid #EFE6D1;
+}
+.range-tab {
+  flex: 1;
+  text-align: center;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  color: #8B7355;
+  border-radius: 28rpx;
+}
+.range-tab-active {
+  background: linear-gradient(135deg, #B8D4AE 0%, #8FAE85 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4rpx 12rpx rgba(143, 174, 133, 0.3);
+}
+
+.overview-card {
+  position: relative;
+  padding: 32rpx 28rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(135deg, #FAE2CB 0%, #F2B68B 100%);
+  box-shadow: 0 6rpx 22rpx rgba(232, 168, 124, 0.22);
+  overflow: hidden;
+  margin-bottom: 8rpx;
+  color: #FFFFFF;
+}
+.overview-card-bg {
+  position: absolute;
+  right: -24rpx;
+  bottom: -32rpx;
+  opacity: 0.2;
+  width: 200rpx;
+  height: 200rpx;
+}
+.overview-card-bg-img {
+  width: 200rpx;
+  height: 200rpx;
+}
+.overview-card-row { display: flex; justify-content: space-between; }
+.overview-card-label { font-size: 26rpx; opacity: 0.95; }
+.overview-card-amount {
+  font-size: 64rpx;
+  font-weight: 600;
+  margin: 12rpx 0 14rpx;
+  letter-spacing: 2rpx;
+}
+.overview-card-meta { font-size: 24rpx; opacity: 0.92; }
+
+/* 饼图 */
+.pie-card { padding: 28rpx 22rpx; }
+
+.pie-wrap {
+  position: relative;
+  width: 360rpx;
+  height: 360rpx;
+  margin: 0 auto 24rpx;
+}
+.pie-canvas { width: 360rpx; height: 360rpx; }
+.pie-center {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.pie-center-label { font-size: 22rpx; color: #A89C8A; }
+.pie-center-amount {
+  margin-top: 8rpx;
+  font-size: 36rpx;
+  color: #5C4A3A;
+  font-weight: 600;
+}
+
+.pie-legend { padding: 4rpx 0; }
+.pie-row {
+  display: flex;
+  align-items: center;
+  padding: 14rpx 4rpx;
+  border-bottom: 1rpx dashed #EFE6D1;
+}
+.pie-row:last-child { border-bottom: none; }
+.pie-dot {
+  width: 16rpx; height: 16rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+.pie-cat-ico {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+.pie-name { flex: 1; font-size: 26rpx; color: #5C4A3A; }
+.pie-pct  { font-size: 24rpx; color: #8FAE85; margin-right: 16rpx; min-width: 80rpx; text-align: right; }
+.pie-amt  { font-size: 26rpx; color: #C97B47; min-width: 130rpx; text-align: right; font-weight: 500; }
+
+/* 趋势 */
+.trend-card { padding: 28rpx 18rpx; }
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  height: 280rpx;
+  padding: 0 12rpx;
+}
+.trend-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 4rpx;
+  height: 100%;
+}
+.trend-bar-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.trend-bar-fill {
+  width: 60%;
+  min-height: 6rpx;
+  background: linear-gradient(180deg, #B8D4AE 0%, #8FAE85 100%);
+  border-radius: 8rpx 8rpx 0 0;
+  box-shadow: inset 0 4rpx 0 rgba(255,255,255,0.25);
+}
+.trend-label {
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: #A89C8A;
+}
+
+/* Top */
+.top-card { padding: 24rpx 22rpx; }
+.top-row {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx dashed #EFE6D1;
+}
+.top-row:last-child { border-bottom: none; }
+.top-row .icon-circle {
+  margin-right: 18rpx;
+  width: 72rpx;
+  height: 72rpx;
+  font-size: 32rpx;
+}
+.top-cat-img {
+  width: 40rpx;
+  height: 40rpx;
+}
+.top-body { flex: 1; }
+.top-row-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+.top-name { font-size: 28rpx; color: #5C4A3A; }
+.top-amt  { font-size: 26rpx; color: #C97B47; font-weight: 500; }
+
+.pie-legend .empty {
+  text-align: center;
+  padding: 40rpx 0 20rpx;
+}
+.pie-legend .empty-ico {
+  width: 80rpx;
+  height: 80rpx;
+  margin: 0 auto 12rpx;
+  display: block;
+}

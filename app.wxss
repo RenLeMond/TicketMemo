@@ -1,0 +1,298 @@
+@import "./styles/tokens.wxss";
+
+/* ============== 全局样式 - 手账文艺风（Token 见 styles/tokens.wxss） ============== */
+
+page {
+  /* 米白主背景 + 极淡纸张噪点感（线性叠加） */
+  background-color: var(--tm-bg-page);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(232, 168, 124, 0.04) 0, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(143, 174, 133, 0.04) 0, transparent 40%);
+  font-family: var(--tm-font-body);
+  color: var(--tm-text);
+  font-size: 28rpx;
+  min-height: 100vh;
+}
+
+/* 大标题 / Slogan：接近 UI 总览的手写感替代（可替换为网络字体） */
+.font-display {
+  font-family: var(--tm-font-display);
+  letter-spacing: 0.04em;
+}
+
+view, text, button, input, textarea {
+  box-sizing: border-box;
+}
+
+/* ============== 基础卡片 ============== */
+
+.card {
+  background-color: #FFFCF7;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 4rpx 18rpx rgba(184, 153, 104, 0.08);
+  border: 1rpx solid rgba(232, 223, 201, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============== 通用容器 ============== */
+
+.page-container {
+  padding: 24rpx 28rpx 220rpx 28rpx;
+  min-height: 100vh;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #5C4A3A;
+  margin: 28rpx 0 18rpx 8rpx;
+}
+
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 8rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #8FAE85 0%, #E8A87C 100%);
+  border-radius: 6rpx;
+  margin-right: 14rpx;
+}
+
+.section-subtitle {
+  font-size: 24rpx;
+  color: #A89C8A;
+  margin-left: auto;
+}
+
+/* ============== 按钮 ============== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  padding: 0 36rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 1;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #A8C5A0 0%, #8FAE85 100%);
+  color: #FFFFFF;
+  box-shadow: 0 6rpx 16rpx rgba(143, 174, 133, 0.3);
+}
+
+.btn-ghost {
+  background-color: #FFFCF7;
+  color: #8FAE85;
+  border: 1rpx solid #DCE9D1;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+  height: 96rpx;
+  border-radius: 28rpx;
+}
+
+button::after { border: none !important; }
+
+/* ============== 标签 ============== */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  margin-right: 12rpx;
+  background-color: #F1E8D6;
+  color: #8B7355;
+}
+
+.tag-green   { background-color: #DCE9D1; color: #6B8C5E; }
+.tag-orange  { background-color: #FAE2CB; color: #C97B47; }
+.tag-coffee  { background-color: #EBDFC8; color: #8B7355; }
+.tag-pink    { background-color: #F8DDD8; color: #B86F65; }
+.tag-blue    { background-color: #D8E4EC; color: #6B85A0; }
+.tag-yellow  { background-color: #F5E6B8; color: #B59442; }
+.tag-purple  { background-color: #E2D5E8; color: #7C6890; }
+.tag-gray    { background-color: #E8E2D5; color: #8A8275; }
+
+/* ============== 输入框 ============== */
+
+.input-wrap {
+  background-color: #FFFCF7;
+  border: 1rpx solid #E8DFC9;
+  border-radius: 20rpx;
+  padding: 18rpx 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #5C4A3A;
+}
+
+.input-placeholder {
+  color: #C9BDA8;
+}
+
+/* ============== 列表行 ============== */
+
+.list-row {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  background-color: #FFFCF7;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(184, 153, 104, 0.05);
+}
+
+.list-row .icon-circle {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  font-size: 36rpx;
+}
+
+/* ============== 圆形图标背景 ============== */
+
+.icon-circle {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38rpx;
+  flex-shrink: 0;
+}
+
+.icon-circle-green   { background-color: #DCE9D1; color: #6B8C5E; }
+.icon-circle-orange  { background-color: #FAE2CB; color: #C97B47; }
+.icon-circle-coffee  { background-color: #EBDFC8; color: #8B7355; }
+.icon-circle-pink    { background-color: #F8DDD8; color: #B86F65; }
+.icon-circle-blue    { background-color: #D8E4EC; color: #6B85A0; }
+.icon-circle-yellow  { background-color: #F5E6B8; color: #B59442; }
+.icon-circle-purple  { background-color: #E2D5E8; color: #7C6890; }
+.icon-circle-gray    { background-color: #E8E2D5; color: #8A8275; }
+
+/* ============== 浮层 / 弹窗 ============== */
+
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(60, 50, 40, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet {
+  width: 100%;
+  background-color: #FFFCF7;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 32rpx 28rpx 60rpx;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.sheet-handle {
+  width: 60rpx;
+  height: 6rpx;
+  background-color: #E8DFC9;
+  border-radius: 4rpx;
+  margin: 0 auto 24rpx;
+}
+
+/* ============== 工具类 ============== */
+
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-1 { flex: 1; }
+
+.text-base { font-size: 28rpx; }
+.text-lg { font-size: 32rpx; }
+.text-xl { font-size: 36rpx; }
+
+.mt-8 { margin-top: 16rpx; }
+.mt-12 { margin-top: 24rpx; }
+.mr-8 { margin-right: 16rpx; }
+
+.text-center { text-align: center; }
+
+.divider {
+  height: 1rpx;
+  background-color: #EFE6D1;
+  margin: 16rpx 0;
+}
+
+.dotted-divider {
+  border-top: 2rpx dashed #E8DFC9;
+  margin: 20rpx 0;
+}
+
+/* ============== 空状态 ============== */
+
+.empty {
+  text-align: center;
+  padding: 80rpx 0 40rpx;
+  color: #B5A88E;
+}
+
+.empty-emoji { font-size: 96rpx; line-height: 1; margin-bottom: 18rpx; }
+.empty-text  { font-size: 26rpx; color: #A89C8A; }
+
+/* ============== 渐变进度条 ============== */
+
+.progress-bar {
+  width: 100%;
+  height: 14rpx;
+  background-color: #F1E8D6;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #A8C5A0 0%, #E8A87C 100%);
+  border-radius: 8rpx;
+}
+
+/* ============== 浮动操作按钮 ============== */
+
+.fab {
+  position: fixed;
+  right: 36rpx;
+  bottom: 200rpx;
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F2B68B 0%, #E8A87C 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  box-shadow: 0 10rpx 28rpx rgba(232, 168, 124, 0.45);
+  z-index: 50;
+}

@@ -1,0 +1,138 @@
+<view class="page-container">
+
+  <!-- 标题区 -->
+  <view class="cat-hero">
+    <view class="cat-hero-title">分类</view>
+    <view class="cat-hero-sub">把每张小票都安放在合适的小窝</view>
+  </view>
+
+  <!-- 分类导航 -->
+  <scroll-view class="cat-nav" scroll-x enable-flex>
+    <view
+      class="cat-chip {{currentId === 'all' ? 'cat-chip-active' : ''}}"
+      bindtap="onSwitchCat"
+      data-id="all"
+    >
+      <image class="chip-ico" src="/assets/icons/category/misc@3x.png" mode="aspectFit" />
+      <text>全部</text>
+    </view>
+    <view
+      wx:for="{{categories}}"
+      wx:key="id"
+      class="cat-chip {{currentId === item.id ? 'cat-chip-active' : ''}}"
+      bindtap="onSwitchCat"
+      bindlongpress="onLongPressCat"
+      data-id="{{item.id}}"
+    >
+      <image wx:if="{{item._iconIsImg}}" class="chip-ico" src="{{item.icon}}" mode="aspectFit" />
+      <text wx:else class="chip-emoji">{{item.icon}}</text>
+      <text>{{item.name}}</text>
+    </view>
+    <view class="cat-chip cat-chip-add" bindtap="onAddCategory">
+      <text class="chip-emoji">＋</text>
+      <text>新建</text>
+    </view>
+  </scroll-view>
+
+  <view class="cat-current">
+    <text class="cat-current-label">当前：</text>
+    <text class="cat-current-name">{{currentName}}</text>
+  </view>
+
+  <view class="cat-list-card">
+    <view
+      wx:for="{{categorySummaries}}"
+      wx:key="id"
+      class="cat-row {{currentId === item.id ? 'cat-row-active' : ''}}"
+      bindtap="onOpenCategory"
+      bindlongpress="onLongPressCat"
+      data-id="{{item.id}}"
+    >
+      <view class="cat-row-icon icon-circle-{{item.color}}">
+        <image wx:if="{{item._iconIsImg}}" class="cat-row-img" src="{{item.icon}}" mode="aspectFit" />
+        <text wx:else>{{item.icon}}</text>
+      </view>
+      <view class="cat-row-body">
+        <view class="cat-row-title">{{item.name}}</view>
+        <view class="cat-row-sub">{{item.count}} 张小票</view>
+      </view>
+      <view class="cat-row-right">
+        <view class="cat-row-amount">¥{{item.total}}</view>
+        <view class="cat-row-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 列表（按月分组） -->
+  <block wx:if="{{list.length > 0}}">
+    <view class="section-title">{{currentName}}小票</view>
+    <view wx:for="{{list}}" wx:for-item="g" wx:key="month" class="month-group">
+      <view class="month-header">
+        <view class="month-label">{{g.month}}</view>
+        <view class="month-total">¥{{g.total.toFixed(2)}}</view>
+      </view>
+      <ticket-card
+        wx:for="{{g.list}}"
+        wx:for-item="r"
+        wx:key="id"
+        receipt="{{r}}"
+      />
+    </view>
+  </block>
+
+  <empty-state
+    wx:else
+    iconSrc="/assets/icons/tab/home@3x.png"
+    text="这个分类还没有小票"
+    sub="去首页拍一张吧"
+  />
+</view>
+
+<!-- 新建分类弹窗 -->
+<view wx:if="{{showAddModal}}" class="mask" catchtouchmove="">
+  <view class="sheet" catchtap="">
+    <view class="sheet-handle"></view>
+    <view class="sheet-title">新建分类</view>
+
+    <view class="form-label">名称</view>
+    <view class="input-wrap">
+      <input
+        class="input"
+        placeholder="给新分类起个名字"
+        placeholder-class="input-placeholder"
+        value="{{newCatName}}"
+        bindinput="onCatNameInput"
+        maxlength="8"
+      />
+    </view>
+
+    <view class="form-label">图标</view>
+    <view class="icon-grid">
+      <view
+        wx:for="{{iconOptions}}"
+        wx:key="*this"
+        class="icon-cell {{newCatIcon === item ? 'icon-cell-active' : ''}}"
+        bindtap="onPickIcon"
+        data-idx="{{index}}"
+      >
+        <image class="icon-cell-img" src="{{item}}" mode="aspectFit" />
+      </view>
+    </view>
+
+    <view class="form-label">颜色</view>
+    <view class="color-row">
+      <view
+        wx:for="{{colorOptions}}"
+        wx:key="*this"
+        class="color-dot icon-circle-{{item}} {{newCatColor === item ? 'color-dot-active' : ''}}"
+        bindtap="onPickColor"
+        data-color="{{item}}"
+      ></view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseModal">取消</view>
+      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存</view>
+    </view>
+  </view>
+</view>
