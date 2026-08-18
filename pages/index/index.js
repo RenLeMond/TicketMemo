@@ -21,8 +21,7 @@ Page({
       basket: icons.FUNC.basket,
       camera: icons.FUNC.camera,
       album: icons.FUNC.album,
-      empty: icons.FUNC.empty,
-      stats: icons.FUNC.stats
+      empty: icons.FUNC.empty
     }
   },
 
@@ -143,10 +142,5 @@ Page({
   goCategoryTab() {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.switchTab({ url: '/pages/category/category' });
-  },
-
-  goStats() {
-    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
-    wx.navigateTo({ url: '/pages/stats/stats' });
   }
 });

@@ -22,15 +22,17 @@
 .me-mascot-box {
   width: 104rpx;
   height: 104rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--tm-accent-light) 0%, var(--tm-coffee-light) 100%);
+  border-radius: var(--tm-radius-well, 28rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: var(--tm-shadow-sm);
+  box-shadow: var(--tm-deboss-well);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .me-mascot-img {
@@ -109,8 +111,15 @@
   height: 72rpx;
   margin-right: 18rpx;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--tm-radius-well, 20rpx);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--tm-bg-inset);
+  box-shadow: var(--tm-deboss-well);
+  border: 1rpx solid var(--tm-border-light);
+  box-sizing: border-box;
 }
 
 .safe-text {
@@ -131,9 +140,13 @@
 }
 
 .safe-arrow {
-  font-size: 32rpx;
+  font-size: 30rpx;
   color: var(--tm-primary-deep);
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1rpx);
 }
 
 /* 菜单列表行（Double-Bezel） */
@@ -175,22 +188,18 @@
 }
 
 .menu-arrow {
-  font-size: 32rpx;
+  font-size: 30rpx;
   color: var(--tm-text-light);
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1rpx);
 }
 
 .menu-divider {
   height: 1rpx;
   background-color: var(--tm-divider);
-}
-
-.bottom-quote {
-  text-align: center;
-  font-size: 22rpx;
-  color: var(--tm-text-muted);
-  margin-top: 36rpx;
-  font-style: italic;
 }
 
 /* 回收站弹窗 */
@@ -239,8 +248,12 @@
   height: 68rpx;
   margin-right: 16rpx;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--tm-radius-well, 20rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .trash-thumb-img {

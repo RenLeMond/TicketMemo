@@ -20,7 +20,9 @@
       <view class="bezel-tray pick-bezel-tray" bindtap="onPickCamera">
         <view class="tape tape-left tape-green"></view>
         <view class="bezel-core pick-core">
-          <image class="pick-ico" src="{{icons.camera}}" mode="aspectFit" />
+          <view class="icon-circle icon-circle-green pick-ico-wrap">
+            <image class="pick-ico" src="{{icons.camera}}" mode="aspectFit" />
+          </view>
           <view class="pick-title">拍照录入</view>
           <view class="pick-sub">相机拍摄 · 自动提取</view>
         </view>
@@ -29,15 +31,21 @@
       <view class="bezel-tray pick-bezel-tray" bindtap="onPickAlbum">
         <view class="tape tape-right tape-pink"></view>
         <view class="bezel-core pick-core">
-          <image class="pick-ico" src="{{icons.album}}" mode="aspectFit" />
+          <view class="icon-circle icon-circle-orange pick-ico-wrap">
+            <image class="pick-ico" src="{{icons.album}}" mode="aspectFit" />
+          </view>
           <view class="pick-title">相册导入</view>
           <view class="pick-sub">选取截图或发票照片</view>
         </view>
       </view>
     </view>
 
-    <view class="pick-skip reveal-3" bindtap="onSkip">
-      <text>跳过选图，直接手动录入详情 →</text>
+    <view class="pick-skip-wrap reveal-3">
+      <view class="pick-skip" bindtap="onSkip">
+        <image class="skip-icon" src="{{icons.edit}}" mode="aspectFit" />
+        <text class="skip-text">跳过选图，直接手动录入详情</text>
+        <text class="skip-arrow">›</text>
+      </view>
     </view>
   </block>
 
@@ -204,11 +212,11 @@
           <view
             wx:for="{{tags}}"
             wx:key="id"
-            class="tag tag-{{item.color}} tag-pick {{selectedTagIds.indexOf(item.id) >= 0 ? 'tag-pick-active' : ''}}"
+            class="tag tag-{{item.color}} tag-pick {{item._selected ? 'tag-pick-active' : ''}}"
             bindtap="onToggleTag"
             data-id="{{item.id}}"
           >
-            {{item.name}}
+            <text wx:if="{{item._selected}}" class="tag-pick-check">✓</text>{{item.name}}
           </view>
           <view class="tag tag-add-btn" bindtap="onOpenAddTag">+ 新建标签</view>
         </view>
@@ -217,14 +225,14 @@
 
     <!-- 底部操作条 -->
     <view class="action-bar">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancel">取消</view>
+      <view class="btn btn-ghost flex-1" bindtap="onCancel">取消</view>
       <view class="btn btn-primary flex-1" bindtap="onSave">{{isEdit ? '保存修改' : '贴入日记'}}</view>
     </view>
   </block>
 </view>
 
 <!-- 新建标签弹窗 -->
-<view wx:if="{{showAddTagModal}}" class="mask" catchtouchmove="">
+<view wx:if="{{showAddTagModal}}" class="mask" catchtouchmove="" bindtap="onCloseAddTag">
   <view class="sheet" catchtap="">
     <view class="sheet-handle"></view>
     <view class="sheet-title">新建手账标签</view>
@@ -253,8 +261,56 @@
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseAddTag">取消</view>
+      <view class="btn btn-ghost flex-1" bindtap="onCloseAddTag">取消</view>
       <view class="btn btn-primary flex-1" bindtap="onSaveNewTag">保存标签</view>
+    </view>
+  </view>
+</view>
+
+<!-- 更换小票图片手账抽屉 (Custom Handcrafted Image Sheet) -->
+<view wx:if="{{showImageDrawer}}" class="mask" catchtouchmove="" bindtap="onCloseImageDrawer">
+  <view class="custom-sheet" catchtap="">
+    <view class="sheet-handle"></view>
+    <view class="custom-sheet-header">
+      <view class="sheet-title font-display" style="margin-bottom: 6rpx;">小票配图设置</view>
+      <view class="sheet-item-sub">拍照拍摄、相册导入或使用手账矢量图标</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onImageDrawerCamera">
+      <view class="icon-circle icon-circle-green sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.camera}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">重新拍照</view>
+        <view class="sheet-item-sub">打开相机拍摄最新纸质小票</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onImageDrawerAlbum">
+      <view class="icon-circle icon-circle-orange sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.album}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">从相册选取新图</view>
+        <view class="sheet-item-sub">选择手机相册中的小票或发票截图</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row sheet-item-danger" bindtap="onImageDrawerRemove" wx:if="{{image}}">
+      <view class="icon-circle icon-circle-pink sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.trash}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">移除图片（使用手账图标）</view>
+        <view class="sheet-item-sub">使用精美的手账分类图标作为小票头像</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-actions" style="margin-top: 24rpx;">
+      <view class="btn btn-ghost btn-block" bindtap="onCloseImageDrawer">取消</view>
     </view>
   </view>
 </view>

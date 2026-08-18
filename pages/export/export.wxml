@@ -195,7 +195,7 @@
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseImport">取消</view>
+      <view class="btn btn-ghost flex-1" bindtap="onCloseImport">取消</view>
       <view class="btn btn-primary flex-1" bindtap="onConfirmImport">确认恢复</view>
     </view>
   </view>

@@ -1,4 +1,4 @@
-<view class="t-card {{variant === 'home' ? 't-card-home' : ''}} t-card-{{receipt.color || 'coffee'}}" bindtap="onTap">
+<view class="t-card {{variant === 'ledger' ? 't-card-ledger' : ''}} {{isLast ? 't-card-last' : ''}} t-card-{{receipt.color || 'coffee'}}" bindtap="onTap">
   <view class="t-thumb icon-circle icon-circle-{{receipt.color || 'coffee'}}">
     <image class="t-thumb-img" src="{{thumbSrc}}" mode="aspectFit" />
   </view>

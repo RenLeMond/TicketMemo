@@ -59,7 +59,15 @@
   width: 100rpx;
   height: 100rpx;
   margin: 0 auto 16rpx;
-  box-shadow: var(--tm-shadow-sm);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tm-radius-well, 28rpx);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .paper-mascot-img {

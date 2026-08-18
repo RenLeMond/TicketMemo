@@ -4,6 +4,13 @@ const format = require('../../utils/format.js');
 const ocr = require('../../utils/ocr.js');
 const icons = require('../../utils/icons.js');
 
+function withTagSelection(tags, selectedIds) {
+  const set = new Set(selectedIds || []);
+  return (tags || []).map(function (tag) {
+    return Object.assign({}, tag, { _selected: set.has(tag.id) });
+  });
+}
+
 Page({
   data: {
     themeClass: '',
@@ -27,6 +34,7 @@ Page({
     showAddTagModal: false,
     newTagName: '',
     newTagColor: 'coffee',
+    showImageDrawer: false,
     tagColorOptions: ['green','orange','coffee','pink','blue','yellow','purple','gray'],
     // 防重提示
     duplicateWarning: null,
@@ -36,7 +44,8 @@ Page({
       tag: icons.FUNC.tag,
       search: icons.FUNC.search,
       edit: icons.FUNC.edit,
-      calendar: icons.FUNC.calendar
+      calendar: icons.FUNC.calendar,
+      trash: icons.FUNC.trash
     }
   },
 
@@ -51,7 +60,7 @@ Page({
     this.setData({
       themeClass: storage.getThemeClass(),
       categories: cats,
-      tags: allTags,
+      tags: withTagSelection(allTags, []),
       categoryId: cats.length > 0 ? cats[0].id : 'cat_other',
       dateTs: todayTs,
       dateText: todayText
@@ -61,6 +70,7 @@ Page({
       const allReceipts = storage.getReceipts();
       const r = allReceipts.find(x => x.id === options.id);
       if (r) {
+        const selectedTagIds = r.tags ? r.tags.slice() : [];
         this.setData({
           isEdit: true,
           editId: r.id,
@@ -75,7 +85,8 @@ Page({
           items: r.items || '',
           note: r.note || '',
           categoryId: r.categoryId || (cats.length > 0 ? cats[0].id : 'cat_other'),
-          selectedTagIds: r.tags ? r.tags.slice() : []
+          selectedTagIds,
+          tags: withTagSelection(allTags, selectedTagIds)
         });
         wx.setNavigationBarTitle({ title: '编辑小票' });
         return;
@@ -120,36 +131,46 @@ Page({
 
   onChangeImage() {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
-    wx.showActionSheet({
-      itemList: ['重新拍照', '从相册选取新图', '移除图片（使用手账图标）'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          wx.chooseMedia({
-            count: 1,
-            mediaType: ['image'],
-            sourceType: ['camera'],
-            camera: 'back',
-            success: (r) => {
-              if (r.tempFiles && r.tempFiles[0]) {
-                this.setData({ image: r.tempFiles[0].tempFilePath });
-              }
-            }
-          });
-        } else if (res.tapIndex === 1) {
-          wx.chooseMedia({
-            count: 1,
-            mediaType: ['image'],
-            sourceType: ['album'],
-            success: (r) => {
-              if (r.tempFiles && r.tempFiles[0]) {
-                this.setData({ image: r.tempFiles[0].tempFilePath });
-              }
-            }
-          });
-        } else if (res.tapIndex === 2) {
-          this.setData({ image: '' });
+    this.setData({ showImageDrawer: true });
+  },
+
+  onCloseImageDrawer() {
+    this.setData({ showImageDrawer: false });
+  },
+
+  onImageDrawerCamera() {
+    this.setData({ showImageDrawer: false });
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['camera'],
+      camera: 'back',
+      success: (r) => {
+        if (r.tempFiles && r.tempFiles[0]) {
+          this.setData({ image: r.tempFiles[0].tempFilePath });
         }
       }
+    });
+  },
+
+  onImageDrawerAlbum() {
+    this.setData({ showImageDrawer: false });
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album'],
+      success: (r) => {
+        if (r.tempFiles && r.tempFiles[0]) {
+          this.setData({ image: r.tempFiles[0].tempFilePath });
+        }
+      }
+    });
+  },
+
+  onImageDrawerRemove() {
+    this.setData({
+      showImageDrawer: false,
+      image: ''
     });
   },
 
@@ -243,8 +264,12 @@ Page({
     const id = e.currentTarget.dataset.id;
     const list = this.data.selectedTagIds.slice();
     const i = list.indexOf(id);
-    if (i >= 0) list.splice(i, 1); else list.push(id);
-    this.setData({ selectedTagIds: list });
+    if (i >= 0) list.splice(i, 1);
+    else list.push(id);
+    this.setData({
+      selectedTagIds: list,
+      tags: withTagSelection(this.data.tags, list)
+    });
   },
 
   onOpenAddTag() {
@@ -281,7 +306,7 @@ Page({
     const selected = this.data.selectedTagIds.slice();
     if (selected.indexOf(newTag.id) < 0) selected.push(newTag.id);
     this.setData({
-      tags,
+      tags: withTagSelection(tags, selected),
       selectedTagIds: selected,
       showAddTagModal: false,
       newTagName: ''

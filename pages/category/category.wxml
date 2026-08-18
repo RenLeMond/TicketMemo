@@ -5,7 +5,7 @@
     <view class="cat-hero-left">
       <view class="eyebrow-tag">CATEGORY ARCHIVE · 分类归档</view>
       <view class="cat-hero-title font-display">分类手账</view>
-      <view class="cat-hero-sub">长按自建分类可编辑或删除 🌿</view>
+      <view class="cat-hero-sub">细细分类日常，用心收藏每一份人间烟火 🌿</view>
     </view>
     <view class="cat-add-pill" bindtap="onAddCategory">
       <text class="cat-add-plus">+</text>
@@ -90,38 +90,51 @@
     </view>
   </view>
 
-  <!-- 按月份时间线展示小票卡片 -->
+  <!-- 按月份账本托盘展示小票行 -->
   <view class="reveal-3">
     <block wx:if="{{list.length > 0}}">
       <view wx:for="{{list}}" wx:key="month" class="month-group">
-        <view class="month-header">
-          <view class="month-label font-display">{{item.month}}</view>
-          <view class="month-sub-total font-number">
-            {{item.count}} 笔 · 共 ¥{{item.total.toFixed(2)}}
+        <view class="bezel-tray ledger-tray">
+          <view class="bezel-core ledger-core">
+            <view class="month-header">
+              <view class="month-label font-display">{{item.month}}</view>
+              <view class="month-sub-total font-number">
+                {{item.count}} 笔 · 共 ¥{{item.total.toFixed(2)}}
+              </view>
+            </view>
+            <ticket-card
+              wx:for="{{item.receipts}}"
+              wx:for-item="r"
+              wx:for-index="ri"
+              wx:key="id"
+              receipt="{{r}}"
+              showDate="{{true}}"
+              variant="ledger"
+              isLast="{{ri === item.receipts.length - 1}}"
+            />
           </view>
         </view>
-        <ticket-card
-          wx:for="{{item.receipts}}"
-          wx:for-item="r"
-          wx:key="id"
-          receipt="{{r}}"
-          showDate="{{true}}"
-        />
       </view>
     </block>
 
-    <empty-state
-      wx:else
-      iconSrc="{{emptyIcon}}"
-      text="该分类下暂无小票"
-      sub="点底部「+」拍照入账一张吧"
-    />
+    <view wx:else class="bezel-tray ledger-tray">
+      <view class="bezel-core ledger-core">
+        <empty-state
+          iconSrc="{{emptyIcon}}"
+          text="该分类下暂无小票"
+          sub="点底部「+」拍照入账一张吧"
+        />
+      </view>
+    </view>
   </view>
+
+  <!-- 分类页底部暖心寄语 -->
+  <view class="bottom-quote reveal-4">把零碎的日子分门别类，用心珍藏每一种烟火气 🌿</view>
 
 </view>
 
 <!-- 新建/编辑分类弹窗 -->
-<view wx:if="{{showAddModal}}" class="mask" catchtouchmove="">
+<view wx:if="{{showAddModal}}" class="mask" catchtouchmove="" bindtap="onCloseModal">
   <view class="sheet" catchtap="">
     <view class="sheet-handle"></view>
     <view class="sheet-title">{{editingCatId ? '编辑分类' : '新建分类'}}</view>
@@ -151,20 +164,63 @@
       </view>
     </view>
 
-    <view class="form-label">色彩标签</view>
-    <view class="color-row">
-      <view
-        wx:for="{{colorOptions}}"
-        wx:key="*this"
-        class="color-dot icon-circle-{{item}} {{newCatColor === item ? 'color-dot-active' : ''}}"
-        bindtap="onPickColor"
-        data-color="{{item}}"
-      ></view>
+    <view class="sheet-actions">
+      <view class="btn btn-ghost flex-1" bindtap="onCloseModal">取消</view>
+      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存分类</view>
+    </view>
+  </view>
+</view>
+
+<!-- 分类长按手账抽屉 (Custom Handcrafted Action Sheet) -->
+<view wx:if="{{showCatActionSheet}}" class="mask" catchtouchmove="" bindtap="onCloseCatActionSheet">
+  <view class="custom-sheet" catchtap="">
+    <view class="sheet-handle"></view>
+    <view class="custom-sheet-header">
+      <view class="sheet-title font-display" style="margin-bottom: 6rpx;">{{actionCat.name}} · 分类管理</view>
+      <view class="sheet-item-sub">自建手账分类管理</view>
     </view>
 
-    <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseModal">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存分类</view>
+    <view class="sheet-item-row" bindtap="onActionEditCat">
+      <view class="icon-circle icon-circle-coffee sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{funcIcons.edit}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">编辑分类</view>
+        <view class="sheet-item-sub">修改分类名称与手账图标</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row sheet-item-danger" bindtap="onActionDeleteCat">
+      <view class="icon-circle icon-circle-pink sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{funcIcons.trash}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">删除分类</view>
+        <view class="sheet-item-sub">该分类下小票将自动归入「其他」</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-actions" style="margin-top: 24rpx;">
+      <view class="btn btn-ghost btn-block" bindtap="onCloseCatActionSheet">取消</view>
+    </view>
+  </view>
+</view>
+
+<!-- 删除分类手账确认弹窗 (Double-Bezel Confirm Dialog) -->
+<view wx:if="{{showDeleteConfirm}}" class="dialog-mask" catchtouchmove="" bindtap="onCancelDeleteConfirm">
+  <view class="dialog-box" catchtap="">
+    <view class="bezel-tray">
+      <view class="tape tape-center tape-pink"></view>
+      <view class="bezel-core dialog-core">
+        <view class="dialog-title font-display">删除分类</view>
+        <view class="dialog-desc">确定删除「{{actionCat.name}}」吗？\n该分类下小票将自动归入「其他」分类，小票不会丢失。</view>
+        <view class="sheet-actions">
+          <view class="btn btn-ghost flex-1" bindtap="onCancelDeleteConfirm">取消</view>
+          <view class="btn btn-danger flex-1" bindtap="onConfirmDeleteCat">确认删除</view>
+        </view>
+      </view>
     </view>
   </view>
 </view>

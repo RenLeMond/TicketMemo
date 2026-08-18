@@ -26,7 +26,7 @@
 
       <view class="bezel-core event-core-card">
         <view class="event-polaroid-head">
-          <view class="event-cover-wrap icon-circle-{{item.coverColor || 'green'}}">
+          <view class="icon-circle icon-circle-{{item.coverColor || 'green'}} event-cover-wrap">
             <image class="event-cover-img" src="{{item.coverSrc}}" mode="aspectFit" />
           </view>
           <view class="event-head-info">
@@ -75,13 +75,12 @@
     sub="点击上方「+ 新建故事」，把一次旅行或聚餐串成手账吧"
   />
 
-  <view class="event-tip" wx:if="{{eventList.length > 0}}">
-    💡 轻点卡片可弹出管理菜单（编辑事件、导出台账、删除故事）
-  </view>
+  <!-- 事件页底部暖心寄语 -->
+  <view class="bottom-quote reveal-4">每一本事件手账，都锁着一段值得重温的故事 🌱</view>
 </view>
 
 <!-- 手账画册翻页浏览弹窗 (Swiper Flip-book Mode) -->
-<view wx:if="{{showFlipModal}}" class="mask" catchtouchmove="">
+<view wx:if="{{showFlipModal}}" class="mask" catchtouchmove="" bindtap="onCloseFlipModal">
   <view class="flip-modal" catchtap="">
     <view class="flip-header">
       <view class="flip-title font-display">{{activeFlipEvent.name}} · 手账画册</view>
@@ -115,6 +114,93 @@
         </view>
       </swiper-item>
     </swiper>
+  </view>
+</view>
+
+<!-- 事件管理手账抽屉 (Custom Handcrafted Action Sheet) -->
+<view wx:if="{{showActionDrawer}}" class="mask" catchtouchmove="" bindtap="onCloseActionDrawer">
+  <view class="custom-sheet" catchtap="">
+    <view class="sheet-handle"></view>
+    <view class="custom-sheet-header">
+      <view class="sheet-title font-display" style="margin-bottom: 6rpx;">{{actionEvent.name}} · 故事管理</view>
+      <view class="sheet-item-sub">{{actionEvent.count}} 张小票 · 共计 ¥{{actionEvent.totalAmount}}</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onDrawerFlip">
+      <view class="icon-circle icon-circle-green sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.book}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">翻页画册浏览</view>
+        <view class="sheet-item-sub">像翻看实体手账画册一样重温小票</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onDrawerPoster">
+      <view class="icon-circle icon-circle-orange sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.share}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">生成手账海报</view>
+        <view class="sheet-item-sub">绘制专属复古小票长图，分享朋友圈</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onDrawerEdit">
+      <view class="icon-circle icon-circle-coffee sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.edit}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">编辑事件故事</view>
+        <view class="sheet-item-sub">修改故事标题、封面与备注</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row" bindtap="onDrawerExport">
+      <view class="icon-circle icon-circle-blue sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.export}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">导出事件台账</view>
+        <view class="sheet-item-sub">导出 Excel / PDF 报销台账明细</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-item-row sheet-item-danger" bindtap="onDrawerDelete">
+      <view class="icon-circle icon-circle-pink sheet-item-ico">
+        <image class="sheet-item-ico-img" src="{{icons.delete}}" mode="aspectFit" />
+      </view>
+      <view class="sheet-item-body">
+        <view class="sheet-item-title">删除事件故事</view>
+        <view class="sheet-item-sub">仅解除事件关联，小票依然完好保留</view>
+      </view>
+      <view class="sheet-item-arrow">›</view>
+    </view>
+
+    <view class="sheet-actions" style="margin-top: 24rpx;">
+      <view class="btn btn-ghost btn-block" bindtap="onCloseActionDrawer">取消</view>
+    </view>
+  </view>
+</view>
+
+<!-- 删除事件确认弹窗 (Double-Bezel Confirm Dialog) -->
+<view wx:if="{{showDeleteConfirm}}" class="dialog-mask" catchtouchmove="" bindtap="onCancelDeleteConfirm">
+  <view class="dialog-box" catchtap="">
+    <view class="bezel-tray">
+      <view class="tape tape-center tape-pink"></view>
+      <view class="bezel-core dialog-core">
+        <view class="dialog-title font-display">删除故事</view>
+        <view class="dialog-desc">确定删除事件「{{actionEvent.name}}」吗？\n事件下所有小票不会被删除，仅取消事件归类。</view>
+        <view class="sheet-actions">
+          <view class="btn btn-ghost flex-1" bindtap="onCancelDeleteConfirm">取消</view>
+          <view class="btn btn-danger flex-1" bindtap="onConfirmDeleteEvent">确认删除</view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
 

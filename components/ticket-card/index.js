@@ -9,7 +9,8 @@ Component({
   properties: {
     receipt: { type: Object, value: {} },
     showDate: { type: Boolean, value: true },
-    variant: { type: String, value: '' }
+    variant: { type: String, value: '' },
+    isLast: { type: Boolean, value: false }
   },
   data: {
     thumbSrc: icons.CATEGORY_BY_ID.cat_other,

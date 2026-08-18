@@ -22,7 +22,7 @@
 
           <!-- 商家与头像 -->
           <view class="paper-header">
-            <view class="paper-mascot icon-circle-{{receipt.color || 'coffee'}}">
+            <view class="icon-circle icon-circle-{{receipt.color || 'coffee'}} paper-mascot">
               <image class="paper-mascot-img" src="{{thumbSrc}}" mode="aspectFit" />
             </view>
             <view class="paper-merchant">{{receipt.merchant}}</view>
@@ -117,6 +117,23 @@
           <image class="detail-act-ico" src="{{icons.delete}}" mode="aspectFit" />
         </view>
         <view class="action-label">移入回收站</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 删除确认手账弹窗 (Double-Bezel Confirm Dialog) -->
+<view wx:if="{{showDeleteModal}}" class="dialog-mask" catchtouchmove="" bindtap="onCancelDelete">
+  <view class="dialog-box" catchtap="">
+    <view class="bezel-tray">
+      <view class="tape tape-center tape-pink"></view>
+      <view class="bezel-core dialog-core">
+        <view class="dialog-title font-display">移入回收站</view>
+        <view class="dialog-desc">确定将这张小票移入回收站吗？\n可在「我的 - 小票回收站」随时恢复。</view>
+        <view class="sheet-actions">
+          <view class="btn btn-ghost flex-1" bindtap="onCancelDelete">取消</view>
+          <view class="btn btn-danger flex-1" bindtap="onConfirmDelete">确认移入</view>
+        </view>
       </view>
     </view>
   </view>

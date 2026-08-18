@@ -10,6 +10,7 @@ page {
   --tm-bg-tray: rgba(232, 223, 201, 0.45);
   --tm-bg-inset: #F3ECE0;
   --tm-bg-tag-default: #EFE6D5;
+  --tm-bg-sheet: #FFFCF7;
 
   /* 品牌与点缀色 (温润莫兰迪森系) */
   --tm-primary: #8FAE85;
@@ -55,6 +56,11 @@ page {
   --tm-shadow-card: 0 4rpx 20rpx rgba(184, 153, 104, 0.07), 0 1rpx 4rpx rgba(184, 153, 104, 0.04);
   --tm-shadow-float: 0 10rpx 32rpx rgba(184, 153, 104, 0.12), 0 2rpx 8rpx rgba(184, 153, 104, 0.06);
   --tm-shadow-glow: 0 8rpx 24rpx rgba(143, 174, 133, 0.28);
+  
+  /* 纸艺钢印与凹槽压痕 (Letterpress Debossed Well) */
+  --tm-deboss-well: inset 0 3rpx 6rpx rgba(92, 82, 69, 0.12), inset 0 -2rpx 3rpx rgba(255, 255, 255, 0.9), 0 1rpx 2rpx rgba(255, 255, 255, 0.5);
+  --tm-deboss-well-active: inset 0 4rpx 8rpx rgba(92, 82, 69, 0.18), inset 0 -2rpx 4rpx rgba(255, 255, 255, 1);
+  --tm-radius-well: 22rpx;
 
   /* 和纸胶带专用色彩 */
   --tm-tape-bg: rgba(250, 226, 203, 0.88);
@@ -71,7 +77,7 @@ page {
   --tm-radius-md: 26rpx;
   --tm-radius-lg: 34rpx;
   --tm-radius-xl: 44rpx;
-  --tm-radius-pill: 999rpx;
+  --tm-radius-pill: 100rpx;
 
   /* 动力学弹簧贝塞尔曲线 */
   --tm-spring-ease: cubic-bezier(0.32, 0.72, 0, 1);
@@ -87,6 +93,11 @@ page {
   --tm-tab-border: rgba(232, 223, 201, 0.6);
   --tm-tab-text: #9E917D;
   --tm-tab-active: #8FAE85;
+
+  /* 层级尺度：Tab < 遮罩 Sheet < 确认弹窗 */
+  --tm-z-tab: 100;
+  --tm-z-overlay: 200;
+  --tm-z-dialog: 300;
 }
 
 /* ==================== 薄荷小屋主题 (Green) ==================== */
@@ -97,6 +108,7 @@ page.theme-green, .theme-green {
   --tm-bg-tray: rgba(215, 232, 213, 0.5);
   --tm-bg-inset: #E3EFE2;
   --tm-bg-tag-default: #DEEEDE;
+  --tm-bg-sheet: #F9FDF8;
 
   --tm-primary: #6DA36E;
   --tm-primary-deep: #4B784C;
@@ -137,6 +149,10 @@ page.theme-green, .theme-green {
   --tm-shadow-card: 0 4rpx 20rpx rgba(109, 163, 110, 0.08), 0 1rpx 4rpx rgba(109, 163, 110, 0.04);
   --tm-shadow-float: 0 10rpx 32rpx rgba(109, 163, 110, 0.14), 0 2rpx 8rpx rgba(109, 163, 110, 0.06);
   --tm-shadow-glow: 0 8rpx 24rpx rgba(109, 163, 110, 0.28);
+  
+  /* 纸艺钢印与凹槽压痕 */
+  --tm-deboss-well: inset 0 3rpx 6rpx rgba(50, 75, 50, 0.13), inset 0 -2rpx 3rpx rgba(255, 255, 255, 0.9), 0 1rpx 2rpx rgba(255, 255, 255, 0.5);
+  --tm-deboss-well-active: inset 0 4rpx 8rpx rgba(50, 75, 50, 0.2), inset 0 -2rpx 4rpx rgba(255, 255, 255, 1);
 
   --tm-tape-bg: rgba(213, 236, 220, 0.88);
   --tm-tape-border: rgba(109, 163, 110, 0.25);
@@ -155,6 +171,7 @@ page.theme-dark, .theme-dark {
   --tm-bg-tray: rgba(56, 50, 44, 0.65);
   --tm-bg-inset: #1E1B18;
   --tm-bg-tag-default: #332F2A;
+  --tm-bg-sheet: #24211E;
 
   --tm-primary: #98B690;
   --tm-primary-deep: #B4CEAC;
@@ -196,6 +213,10 @@ page.theme-dark, .theme-dark {
   --tm-shadow-card: 0 4rpx 20rpx rgba(0, 0, 0, 0.45), 0 1rpx 4rpx rgba(0, 0, 0, 0.25);
   --tm-shadow-float: 0 10rpx 32rpx rgba(0, 0, 0, 0.55), 0 2rpx 8rpx rgba(0, 0, 0, 0.35);
   --tm-shadow-glow: 0 8rpx 26rpx rgba(152, 182, 144, 0.25);
+
+  /* 纸艺钢印与凹槽压痕 (深色) */
+  --tm-deboss-well: inset 0 3rpx 6rpx rgba(0, 0, 0, 0.5), inset 0 -1rpx 2rpx rgba(255, 255, 255, 0.08);
+  --tm-deboss-well-active: inset 0 5rpx 10rpx rgba(0, 0, 0, 0.65), inset 0 -1rpx 2rpx rgba(255, 255, 255, 0.12);
 
   --tm-tape-bg: rgba(68, 59, 44, 0.92);
   --tm-tape-border: rgba(196, 169, 125, 0.3);

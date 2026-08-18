@@ -1,5 +1,7 @@
 <view class="empty">
-  <image wx:if="{{iconSrc}}" class="empty-img" src="{{iconSrc}}" mode="aspectFit" />
+  <view wx:if="{{iconSrc}}" class="empty-icon-well icon-circle icon-circle-gray">
+    <image class="empty-img" src="{{iconSrc}}" mode="aspectFit" />
+  </view>
   <view class="empty-text">{{text}}</view>
   <view wx:if="{{sub}}" class="empty-sub">{{sub}}</view>
 </view>

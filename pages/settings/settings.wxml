@@ -169,7 +169,7 @@
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancelPassword">取消</view>
+      <view class="btn btn-ghost flex-1" bindtap="onCancelPassword">取消</view>
       <view class="btn btn-primary flex-1" bindtap="onSavePassword">确认开启</view>
     </view>
   </view>

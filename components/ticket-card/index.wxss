@@ -20,9 +20,32 @@
   opacity: 0.94;
 }
 
-.t-card-home {
-  padding: 22rpx 24rpx;
+/* 账本行：嵌在托盘内芯里，去掉独立卡片铬层 */
+.t-card-ledger {
+  margin-bottom: 0;
+  padding: 22rpx 16rpx;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   border-radius: var(--tm-radius-sm);
+  overflow: visible;
+}
+
+.t-card-ledger:not(.t-card-last)::after {
+  content: "";
+  position: absolute;
+  left: 24rpx;
+  right: 20rpx;
+  bottom: 0;
+  border-bottom: 1rpx dashed var(--tm-dotted-line);
+  pointer-events: none;
+}
+
+.t-card-ledger:active {
+  transform: none;
+  opacity: 1;
+  box-shadow: none;
+  background-color: var(--tm-bg-inset);
 }
 
 /* 左侧彩色和纸书签竖条 */
@@ -48,14 +71,17 @@
 .t-card-purple::before { background: var(--tm-purple); }
 .t-card-gray::before   { background: var(--tm-gray); }
 
-/* 缩略图容器 */
+/* 缩略图容器 (纸艺钢印凹槽) */
 .t-thumb {
   margin-right: 22rpx;
   flex-shrink: 0;
   width: 78rpx;
   height: 78rpx;
-  border-radius: 22rpx;
-  box-shadow: inset 0 1rpx 2rpx rgba(255, 255, 255, 0.4);
+  border-radius: var(--tm-radius-well, 22rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  box-sizing: border-box;
 }
 
 .t-thumb-img {

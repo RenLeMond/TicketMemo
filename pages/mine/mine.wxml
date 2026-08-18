@@ -18,7 +18,7 @@
       </view>
 
       <view class="me-stats-row">
-        <view class="me-stat-item" bindtap="goStats">
+        <view class="me-stat-item">
           <view class="me-stat-val font-number">{{receiptCount}}</view>
           <view class="me-stat-lbl">小票总数</view>
         </view>
@@ -28,7 +28,7 @@
           <view class="me-stat-lbl">事件故事</view>
         </view>
         <view class="me-stat-divider"></view>
-        <view class="me-stat-item" bindtap="goStats">
+        <view class="me-stat-item">
           <view class="me-stat-val font-number">¥{{totalExpense}}</view>
           <view class="me-stat-lbl">累计入账</view>
         </view>
@@ -38,7 +38,7 @@
 
   <!-- 隐私安全保护状态卡片 -->
   <view class="safe-card reveal-2" bindtap="onPrivacy">
-    <view class="safe-icon icon-circle-green">
+    <view class="icon-circle icon-circle-green safe-icon">
       <image class="mine-menu-ico" src="{{icons.encrypt}}" mode="aspectFit" />
     </view>
     <view class="safe-text">
@@ -52,17 +52,6 @@
   <view class="section-title reveal-3">数据与归档</view>
   <view class="bezel-tray menu-bezel-tray reveal-3">
     <view class="bezel-core menu-bezel-core">
-      <view class="menu-row" bindtap="goStats">
-        <view class="icon-circle icon-circle-green">
-          <image class="mine-menu-ico" src="{{icons.stats}}" mode="aspectFit" />
-        </view>
-        <view class="menu-text">
-          <view class="menu-title">开支数据罗盘</view>
-          <view class="menu-sub">周 / 月 / 年多维图表统计</view>
-        </view>
-        <view class="menu-arrow">›</view>
-      </view>
-      <view class="menu-divider"></view>
       <view class="menu-row" bindtap="goExport">
         <view class="icon-circle icon-circle-orange">
           <image class="mine-menu-ico" src="{{icons.export}}" mode="aspectFit" />
@@ -173,8 +162,27 @@
     </scroll-view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseTrash">关闭</view>
+      <view class="btn btn-ghost flex-1" bindtap="onCloseTrash">关闭</view>
       <view class="btn btn-primary flex-1" bindtap="onRestoreAllTrash">全部恢复</view>
+    </view>
+  </view>
+</view>
+
+<!-- 我的页面通用手账确认与信息弹窗 (Double-Bezel Confirm Dialog) -->
+<view wx:if="{{showConfirmDialog}}" class="dialog-mask" catchtouchmove="" bindtap="onDialogCancel">
+  <view class="dialog-box" catchtap="">
+    <view class="bezel-tray">
+      <view class="tape tape-center {{confirmDialog.isDanger ? 'tape-pink' : 'tape-green'}}"></view>
+      <view class="bezel-core dialog-core">
+        <view class="dialog-title font-display">{{confirmDialog.title}}</view>
+        <view class="dialog-desc" style="white-space: pre-line; text-align: {{confirmDialog.isInfoOnly ? 'left' : 'center'}};">{{confirmDialog.desc}}</view>
+        <view class="sheet-actions">
+          <view wx:if="{{!confirmDialog.isInfoOnly}}" class="btn btn-ghost flex-1" bindtap="onDialogCancel">取消</view>
+          <view class="btn {{confirmDialog.isDanger ? 'btn-danger' : 'btn-primary'}} flex-1" bindtap="onDialogConfirm">
+            {{confirmDialog.isInfoOnly ? '我知道了' : (confirmDialog.isDanger ? '确认删除' : '确定')}}
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </view>

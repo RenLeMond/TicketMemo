@@ -15,7 +15,12 @@
   height: 100rpx;
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: var(--tm-shadow-sm);
+  border-radius: var(--tm-radius-well, 28rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .exp-cover-img {
@@ -63,24 +68,27 @@
   flex-direction: column;
   align-items: center;
   padding: 24rpx 10rpx;
-  border-radius: var(--tm-radius-sm);
+  border-radius: var(--tm-radius-well, 18rpx);
   background: var(--tm-bg-inset);
-  border: 2rpx solid transparent;
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   transition: all 0.18s var(--tm-spring-bounce);
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .range-card-active {
   background: var(--tm-primary-light);
   border-color: var(--tm-primary);
-  box-shadow: var(--tm-shadow-glow);
-  transform: scale(1.03);
+  box-shadow: var(--tm-shadow-glow), 0 4rpx 12rpx rgba(101, 133, 87, 0.25);
+  transform: scale(1.04);
 }
 
 .range-ico {
-  width: 44rpx;
-  height: 44rpx;
+  width: 48rpx;
+  height: 48rpx;
   margin-bottom: 12rpx;
+  transition: transform 0.18s ease;
 }
 
 .range-name {
@@ -110,6 +118,9 @@
   font-size: 26rpx;
   color: var(--tm-primary-deep);
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .event-info-box {
@@ -160,18 +171,20 @@
   flex-direction: column;
   align-items: center;
   padding: 30rpx 10rpx 24rpx;
-  border-radius: var(--tm-radius-sm);
+  border-radius: var(--tm-radius-well, 18rpx);
   background: var(--tm-bg-inset);
-  border: 2rpx solid transparent;
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   transition: all 0.18s var(--tm-spring-bounce);
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .fmt-card-active {
   background: var(--tm-bg-card);
   border-color: var(--tm-accent);
-  box-shadow: 0 4rpx 14rpx rgba(232, 168, 124, 0.28);
-  transform: scale(1.03);
+  box-shadow: 0 6rpx 20rpx rgba(232, 168, 124, 0.32);
+  transform: scale(1.04);
 }
 
 .fmt-tag {
@@ -266,9 +279,13 @@
 }
 
 .menu-arrow {
-  font-size: 32rpx;
+  font-size: 30rpx;
   color: var(--tm-text-light);
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1rpx);
 }
 
 .menu-divider {

@@ -13,10 +13,17 @@
 .ec-cover {
   width: 110rpx;
   height: 110rpx;
-  border-radius: 28rpx;
+  border-radius: var(--tm-radius-well, 28rpx);
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: var(--tm-shadow-sm);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .ec-cover-img {
@@ -97,18 +104,22 @@
 .cover-cell {
   width: 100%;
   height: 120rpx;
-  border-radius: var(--tm-radius-md);
+  border-radius: var(--tm-radius-well, 22rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2rpx solid transparent;
   transition: all 0.18s var(--tm-spring-bounce);
+  box-sizing: border-box;
 }
 
 .cover-cell-active {
+  background-color: var(--tm-bg-card);
   border-color: var(--tm-primary);
   transform: scale(1.06);
-  box-shadow: var(--tm-shadow-glow);
+  box-shadow: var(--tm-shadow-glow), 0 4rpx 14rpx rgba(101, 133, 87, 0.25);
 }
 
 .cover-cell-img {

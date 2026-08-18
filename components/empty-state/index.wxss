@@ -9,13 +9,22 @@
   justify-content: center;
 }
 
+.empty-icon-well {
+  width: 136rpx;
+  height: 136rpx;
+  border-radius: var(--tm-radius-well, 34rpx);
+  margin: 0 auto 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
 .empty-img {
-  width: 140rpx;
-  height: 140rpx;
-  margin: 0 auto 20rpx;
+  width: 84rpx;
+  height: 84rpx;
   display: block;
-  opacity: 0.85;
-  filter: drop-shadow(0 4rpx 12rpx rgba(184, 153, 104, 0.15));
+  opacity: 0.8;
 }
 
 .empty-text {

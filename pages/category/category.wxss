@@ -38,16 +38,16 @@
   align-items: center;
   gap: 8rpx;
   padding: 12rpx 28rpx;
-  border-radius: var(--tm-radius-pill);
+  border-radius: 36rpx;
   background: linear-gradient(135deg, var(--tm-primary) 0%, var(--tm-primary-deep) 100%);
   color: #FFFFFF;
   font-size: 24rpx;
   font-weight: 600;
-  box-shadow: var(--tm-shadow-glow);
+  box-shadow: 0 4rpx 14rpx rgba(101, 133, 87, 0.25);
   cursor: pointer;
-  overflow: hidden;
   transition: transform 0.18s var(--tm-spring-bounce);
   margin-bottom: 4rpx;
+  box-sizing: border-box;
 }
 
 .cat-add-plus {
@@ -60,29 +60,37 @@
 .cat-capsule-scroll {
   display: flex;
   white-space: nowrap;
-  padding: 12rpx 0 20rpx;
+  padding: 16rpx 10rpx 24rpx;
   margin-bottom: 12rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cat-chip {
   display: inline-flex;
   align-items: center;
-  padding: 10rpx 26rpx 10rpx 12rpx;
+  flex-shrink: 0;
+  height: 76rpx;
+  padding: 0 28rpx 0 12rpx;
   background-color: var(--tm-bg-card);
   border: 1rpx solid var(--tm-border-light);
-  border-radius: var(--tm-radius-pill);
+  border-radius: 38rpx;
   margin-right: 18rpx;
-  box-shadow: var(--tm-shadow-sm);
+  box-shadow: 0 2rpx 8rpx rgba(184, 153, 104, 0.08);
   transition: all 0.2s var(--tm-spring-bounce);
   cursor: pointer;
-  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.cat-chip:first-child {
+  margin-left: 6rpx;
 }
 
 .cat-chip-active {
   background: var(--tm-primary);
   border-color: var(--tm-primary);
-  box-shadow: var(--tm-shadow-glow);
-  transform: scale(1.04);
+  box-shadow: 0 4rpx 16rpx rgba(101, 133, 87, 0.3);
 }
 
 .cat-chip-new {
@@ -101,12 +109,28 @@
 .cat-chip-icon {
   width: 52rpx;
   height: 52rpx;
-  margin-right: 12rpx;
+  border-radius: 16rpx;
+  margin-right: 14rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  box-sizing: border-box;
+}
+
+.cat-chip-active .cat-chip-icon {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 2rpx 4rpx rgba(0, 0, 0, 0.15), 0 1rpx 2rpx rgba(255, 255, 255, 0.35);
 }
 
 .cat-chip-img {
-  width: 32rpx;
-  height: 32rpx;
+  width: 34rpx;
+  height: 34rpx;
+  flex-shrink: 0;
 }
 
 .cat-chip-emoji {
@@ -117,6 +141,9 @@
   font-size: 26rpx;
   font-weight: 600;
   color: var(--tm-text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .cat-chip-active .cat-chip-name {
@@ -148,9 +175,16 @@
 .cat-summary-icon {
   width: 88rpx;
   height: 88rpx;
-  border-radius: 50%;
+  border-radius: var(--tm-radius-well, 26rpx);
   margin-right: 18rpx;
   flex-shrink: 0;
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cat-sum-img {
@@ -235,16 +269,18 @@
   font-size: 24rpx;
 }
 
-/* 月度分组 */
+/* 月度分组（一月一册账本托盘） */
 .month-group {
-  margin-bottom: 30rpx;
+  margin-bottom: 0;
 }
 
 .month-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 10rpx 6rpx 14rpx;
+  padding: 16rpx 14rpx 14rpx;
+  margin: 0 6rpx 2rpx;
+  border-bottom: 1rpx dashed var(--tm-dotted-line);
 }
 
 .month-label {
@@ -263,60 +299,35 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16rpx;
-  margin: 16rpx 0 28rpx;
-  max-height: 320rpx;
+  margin: 12rpx 0 24rpx;
+  max-height: 340rpx;
   overflow-y: auto;
-  padding: 4rpx;
+  padding: 16rpx 8rpx;
+  box-sizing: border-box;
 }
 
 .icon-cell {
-  width: 90rpx;
-  height: 90rpx;
-  border-radius: var(--tm-radius-sm);
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: var(--tm-radius-well, 22rpx);
   background-color: var(--tm-bg-inset);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2rpx solid transparent;
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   transition: all 0.18s var(--tm-spring-bounce);
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .icon-cell-active {
   background-color: var(--tm-bg-card);
   border-color: var(--tm-primary);
-  box-shadow: var(--tm-shadow-glow);
-  transform: scale(1.1);
+  box-shadow: var(--tm-shadow-glow), 0 4rpx 12rpx rgba(101, 133, 87, 0.25);
+  transform: scale(1.08);
 }
 
 .icon-cell-img {
   width: 52rpx;
   height: 52rpx;
-}
-
-/* 颜色选择行 */
-.color-row {
-  display: flex;
-  gap: 16rpx;
-  margin: 16rpx 0 32rpx;
-}
-
-.color-dot {
-  width: 60rpx;
-  height: 60rpx;
-  border-radius: 50%;
-  border: 4rpx solid transparent;
-  transition: transform 0.18s var(--tm-spring-bounce);
-  overflow: hidden;
-}
-
-.color-dot-active {
-  border-color: var(--tm-primary);
-  transform: scale(1.18);
-  box-shadow: 0 4rpx 12rpx rgba(143, 174, 133, 0.35);
-}
-
-.sheet-actions {
-  display: flex;
-  margin-top: 10rpx;
 }

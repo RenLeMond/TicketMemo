@@ -37,9 +37,15 @@ Page({
     newCatIcon: icons.NEW_CATEGORY_ICON_PICKS[0],
     newCatColor: 'coffee',
     iconOptions: icons.NEW_CATEGORY_ICON_PICKS,
-    colorOptions: ['green','orange','coffee','pink','blue','yellow','purple','gray'],
     allIcon: icons.CATEGORY_BY_ID.cat_other,
-    emptyIcon: icons.FUNC.empty
+    emptyIcon: icons.FUNC.empty,
+    showCatActionSheet: false,
+    showDeleteConfirm: false,
+    actionCat: null,
+    funcIcons: {
+      edit: icons.FUNC.edit,
+      trash: icons.FUNC.trash
+    }
   },
 
   onShow() {
@@ -229,40 +235,59 @@ Page({
       return;
     }
 
-    wx.showActionSheet({
-      itemList: ['编辑分类', '删除分类'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          this.setData({
-            showAddModal: true,
-            editingCatId: cat.id,
-            newCatName: cat.name,
-            newCatIcon: cat.icon,
-            newCatColor: cat.color || 'coffee'
-          });
-        } else if (res.tapIndex === 1) {
-          wx.showModal({
-            title: '删除分类',
-            content: '确定删除「' + cat.name + '」吗？该分类下小票将自动归入「其他」',
-            confirmColor: '#B86F65',
-            success: (r) => {
-              if (!r.confirm) return;
-              const cats = storage.getCategories().filter(c => c.id !== id);
-              const receipts = storage.getReceipts().map(rec =>
-                rec.categoryId === id ? Object.assign({}, rec, { categoryId: 'cat_other' }) : rec
-              );
-              storage.setCategories(cats);
-              storage.setReceipts(receipts);
-              this.setData({
-                categories: decorateCategories(cats),
-                currentId: this.data.currentId === id ? 'all' : this.data.currentId
-              });
-              this.loadList();
-              wx.showToast({ title: '已删除', icon: 'none' });
-            }
-          });
-        }
-      }
+    this.setData({
+      showCatActionSheet: true,
+      actionCat: cat
     });
+  },
+
+  onCloseCatActionSheet() {
+    this.setData({ showCatActionSheet: false });
+  },
+
+  onActionEditCat() {
+    const cat = this.data.actionCat;
+    if (!cat) return;
+    this.setData({
+      showCatActionSheet: false,
+      showAddModal: true,
+      editingCatId: cat.id,
+      newCatName: cat.name,
+      newCatIcon: cat.icon,
+      newCatColor: cat.color || 'coffee'
+    });
+  },
+
+  onActionDeleteCat() {
+    this.setData({
+      showCatActionSheet: false,
+      showDeleteConfirm: true
+    });
+  },
+
+  onCancelDeleteConfirm() {
+    this.setData({ showDeleteConfirm: false });
+  },
+
+  onConfirmDeleteCat() {
+    const cat = this.data.actionCat;
+    if (!cat) return;
+    const id = cat.id;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+
+    const cats = storage.getCategories().filter(c => c.id !== id);
+    const receipts = storage.getReceipts().map(rec =>
+      rec.categoryId === id ? Object.assign({}, rec, { categoryId: 'cat_other' }) : rec
+    );
+    storage.setCategories(cats);
+    storage.setReceipts(receipts);
+    this.setData({
+      categories: decorateCategories(cats),
+      currentId: this.data.currentId === id ? 'all' : this.data.currentId,
+      showDeleteConfirm: false,
+      actionCat: null
+    });
+    this.loadList();
+    wx.showToast({ title: '已删除分类', icon: 'none' });
   }
 });

@@ -3,8 +3,10 @@
   <!-- 顶部品牌奢华手账区 -->
   <view class="hero reveal-1">
     <view class="hero-left">
-      <view class="eyebrow-tag">TICKET MEMO ARCHIVE · 票忆手账</view>
-      <view class="hero-title font-display">小票日记</view>
+      <view class="eyebrow-tag">HANDCRAFTED JOURNAL · 票忆手账</view>
+      <view class="hero-title font-display brand-title">
+        <text class="brand-ticket">Ticket</text><text class="brand-memo">Memo</text><text class="brand-dot">.</text>
+      </view>
       <view class="hero-sub">{{greeting}}</view>
     </view>
     <view class="hero-mascot">
@@ -41,10 +43,6 @@
           <text class="overview-dot"></text>
           <text>本月小票账目</text>
         </view>
-        <view class="overview-stat-link" bindtap="goStats">
-          <text>数据罗盘</text>
-          <text class="stat-arrow">›</text>
-        </view>
       </view>
 
       <view class="overview-amount-box">
@@ -76,50 +74,60 @@
     </view>
   </view>
 
-  <!-- 快捷分类 -->
+  <!-- 快捷分类 (Double-Bezel 双层手账外壳) -->
   <view class="section-title reveal-3">
     快捷分类
-    <text class="section-subtitle" bindtap="goCategoryTab">全部分类 ›</text>
+    <view class="section-subtitle" bindtap="goCategoryTab">全部分类<text class="section-subtitle-arrow">›</text></view>
   </view>
 
-  <view class="quick-cats reveal-3">
-    <view
-      wx:for="{{categories}}"
-      wx:key="id"
-      class="quick-cat"
-      bindtap="goCategory"
-      data-id="{{item.id}}"
-    >
-      <view class="icon-circle icon-circle-{{item.color}}">
-        <image wx:if="{{item._iconIsImg}}" class="quick-cat-img" src="{{item.icon}}" mode="aspectFit" />
-        <text wx:else class="quick-cat-emoji">{{item.icon}}</text>
+  <view class="bezel-tray quick-bezel-tray reveal-3">
+    <view class="bezel-core quick-bezel-core">
+      <view class="quick-cats">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="quick-cat"
+          bindtap="goCategory"
+          data-id="{{item.id}}"
+        >
+          <view class="icon-circle icon-circle-{{item.color}}">
+            <image wx:if="{{item._iconIsImg}}" class="quick-cat-img" src="{{item.icon}}" mode="aspectFit" />
+            <text wx:else class="quick-cat-emoji">{{item.icon}}</text>
+          </view>
+          <view class="quick-cat-name">{{item.name}}</view>
+        </view>
       </view>
-      <view class="quick-cat-name">{{item.name}}</view>
     </view>
   </view>
 
   <!-- 最近小票流 -->
   <view class="section-title reveal-4">
     最近小票
-    <text class="section-subtitle" bindtap="goCategoryTab">全部 ›</text>
+    <view class="section-subtitle" bindtap="goCategoryTab">全部<text class="section-subtitle-arrow">›</text></view>
   </view>
 
-  <view class="reveal-4">
-    <block wx:if="{{filtered.length > 0}}">
-      <ticket-card
-        wx:for="{{filtered}}"
-        wx:key="id"
-        receipt="{{item}}"
-        variant="home"
+  <view class="bezel-tray ledger-tray reveal-4">
+    <view class="bezel-core ledger-core">
+      <block wx:if="{{filtered.length > 0}}">
+        <ticket-card
+          wx:for="{{filtered}}"
+          wx:key="id"
+          receipt="{{item}}"
+          variant="ledger"
+          isLast="{{index === filtered.length - 1}}"
+        />
+      </block>
+
+      <empty-state
+        wx:else
+        iconSrc="{{icons.empty}}"
+        text="还没有找到小票呢～"
+        sub="试试清除筛选条件，或点底部「+」拍一张吧"
       />
-    </block>
-
-    <empty-state
-      wx:else
-      iconSrc="{{icons.empty}}"
-      text="还没有找到小票呢～"
-      sub="试试清除筛选条件，或点底部「+」拍一张吧"
-    />
+    </view>
   </view>
+
+  <!-- 首页底部暖心寄语 -->
+  <view class="bottom-quote reveal-4">一张小票，一段时光；细水长流，皆是生活 🍃</view>
 
 </view>

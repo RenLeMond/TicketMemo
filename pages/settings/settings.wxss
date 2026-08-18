@@ -15,7 +15,12 @@
   height: 100rpx;
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: var(--tm-shadow-sm);
+  border-radius: var(--tm-radius-well, 28rpx);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .st-cover-img {
@@ -161,9 +166,13 @@
 }
 
 .menu-arrow {
-  font-size: 32rpx;
+  font-size: 30rpx;
   color: var(--tm-text-light);
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1rpx);
 }
 
 .menu-divider {

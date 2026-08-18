@@ -18,6 +18,10 @@ Page({
     // 海报弹窗
     showPosterModal: false,
     posterImg: '',
+    // 手账抽屉与确认弹窗
+    showActionDrawer: false,
+    showDeleteConfirm: false,
+    actionEvent: null,
     icons: {
       event: icons.TAB.event,
       add: icons.FUNC.add,
@@ -79,22 +83,65 @@ Page({
     if (!cur) return;
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
 
-    wx.showActionSheet({
-      itemList: ['翻页画册浏览 📖', '生成手账海报 🎨', '编辑事件 ✏️', '导出事件台账 📑', '删除事件 🗑️'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          this.openFlipModalForEvent(cur);
-        } else if (res.tapIndex === 1) {
-          this.generatePosterForEvent(cur);
-        } else if (res.tapIndex === 2) {
-          wx.navigateTo({ url: '/pages/event-create/event-create?id=' + id });
-        } else if (res.tapIndex === 3) {
-          wx.navigateTo({ url: '/pages/export/export?eventId=' + id });
-        } else if (res.tapIndex === 4) {
-          this.confirmDeleteEvent(id);
-        }
-      }
+    this.setData({
+      showActionDrawer: true,
+      actionEvent: cur
     });
+  },
+
+  onCloseActionDrawer() {
+    this.setData({ showActionDrawer: false });
+  },
+
+  onDrawerFlip() {
+    const cur = this.data.actionEvent;
+    this.setData({ showActionDrawer: false });
+    if (cur) this.openFlipModalForEvent(cur);
+  },
+
+  onDrawerPoster() {
+    const cur = this.data.actionEvent;
+    this.setData({ showActionDrawer: false });
+    if (cur) this.generatePosterForEvent(cur);
+  },
+
+  onDrawerEdit() {
+    const cur = this.data.actionEvent;
+    this.setData({ showActionDrawer: false });
+    if (cur) wx.navigateTo({ url: '/pages/event-create/event-create?id=' + cur.id });
+  },
+
+  onDrawerExport() {
+    const cur = this.data.actionEvent;
+    this.setData({ showActionDrawer: false });
+    if (cur) wx.navigateTo({ url: '/pages/export/export?eventId=' + cur.id });
+  },
+
+  onDrawerDelete() {
+    this.setData({
+      showActionDrawer: false,
+      showDeleteConfirm: true
+    });
+  },
+
+  onCancelDeleteConfirm() {
+    this.setData({ showDeleteConfirm: false });
+  },
+
+  onConfirmDeleteEvent() {
+    const cur = this.data.actionEvent;
+    if (!cur) return;
+    const id = cur.id;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+    const events = storage.getEvents().filter(x => x.id !== id);
+    storage.setEvents(events);
+    this.setData({
+      selectedId: null,
+      showDeleteConfirm: false,
+      actionEvent: null
+    });
+    this.loadEvents();
+    wx.showToast({ title: '已删除事件', icon: 'none' });
   },
 
   onOpenFlipModal(e) {
@@ -332,23 +379,6 @@ Page({
         } else {
           wx.showToast({ title: '保存失败', icon: 'none' });
         }
-      }
-    });
-  },
-
-  confirmDeleteEvent(id) {
-    wx.showModal({
-      title: '删除事件',
-      content: '事件下小票不会被删除，仅取消事件归类',
-      confirmColor: '#B86F65',
-      success: (r) => {
-        if (!r.confirm) return;
-        try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
-        const events = storage.getEvents().filter(x => x.id !== id);
-        storage.setEvents(events);
-        this.setData({ selectedId: null });
-        this.loadEvents();
-        wx.showToast({ title: '已删除事件', icon: 'none' });
       }
     });
   }

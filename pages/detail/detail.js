@@ -97,16 +97,18 @@ Page({
 
   onDelete() {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (e) {}
-    wx.showModal({
-      title: '删除小票',
-      content: '小票将移入回收站，30 天内可在「我的 - 回收站」随时恢复。',
-      confirmColor: '#B86F65',
-      success: (r) => {
-        if (!r.confirm) return;
-        storage.deleteReceipt(this.id);
-        wx.showToast({ title: '已移入回收站', icon: 'success', duration: 800 });
-        setTimeout(() => wx.navigateBack(), 850);
-      }
-    });
+    this.setData({ showDeleteModal: true });
+  },
+
+  onCancelDelete() {
+    this.setData({ showDeleteModal: false });
+  },
+
+  onConfirmDelete() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (e) {}
+    storage.deleteReceipt(this.id);
+    this.setData({ showDeleteModal: false });
+    wx.showToast({ title: '已移入回收站 🌿', icon: 'success', duration: 800 });
+    setTimeout(() => wx.navigateBack(), 850);
   }
 });

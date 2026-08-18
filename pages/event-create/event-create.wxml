@@ -6,7 +6,7 @@
   </view>
 
   <view class="ec-hero reveal-1">
-    <view class="ec-cover icon-circle-{{coverColor}}">
+    <view class="ec-cover icon-circle icon-circle-{{coverColor}}">
       <image class="ec-cover-img" src="{{cover}}" mode="aspectFit" />
     </view>
     <view class="ec-hero-info">
@@ -111,7 +111,7 @@
   <empty-state wx:else iconSrc="{{emptyIcon}}" text="还没有小票可以选择" sub="先到首页录入几张吧" />
 
   <view class="action-bar">
-    <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancel">取消</view>
+    <view class="btn btn-ghost flex-1" bindtap="onCancel">取消</view>
     <view class="btn btn-primary flex-1" bindtap="onSave">{{isEdit ? '保存修改' : '创建事件'}}</view>
   </view>
 </view>

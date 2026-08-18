@@ -4,7 +4,7 @@ function tabList() {
   return [
     { pagePath: '/pages/index/index', text: '首页', iconSrc: icons.TAB.home },
     { pagePath: '/pages/category/category', text: '分类', iconSrc: icons.TAB.category },
-    { pagePath: '/pages/add/add', text: '', iconSrc: icons.TAB.add, isAction: true },
+    { pagePath: '/pages/add/add', text: '记账', iconSrc: icons.TAB.add, isAction: true },
     { pagePath: '/pages/event/event', text: '事件', iconSrc: icons.TAB.event },
     { pagePath: '/pages/mine/mine', text: '我的', iconSrc: icons.TAB.mine }
   ];
@@ -53,7 +53,7 @@ Component({
         if (wx.vibrateShort) wx.vibrateShort({ type: 'light' });
       } catch (err) {}
       if (path === '/pages/add/add') {
-        wx.navigateTo({ url: '/pages/add/add?mode=camera' });
+        wx.navigateTo({ url: '/pages/add/add' });
         return;
       }
       wx.switchTab({ url: path });

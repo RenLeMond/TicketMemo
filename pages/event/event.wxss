@@ -38,16 +38,16 @@
   align-items: center;
   gap: 8rpx;
   padding: 12rpx 28rpx;
-  border-radius: var(--tm-radius-pill);
+  border-radius: 36rpx;
   background: linear-gradient(135deg, var(--tm-primary) 0%, var(--tm-primary-deep) 100%);
   color: #FFFFFF;
   font-size: 24rpx;
   font-weight: 600;
-  box-shadow: var(--tm-shadow-glow);
+  box-shadow: 0 4rpx 14rpx rgba(101, 133, 87, 0.25);
   cursor: pointer;
-  overflow: hidden;
   transition: transform 0.18s var(--tm-spring-bounce);
   margin-bottom: 4rpx;
+  box-sizing: border-box;
 }
 
 .event-create-plus {
@@ -89,11 +89,17 @@
 .event-cover-wrap {
   width: 88rpx;
   height: 88rpx;
-  border-radius: 24rpx;
+  border-radius: var(--tm-radius-well, 24rpx);
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: var(--tm-shadow-sm);
+  background-color: var(--tm-bg-inset);
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-deboss-well);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .event-cover-img {
@@ -179,6 +185,7 @@
   width: 48rpx;
   height: 48rpx;
   margin-left: 10rpx;
+  border-radius: var(--tm-radius-well, 14rpx);
 }
 
 .event-quick-actions .btn-nested-ico {
@@ -188,13 +195,6 @@
 
 .event-btn-text {
   font-size: 24rpx;
-}
-
-.event-tip {
-  text-align: center;
-  font-size: 22rpx;
-  color: var(--tm-text-muted);
-  margin-top: 36rpx;
 }
 
 /* 翻页画册弹窗 */
@@ -285,8 +285,10 @@
 .flip-placeholder-wrap {
   width: 130rpx;
   height: 130rpx;
+  border-radius: var(--tm-radius-well, 34rpx);
   margin: 40rpx 0;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .flip-placeholder-img {
