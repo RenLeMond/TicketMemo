@@ -94,7 +94,8 @@ page {
   --tm-tab-text: #9E917D;
   --tm-tab-active: #8FAE85;
 
-  /* 层级尺度：Tab < 遮罩 Sheet < 确认弹窗 */
+  /* 层级尺度：内容 < 顶栏 < Tab < 遮罩 Sheet < 确认弹窗 */
+  --tm-z-nav: 90;
   --tm-z-tab: 100;
   --tm-z-overlay: 200;
   --tm-z-dialog: 300;
