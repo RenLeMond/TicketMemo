@@ -1,17 +1,18 @@
-// mock/data.js - 初始 mock 数据
+// mock/data.js - 初始 mock 数据（纯 SVG 图标版）
+const icons = require('../utils/icons.js');
 
 const now = Date.now();
 const day = 24 * 3600 * 1000;
 
 const categories = [
-  { id: 'cat_food',    name: '餐饮', icon: '/assets/icons/category/dining@3x.png',    color: 'orange', isDefault: true },
-  { id: 'cat_shop',    name: '购物', icon: '/assets/icons/category/shopping@3x.png', color: 'pink',   isDefault: true },
-  { id: 'cat_traffic', name: '出行', icon: '/assets/icons/category/travel@3x.png',    color: 'blue',   isDefault: true },
-  { id: 'cat_med',     name: '医疗', icon: '/assets/icons/category/medical@3x.png',   color: 'green',  isDefault: true },
-  { id: 'cat_fun',     name: '娱乐', icon: '/assets/icons/category/fun@3x.png',       color: 'purple', isDefault: true },
-  { id: 'cat_bill',    name: '缴费', icon: '/assets/icons/category/utility@3x.png',   color: 'yellow', isDefault: true },
-  { id: 'cat_reim',    name: '报销', icon: '/assets/icons/category/reimburse@3x.png', color: 'coffee', isDefault: true },
-  { id: 'cat_other',   name: '其他', icon: '/assets/icons/category/misc@3x.png',     color: 'gray',   isDefault: true }
+  { id: 'cat_food',    name: '餐饮', icon: icons.CATEGORY_BY_ID.cat_food,    color: 'orange', isDefault: true },
+  { id: 'cat_shop',    name: '购物', icon: icons.CATEGORY_BY_ID.cat_shop,    color: 'pink',   isDefault: true },
+  { id: 'cat_traffic', name: '出行', icon: icons.CATEGORY_BY_ID.cat_traffic, color: 'blue',   isDefault: true },
+  { id: 'cat_med',     name: '医疗', icon: icons.CATEGORY_BY_ID.cat_med,     color: 'green',  isDefault: true },
+  { id: 'cat_fun',     name: '娱乐', icon: icons.CATEGORY_BY_ID.cat_fun,     color: 'purple', isDefault: true },
+  { id: 'cat_bill',    name: '缴费', icon: icons.CATEGORY_BY_ID.cat_bill,    color: 'yellow', isDefault: true },
+  { id: 'cat_reim',    name: '报销', icon: icons.CATEGORY_BY_ID.cat_reim,    color: 'coffee', isDefault: true },
+  { id: 'cat_other',   name: '其他', icon: icons.CATEGORY_BY_ID.cat_other,   color: 'gray',   isDefault: true }
 ];
 
 const tags = [
@@ -187,7 +188,7 @@ const events = [
   {
     id: 'ev_1',
     name: '杭州两日游',
-    cover: '/images/事件/event_travel.png',
+    cover: 'travel',
     coverColor: 'blue',
     startDate: now - 13 * day,
     endDate: now - 11 * day,
@@ -198,7 +199,7 @@ const events = [
   {
     id: 'ev_2',
     name: '生日小聚',
-    cover: '/images/事件/event_birthday.png',
+    cover: 'birthday',
     coverColor: 'yellow',
     startDate: now - 4 * day,
     endDate: now - 4 * day,
@@ -209,7 +210,7 @@ const events = [
   {
     id: 'ev_3',
     name: '本月日常',
-    cover: '/images/事件/event_shopping.png',
+    cover: 'shopping',
     coverColor: 'pink',
     startDate: now - 30 * day,
     endDate: now,

@@ -1,71 +1,122 @@
-<view class="page-container">
+<view class="page-container event-page {{themeClass}}">
 
-  <view class="ev-hero">
-    <view>
-      <view class="ev-hero-title">事件</view>
-      <view class="ev-hero-sub">把零碎的小票串成一段段故事</view>
+  <!-- 顶部标题区（避开微信右上角胶囊） -->
+  <view class="event-hero reveal-1">
+    <view class="event-hero-left">
+      <view class="eyebrow-tag">STORY SCRAPBOOK · 故事集</view>
+      <view class="event-hero-title font-display">事件故事手账</view>
+      <view class="event-hero-sub">将散落的小票，串联成闪闪发光的独家记忆 🌿</view>
     </view>
-    <view class="ev-add" bindtap="goCreate">
-      <text class="ev-add-plus">＋</text>
-      <text class="ev-add-text">新建事件</text>
+    <view class="event-create-pill" bindtap="goCreate">
+      <text class="event-create-plus">+</text>
+      <text>新建故事</text>
     </view>
   </view>
 
-  <!-- 事件贴纸卡片 -->
-  <view class="ev-list" wx:if="{{events.length > 0}}">
+  <!-- 事件卡片列表 -->
+  <view class="event-list reveal-2" wx:if="{{eventList.length > 0}}">
     <view
-      wx:for="{{events}}"
+      wx:for="{{eventList}}"
       wx:key="id"
-      class="ev-card {{selectedId === item.id ? 'ev-card-active' : ''}}"
-      bindtap="onSelectEvent"
-      bindlongpress="onLongPressEvent"
+      class="bezel-tray event-bezel-card {{index % 2 === 1 ? 'event-card-tilt-alt' : 'event-card-tilt'}}"
+      bindtap="onOpenActionSheet"
       data-id="{{item.id}}"
     >
-      <view class="ev-card-main">
-        <view class="ev-card-name">{{item.name}}</view>
-        <view class="ev-card-date">{{item.startText}} - {{item.endText}}</view>
-        <view class="ev-card-count">{{item.count}} 张小票</view>
-        <view class="ev-card-total">¥{{item.total}}</view>
-      </view>
-      <view class="ev-polaroid icon-circle-{{item.coverColor}}">
-        <image class="ev-cover-img" src="{{item.coverSrc}}" mode="aspectFit" />
+      <view class="tape tape-left {{index % 2 === 0 ? 'tape-green' : 'tape-pink'}}"></view>
+
+      <view class="bezel-core event-core-card">
+        <view class="event-polaroid-head">
+          <view class="event-cover-wrap icon-circle-{{item.coverColor || 'green'}}">
+            <image class="event-cover-img" src="{{item.coverSrc}}" mode="aspectFit" />
+          </view>
+          <view class="event-head-info">
+            <view class="event-name">{{item.name}}</view>
+            <view class="event-date font-number">{{item.dateRangeText}}</view>
+          </view>
+          <view class="event-count-badge tag tag-green">{{item.count}} 张小票</view>
+        </view>
+
+        <view class="event-note-quote" wx:if="{{item.note}}">
+          “{{item.note}}”
+        </view>
+
+        <view class="dotted-divider"></view>
+
+        <view class="event-card-footer">
+          <view class="event-total-box">
+            <text class="event-total-label">故事总计</text>
+            <text class="event-total-amount font-number">{{item.totalAmount}}</text>
+          </view>
+
+          <!-- 嵌套岛按钮操作 -->
+          <view class="event-quick-actions">
+            <view class="btn-nested btn-nested-primary" catchtap="onOpenFlipModal" data-id="{{item.id}}">
+              <text class="event-btn-text">画册</text>
+              <view class="btn-nested-tray">
+                <image class="btn-nested-ico" src="{{icons.book}}" mode="aspectFit" />
+              </view>
+            </view>
+            <view class="btn-nested btn-nested-accent" catchtap="onGeneratePoster" data-id="{{item.id}}">
+              <text class="event-btn-text">海报</text>
+              <view class="btn-nested-tray">
+                <image class="btn-nested-ico" src="{{icons.share}}" mode="aspectFit" />
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
-  </view>
-
-  <!-- 当前事件详情 -->
-  <view wx:if="{{selectedId && events.length > 0}}" class="ev-detail">
-    <view class="ev-detail-header">
-      <view class="section-title" style="margin: 0;">事件明细</view>
-      <view class="ev-anim-btn" bindtap="onPlayAnimation">
-        <text class="ev-anim-icon">▶</text>
-        <text>生成动画</text>
-      </view>
-    </view>
-
-    <view class="ev-summary">
-      <view class="ev-summary-item">
-        <view class="ev-summary-label">总消费</view>
-        <view class="ev-summary-value">¥{{selectedTotal}}</view>
-      </view>
-      <view class="ev-summary-divider"></view>
-      <view class="ev-summary-item">
-        <view class="ev-summary-label">小票</view>
-        <view class="ev-summary-value">{{selectedReceipts.length}} 张</view>
-      </view>
-    </view>
-
-    <ticket-card
-      wx:for="{{selectedReceipts}}"
-      wx:key="id"
-      receipt="{{item}}"
-    />
   </view>
 
   <empty-state
-    wx:if="{{events.length === 0}}"
-    iconSrc="/assets/icons/tab/event@3x.png"
-    text="还没有事件呢"
-    sub="试试把一次旅行整理成一个事件"
+    wx:else
+    iconSrc="{{icons.empty}}"
+    text="还没有创建任何事件故事呢"
+    sub="点击上方「+ 新建故事」，把一次旅行或聚餐串成手账吧"
   />
+
+  <view class="event-tip" wx:if="{{eventList.length > 0}}">
+    💡 轻点卡片可弹出管理菜单（编辑事件、导出台账、删除故事）
+  </view>
 </view>
+
+<!-- 手账画册翻页浏览弹窗 (Swiper Flip-book Mode) -->
+<view wx:if="{{showFlipModal}}" class="mask" catchtouchmove="">
+  <view class="flip-modal" catchtap="">
+    <view class="flip-header">
+      <view class="flip-title font-display">{{activeFlipEvent.name}} · 手账画册</view>
+      <view class="flip-close" bindtap="onCloseFlipModal">×</view>
+    </view>
+
+    <swiper
+      class="flip-swiper"
+      indicator-dots="{{true}}"
+      indicator-color="rgba(143, 174, 133, 0.3)"
+      indicator-active-color="#8FAE85"
+      current="{{currentFlipIndex}}"
+      bindchange="onFlipSwiperChange"
+    >
+      <swiper-item wx:for="{{flipReceipts}}" wx:key="id">
+        <view class="flip-page-card">
+          <view class="tape tape-center tape-green"></view>
+          <view class="flip-merchant">{{item.merchant}}</view>
+          <view class="flip-date font-number">{{item._dateText}}</view>
+
+          <view wx:if="{{item.image}}" class="flip-img-wrap">
+            <image class="flip-img" src="{{item.image}}" mode="aspectFill"></image>
+          </view>
+          <view wx:else class="flip-placeholder-wrap icon-circle icon-circle-{{item.color || 'coffee'}}">
+            <image class="flip-placeholder-img" src="{{item._thumb}}" mode="aspectFit" />
+          </view>
+
+          <view class="flip-amount font-number">¥{{item.amount.toFixed(2)}}</view>
+          <view class="flip-note" wx:if="{{item.note}}">“{{item.note}}”</view>
+          <view class="flip-index-badge">第 {{index + 1}} / {{flipReceipts.length}} 页</view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
+
+<!-- 隐藏/渲染用 Canvas 2D 用于生成手账海报 -->
+<canvas type="2d" id="posterCanvas" class="hidden-poster-canvas"></canvas>

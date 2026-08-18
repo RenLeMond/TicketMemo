@@ -3,13 +3,16 @@ const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
 
 Component({
+  options: {
+    styleIsolation: 'apply-shared'
+  },
   properties: {
     receipt: { type: Object, value: {} },
     showDate: { type: Boolean, value: true },
     variant: { type: String, value: '' }
   },
   data: {
-    thumbSrc: '/assets/icons/category/misc@3x.png',
+    thumbSrc: icons.CATEGORY_BY_ID.cat_other,
     _dateText: '',
     _amountText: ''
   },

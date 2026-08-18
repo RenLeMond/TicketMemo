@@ -1,69 +1,88 @@
-<view class="page-container">
+<view class="page-container {{themeClass}}">
 
-  <view class="home-nav" style="padding-top: {{statusBarHeight}}px; height: {{navHeight}}px;">
-    <view class="home-nav-title">首页</view>
-  </view>
-
-  <!-- 顶部品牌区 -->
-  <view class="hero">
+  <!-- 顶部品牌奢华手账区 -->
+  <view class="hero reveal-1">
     <view class="hero-left">
+      <view class="eyebrow-tag">TICKET MEMO ARCHIVE · 票忆手账</view>
       <view class="hero-title font-display">小票日记</view>
-      <view class="hero-sub">每一张小票，都是生活的温柔记录</view>
+      <view class="hero-sub">{{greeting}}</view>
     </view>
     <view class="hero-mascot">
-      <image class="hero-mascot-img" src="/assets/icons/tab/home@3x.png" mode="aspectFit" />
+      <image class="hero-mascot-img" src="{{icons.mascot}}" mode="aspectFit" />
     </view>
   </view>
 
-  <!-- 搜索框 -->
-  <view class="search">
-    <image class="search-icon-img" src="/assets/icons/func/search@3x.png" mode="aspectFit" />
-    <input
-      class="search-input"
-      placeholder="搜索商家 / 商品 / 备注"
-      placeholder-class="search-placeholder"
-      value="{{keyword}}"
-      bindinput="onInput"
-      confirm-type="search"
-    />
-    <view wx:if="{{keyword}}" class="search-clear" bindtap="onClearKeyword">×</view>
+  <!-- 搜索栏区 -->
+  <view class="search-section reveal-2">
+    <view class="search">
+      <image class="search-icon-img" src="{{icons.search}}" mode="aspectFit" />
+      <input
+        class="search-input"
+        placeholder="搜索商家 / 商品 / 备注"
+        placeholder-class="search-placeholder"
+        value="{{keyword}}"
+        bindinput="onInput"
+        confirm-type="search"
+      />
+      <view wx:if="{{keyword}}" class="search-clear" bindtap="onClearKeyword">×</view>
+    </view>
   </view>
 
-  <!-- 录入入口 / 本月概览卡 -->
-  <view class="overview">
-    <image class="overview-bg-img" src="/assets/icons/scene/basket_groceries@3x.png" mode="aspectFit" />
-    <view class="overview-content">
-      <view class="tape tape-left"></view>
-      <view class="tape tape-right"></view>
-      <view class="overview-row">
-        <view class="overview-label">录入小票</view>
+  <!-- 本月概览卡片（Double-Bezel 双层硬件拟物托盘） -->
+  <view class="bezel-tray overview-tray reveal-2">
+    <view class="tape tape-left tape-green"></view>
+    <view class="tape tape-right tape-pink"></view>
+
+    <view class="bezel-core overview-core">
+      <image class="overview-bg-img" src="{{icons.basket}}" mode="aspectFit" />
+
+      <view class="overview-header-row">
+        <view class="overview-badge">
+          <text class="overview-dot"></text>
+          <text>本月小票账目</text>
+        </view>
+        <view class="overview-stat-link" bindtap="goStats">
+          <text>数据罗盘</text>
+          <text class="stat-arrow">›</text>
+        </view>
+      </view>
+
+      <view class="overview-amount-box">
+        <text class="amount-cur font-number">¥</text>
+        <text class="amount-val font-number">{{monthTotal}}</text>
+      </view>
+
+      <view class="overview-meta-row">
+        <view class="overview-meta">已收录 <text class="meta-count font-number">{{monthCount}}</text> 笔生活小确幸</view>
         <view class="overview-date">{{today}}</view>
       </view>
-      <view class="overview-amount">拍照识别 / 相册导入</view>
-      <view class="overview-row">
-        <view class="overview-meta">本月 ¥{{monthTotal}} / {{monthCount}} 笔</view>
-        <view class="overview-tip" bindtap="goStats">查看统计 ›</view>
-      </view>
+
+      <!-- Button-in-Button 嵌套岛 CTA 按钮 -->
       <view class="entry-row">
-        <view class="entry entry-primary" bindtap="goAdd" data-mode="camera">
-          <image class="entry-ico" src="/assets/icons/func/camera@3x.png" mode="aspectFit" />
-          <text>拍照识别</text>
+        <view class="btn-nested btn-nested-primary flex-1" bindtap="goAdd" data-mode="camera">
+          <text class="btn-nested-text">拍照识别</text>
+          <view class="btn-nested-tray">
+            <image class="btn-nested-ico" src="{{icons.camera}}" mode="aspectFit" />
+          </view>
         </view>
-        <view class="entry entry-accent" bindtap="goAdd" data-mode="album">
-          <image class="entry-ico" src="/assets/icons/func/album@3x.png" mode="aspectFit" />
-          <text>相册导入</text>
+
+        <view class="btn-nested btn-nested-accent flex-1" bindtap="goAdd" data-mode="album">
+          <text class="btn-nested-text">相册导入</text>
+          <view class="btn-nested-tray">
+            <image class="btn-nested-ico" src="{{icons.album}}" mode="aspectFit" />
+          </view>
         </view>
       </view>
     </view>
   </view>
 
   <!-- 快捷分类 -->
-  <view class="section-title">
+  <view class="section-title reveal-3">
     快捷分类
-    <text class="section-subtitle" bindtap="goAllCategories">全部 ›</text>
+    <text class="section-subtitle" bindtap="goCategoryTab">全部分类 ›</text>
   </view>
 
-  <view class="quick-cats">
+  <view class="quick-cats reveal-3">
     <view
       wx:for="{{categories}}"
       wx:key="id"
@@ -79,26 +98,28 @@
     </view>
   </view>
 
-  <!-- 最近小票 -->
-  <view class="section-title">
+  <!-- 最近小票流 -->
+  <view class="section-title reveal-4">
     最近小票
-    <text class="section-subtitle" bindtap="goAllReceipts">全部 ›</text>
+    <text class="section-subtitle" bindtap="goCategoryTab">全部 ›</text>
   </view>
 
-  <block wx:if="{{filtered.length > 0}}">
-    <ticket-card
-      wx:for="{{filtered}}"
-      wx:key="id"
-      receipt="{{item}}"
-      variant="home"
-    />
-  </block>
+  <view class="reveal-4">
+    <block wx:if="{{filtered.length > 0}}">
+      <ticket-card
+        wx:for="{{filtered}}"
+        wx:key="id"
+        receipt="{{item}}"
+        variant="home"
+      />
+    </block>
 
-  <empty-state
-    wx:else
-    iconSrc="/assets/icons/tab/mine@3x.png"
-    text="还没有小票呢～"
-    sub="点底部中间拍一张吧"
-  />
+    <empty-state
+      wx:else
+      iconSrc="{{icons.empty}}"
+      text="还没有找到小票呢～"
+      sub="试试清除筛选条件，或点底部「+」拍一张吧"
+    />
+  </view>
 
 </view>

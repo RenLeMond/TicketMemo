@@ -11,7 +11,9 @@
     "pages/export/export",
     "pages/settings/settings"
   ],
+  "lazyCodeLoading": "requiredComponents",
   "window": {
+    "navigationStyle": "custom",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#FAF6EE",
     "navigationBarTitleText": "小票日记",

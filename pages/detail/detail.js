@@ -5,12 +5,20 @@ const icons = require('../../utils/icons.js');
 
 Page({
   data: {
+    themeClass: '',
     receipt: null,
     category: null,
     tags: [],
     dateText: '',
     amountText: '',
-    thumbSrc: ''
+    thumbSrc: '',
+    barcodeSrc: icons.FUNC.barcode,
+    icons: {
+      share: icons.FUNC.share,
+      edit: icons.FUNC.edit,
+      export: icons.FUNC.export,
+      delete: icons.FUNC.delete
+    }
   },
 
   onLoad(options) {
@@ -23,14 +31,21 @@ Page({
   },
 
   onShow() {
+    this.setData({
+      themeClass: storage.getThemeClass()
+    });
     if (this.id) this.loadDetail();
+  },
+
+  goBack() {
+    wx.navigateBack();
   },
 
   loadDetail() {
     const list = storage.getReceipts();
     const r = list.find(x => x.id === this.id);
     if (!r) {
-      wx.showToast({ title: '小票不存在', icon: 'none', duration: 800 });
+      wx.showToast({ title: '小票不存在或已删除', icon: 'none', duration: 800 });
       setTimeout(() => wx.navigateBack(), 1000);
       return;
     }
@@ -41,11 +56,12 @@ Page({
       ? cat0
       : Object.assign({}, cat0, { icon: icons.categoryIconUrl(r.categoryId) });
     const tags = (r.tags || []).map(tid => tagsAll.find(t => t.id === tid)).filter(Boolean);
+
     this.setData({
       receipt: r,
       category: cat,
       tags,
-      dateText: format.formatDate(r.date, 'YYYY-MM-DD HH:mm'),
+      dateText: format.formatDate(r.date, 'YYYY年MM月DD日 HH:mm'),
       amountText: format.formatMoney(r.amount),
       thumbSrc: icons.receiptThumbUrl(r)
     });
@@ -54,8 +70,12 @@ Page({
   onCopy() {
     const r = this.data.receipt;
     if (!r) return;
-    const text = r.merchant + '\n' + format.formatMoney(r.amount) + '\n' + format.formatDate(r.date, 'YYYY-MM-DD HH:mm') + '\n' + (r.items || '') + '\n' + (r.note || '');
-    wx.setClipboardData({ data: text, success: () => wx.showToast({ title: '已复制', icon: 'success' }) });
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (e) {}
+    const text = `【小票记录】\n商家：${r.merchant}\n金额：${format.formatMoney(r.amount)}\n日期：${format.formatDate(r.date, 'YYYY-MM-DD HH:mm')}\n商品：${r.items || '无'}\n备注：${r.note || '无'}`;
+    wx.setClipboardData({
+      data: text,
+      success: () => wx.showToast({ title: '已复制小票详情 🌿', icon: 'success' })
+    });
   },
 
   onPreviewImage() {
@@ -65,22 +85,27 @@ Page({
   },
 
   onEdit() {
-    wx.showToast({ title: '编辑功能即将上线', icon: 'none' });
+    if (!this.id) return;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (e) {}
+    wx.navigateTo({ url: '/pages/add/add?id=' + this.id });
   },
 
   onExport() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (e) {}
     wx.navigateTo({ url: '/pages/export/export?receiptId=' + this.id });
   },
 
   onDelete() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (e) {}
     wx.showModal({
       title: '删除小票',
-      content: '将移入回收站，30 天内可恢复',
+      content: '小票将移入回收站，30 天内可在「我的 - 回收站」随时恢复。',
+      confirmColor: '#B86F65',
       success: (r) => {
         if (!r.confirm) return;
         storage.deleteReceipt(this.id);
         wx.showToast({ title: '已移入回收站', icon: 'success', duration: 800 });
-        setTimeout(() => wx.navigateBack(), 1000);
+        setTimeout(() => wx.navigateBack(), 850);
       }
     });
   }

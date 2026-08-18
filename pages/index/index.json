@@ -1,5 +1,5 @@
 {
-  "navigationStyle": "custom",
+  "navigationBarTitleText": "小票日记",
   "usingComponents": {
     "ticket-card": "/components/ticket-card/index",
     "empty-state": "/components/empty-state/index"

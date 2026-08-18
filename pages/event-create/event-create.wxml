@@ -1,100 +1,114 @@
-<view class="page-container ec-page">
+<view class="page-container ec-page {{themeClass}}">
 
-  <view class="ec-hero">
+  <view class="nav-back-bar reveal-1">
+    <view class="nav-back-btn" bindtap="onCancel"></view>
+    <view class="nav-page-title font-display">{{isEdit ? '编辑事件' : '新建事件故事'}}</view>
+  </view>
+
+  <view class="ec-hero reveal-1">
     <view class="ec-cover icon-circle-{{coverColor}}">
       <image class="ec-cover-img" src="{{cover}}" mode="aspectFit" />
     </view>
-    <view class="ec-hero-title">{{isEdit ? '编辑事件' : '新建事件'}}</view>
-    <view class="ec-hero-sub">把这段日子里的小票串起来</view>
+    <view class="ec-hero-info">
+      <view class="eyebrow-tag">CREATE STORY · 编织故事</view>
+      <view class="ec-hero-title font-display">{{name || (isEdit ? '编辑事件' : '新建事件')}}</view>
+      <view class="ec-hero-sub">把这段日子里的小票串成一卷手账</view>
+    </view>
   </view>
 
-  <view class="card ec-form">
-    <view class="form-group">
-      <view class="form-label">事件名称</view>
-      <view class="input-wrap">
-        <input
-          class="input"
-          placeholder="例如 杭州两日游 / 月度日常"
-          placeholder-class="input-placeholder"
-          value="{{name}}"
-          bindinput="onNameInput"
-          maxlength="20"
-        />
+  <view class="bezel-tray ec-bezel-tray reveal-2">
+    <view class="bezel-core ec-core-form">
+      <view class="form-group">
+        <view class="form-label">事件名称</view>
+        <view class="input-wrap">
+          <input
+            class="input"
+            placeholder="例如 杭州两日游 / 毕业聚餐 / 生日趴"
+            placeholder-class="input-placeholder"
+            value="{{name}}"
+            bindinput="onNameInput"
+            maxlength="20"
+          />
+        </view>
       </view>
-    </view>
 
-    <view class="form-group">
-      <view class="form-label">事件时间</view>
-      <view class="date-row">
-        <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange">
-          <view class="input-wrap">
-            <text class="input">{{startDate}}</text>
+      <view class="form-group">
+        <view class="form-label">事件起止时间</view>
+        <view class="date-row">
+          <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange" class="date-picker-flex">
+            <view class="input-wrap">
+              <text class="input font-number">{{startDate}}</text>
+            </view>
+          </picker>
+          <view class="date-tilde">～</view>
+          <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange" class="date-picker-flex">
+            <view class="input-wrap">
+              <text class="input font-number">{{endDate}}</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">手账随笔 / 心情寄语</view>
+        <view class="textarea-wrap">
+          <textarea
+            class="textarea"
+            placeholder="写一两句这段日子的心情或回忆吧～"
+            placeholder-style="color: var(--tm-text-light);"
+            value="{{note}}"
+            bindinput="onNoteInput"
+            maxlength="80"
+          ></textarea>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">选择故事手账封面</view>
+        <view class="cover-grid">
+          <view
+            wx:for="{{coverOptions}}"
+            wx:key="src"
+            class="cover-cell icon-circle-{{item.color}} {{cover === item.src ? 'cover-cell-active' : ''}}"
+            bindtap="onPickCover"
+            data-idx="{{index}}"
+          >
+            <image class="cover-cell-img" src="{{item.src}}" mode="aspectFit" />
           </view>
-        </picker>
-        <view class="date-tilde">～</view>
-        <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange">
-          <view class="input-wrap">
-            <text class="input">{{endDate}}</text>
-          </view>
-        </picker>
-      </view>
-    </view>
-
-    <view class="form-group">
-      <view class="form-label">事件备注</view>
-      <view class="textarea-wrap">
-        <textarea
-          class="textarea"
-          placeholder="写一句这段日子的心情吧～"
-          placeholder-style="color:#C9BDA8;"
-          value="{{note}}"
-          bindinput="onNoteInput"
-          maxlength="80"
-        ></textarea>
-      </view>
-    </view>
-
-    <view class="form-group">
-      <view class="form-label">事件封面</view>
-      <view class="cover-grid">
-        <view
-          wx:for="{{coverOptions}}"
-          wx:key="src"
-          class="cover-cell icon-circle-{{item.color}} {{cover === item.src ? 'cover-cell-active' : ''}}"
-          bindtap="onPickCover"
-          data-idx="{{index}}"
-        >
-          <image class="cover-cell-img" src="{{item.src}}" mode="aspectFit" />
         </view>
       </view>
     </view>
   </view>
 
-  <view class="section-title">
-    选择小票
-    <text class="section-subtitle">已选 {{selectedIds.length}} 张</text>
+  <view class="section-title reveal-3">
+    选择关联小票
+    <text class="section-subtitle">已选 {{selectedIds.length}} 张小票</text>
   </view>
 
-  <view class="card receipt-list" wx:if="{{receipts.length > 0}}">
-    <view
-      wx:for="{{receipts}}"
-      wx:key="id"
-      class="rec-row {{selectedIds.indexOf(item.id) >= 0 ? 'rec-row-active' : ''}}"
-      bindtap="onToggleReceipt"
-      data-id="{{item.id}}"
-    >
-      <view class="rec-check">{{selectedIds.indexOf(item.id) >= 0 ? '✓' : ''}}</view>
-      <view class="icon-circle icon-circle-{{item.color || 'coffee'}}">
-        <image class="rec-thumb" src="{{item._thumb}}" mode="aspectFit" />
+  <view class="bezel-tray ec-bezel-tray reveal-3" wx:if="{{receipts.length > 0}}">
+    <view class="bezel-core ec-core-list">
+      <view
+        wx:for="{{receipts}}"
+        wx:key="id"
+        class="rec-row {{selectedIds.indexOf(item.id) >= 0 ? 'rec-row-active' : ''}}"
+        bindtap="onToggleReceipt"
+        data-id="{{item.id}}"
+      >
+        <view class="rec-check {{selectedIds.indexOf(item.id) >= 0 ? 'rec-check-active' : ''}}">
+          {{selectedIds.indexOf(item.id) >= 0 ? '✓' : ''}}
+        </view>
+        <view class="icon-circle icon-circle-{{item.color || 'coffee'}} rec-thumb-wrap">
+          <image class="rec-thumb" src="{{item._thumb}}" mode="aspectFit" />
+        </view>
+        <view class="rec-body">
+          <view class="rec-merchant">{{item.merchant}}</view>
+          <view class="rec-meta">{{item.items || item.note || '小票记录'}}</view>
+        </view>
+        <view class="rec-amount font-number">¥{{item.amount.toFixed(2)}}</view>
       </view>
-      <view class="rec-body">
-        <view class="rec-merchant">{{item.merchant}}</view>
-        <view class="rec-meta">{{item.items}}</view>
-      </view>
-      <view class="rec-amount">¥{{item.amount.toFixed(2)}}</view>
     </view>
   </view>
-  <empty-state wx:else iconSrc="/assets/icons/tab/home@3x.png" text="还没有小票可以选择" sub="先到首页录入几张吧" />
+  <empty-state wx:else iconSrc="{{emptyIcon}}" text="还没有小票可以选择" sub="先到首页录入几张吧" />
 
   <view class="action-bar">
     <view class="btn btn-ghost flex-1 mr-8" bindtap="onCancel">取消</view>

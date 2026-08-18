@@ -1,117 +1,180 @@
-<view class="page-container">
+<view class="page-container mine-page {{themeClass}}">
 
-  <view class="me-card">
-    <view class="me-mascot">
-      <image class="me-mascot-img" src="/assets/icons/tab/mine@3x.png" mode="aspectFit" />
+  <!-- 个人中心手账卡片（Double-Bezel 双层硬件托盘） -->
+  <view class="bezel-tray me-bezel-tray reveal-1">
+    <view class="tape tape-left tape-green"></view>
+    <view class="tape tape-right tape-pink"></view>
+
+    <view class="bezel-core me-core-card">
+      <view class="eyebrow-tag">PERSONAL ARCHIVE · 个人归档</view>
+      <view class="me-header">
+        <view class="me-mascot-box">
+          <image class="me-mascot-img" src="{{icons.mascot}}" mode="aspectFit" />
+        </view>
+        <view class="me-info">
+          <view class="me-title font-display">小票日记 · 手账本</view>
+          <view class="me-sub">每一张小票，都是生活的温柔痕迹 🌿</view>
+        </view>
+      </view>
+
+      <view class="me-stats-row">
+        <view class="me-stat-item" bindtap="goStats">
+          <view class="me-stat-val font-number">{{receiptCount}}</view>
+          <view class="me-stat-lbl">小票总数</view>
+        </view>
+        <view class="me-stat-divider"></view>
+        <view class="me-stat-item">
+          <view class="me-stat-val font-number">{{eventCount}}</view>
+          <view class="me-stat-lbl">事件故事</view>
+        </view>
+        <view class="me-stat-divider"></view>
+        <view class="me-stat-item" bindtap="goStats">
+          <view class="me-stat-val font-number">¥{{totalExpense}}</view>
+          <view class="me-stat-lbl">累计入账</view>
+        </view>
+      </view>
     </view>
-    <view class="me-body">
-      <view class="me-title">小票日记</view>
-      <view class="me-sub">记录生活，留住时光</view>
-    </view>
-    <view class="me-arrow">›</view>
   </view>
 
-  <view class="safe-card" bindtap="goSettings">
+  <!-- 隐私安全保护状态卡片 -->
+  <view class="safe-card reveal-2" bindtap="onPrivacy">
     <view class="safe-icon icon-circle-green">
-      <image class="mine-menu-ico" src="/assets/icons/func/encrypt@3x.png" mode="aspectFit" />
+      <image class="mine-menu-ico" src="{{icons.encrypt}}" mode="aspectFit" />
     </view>
-    <view class="safe-text">数据安全保护中</view>
+    <view class="safe-text">
+      <view class="safe-title">100% 纯本地离线隐私保护中</view>
+      <view class="safe-sub">无社交、无第三方上传、仅存设备本地</view>
+    </view>
     <view class="safe-arrow">›</view>
   </view>
 
-  <view class="card menu-card">
-    <view class="menu-row" bindtap="goStats">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/stats@3x.png" mode="aspectFit" />
+  <!-- 核心数据与管理操作 -->
+  <view class="section-title reveal-3">数据与归档</view>
+  <view class="bezel-tray menu-bezel-tray reveal-3">
+    <view class="bezel-core menu-bezel-core">
+      <view class="menu-row" bindtap="goStats">
+        <view class="icon-circle icon-circle-green">
+          <image class="mine-menu-ico" src="{{icons.stats}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">开支数据罗盘</view>
+          <view class="menu-sub">周 / 月 / 年多维图表统计</view>
+        </view>
+        <view class="menu-arrow">›</view>
       </view>
-      <view class="menu-text">
-        <view class="menu-title">数据统计</view>
-        <view class="menu-sub">{{receiptCount}} 张小票 / {{eventCount}} 个事件</view>
+      <view class="menu-divider"></view>
+      <view class="menu-row" bindtap="goExport">
+        <view class="icon-circle icon-circle-orange">
+          <image class="mine-menu-ico" src="{{icons.export}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">台账导出与备份</view>
+          <view class="menu-sub">Excel CSV / PDF 报销台账 / JSON</view>
+        </view>
+        <view class="menu-arrow">›</view>
       </view>
-      <view class="menu-arrow">›</view>
-    </view>
-    <view class="menu-divider"></view>
-    <view class="menu-row" bindtap="goExport">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/backup@3x.png" mode="aspectFit" />
+      <view class="menu-divider"></view>
+      <view class="menu-row" bindtap="goTrash">
+        <view class="icon-circle icon-circle-pink">
+          <image class="mine-menu-ico" src="{{icons.trash}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">小票回收站</view>
+          <view class="menu-sub">{{trashCount > 0 ? (trashCount + ' 项可恢复小票') : '暂无已删除小票'}}</view>
+        </view>
+        <view class="menu-arrow">›</view>
       </view>
-      <view class="menu-text">
-        <view class="menu-title">数据备份</view>
-        <view class="menu-sub">本地加密备份</view>
-      </view>
-      <view class="menu-arrow">›</view>
-    </view>
-    <view class="menu-divider"></view>
-    <view class="menu-row" bindtap="goExport">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/export@3x.png" mode="aspectFit" />
-      </view>
-      <view class="menu-text">
-        <view class="menu-title">导出与打印</view>
-        <view class="menu-sub">PDF / Excel / 图片</view>
-      </view>
-      <view class="menu-arrow">›</view>
-    </view>
-    <view class="menu-divider"></view>
-    <view class="menu-row" bindtap="goTrash">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/trash@3x.png" mode="aspectFit" />
-      </view>
-      <view class="menu-text">
-        <view class="menu-title">回收站</view>
-        <view class="menu-sub">{{trashCount}} 项，30 天内可恢复</view>
-      </view>
-      <view class="menu-arrow">›</view>
     </view>
   </view>
 
-  <view class="card menu-card">
-    <view class="menu-row" bindtap="goSettings">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/encrypt@3x.png" mode="aspectFit" />
+  <!-- 偏好与隐私设置 -->
+  <view class="section-title reveal-4">安全与偏好</view>
+  <view class="bezel-tray menu-bezel-tray reveal-4">
+    <view class="bezel-core menu-bezel-core">
+      <view class="menu-row" bindtap="goSettings">
+        <view class="icon-circle icon-circle-coffee">
+          <image class="mine-menu-ico" src="{{icons.encrypt}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">启动密码锁屏</view>
+          <view class="menu-sub">{{settings.passwordEnabled ? '已开启 6 位密码保护' : '未开启'}}</view>
+        </view>
+        <view class="menu-arrow">›</view>
       </view>
-      <view class="menu-text">
-        <view class="menu-title">隐私设置</view>
-        <view class="menu-sub">密码 / 指纹保护</view>
+      <view class="menu-divider"></view>
+      <view class="menu-row" bindtap="goSettings">
+        <view class="icon-circle icon-circle-blue">
+          <image class="mine-menu-ico" src="{{icons.settings}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">主题外观与偏好</view>
+          <view class="menu-sub">米白手账 / 薄荷小屋 / 夜读模式</view>
+        </view>
+        <view class="menu-arrow">›</view>
       </view>
-      <view class="menu-arrow">›</view>
-    </view>
-    <view class="menu-divider"></view>
-    <view class="menu-row" bindtap="goSettings">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/settings@3x.png" mode="aspectFit" />
-      </view>
-      <view class="menu-text">
-        <view class="menu-title">偏好设置</view>
-        <view class="menu-sub">主题与清理缓存</view>
-      </view>
-      <view class="menu-arrow">›</view>
-    </view>
-  </view>
-
-  <view class="card menu-card">
-    <view class="menu-row" bindtap="onPrivacy">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/pdf@3x.png" mode="aspectFit" />
-      </view>
-      <view class="menu-text">
-        <view class="menu-title">帮助与反馈</view>
-        <view class="menu-sub">隐私协议与使用说明</view>
-      </view>
-      <view class="menu-arrow">›</view>
-    </view>
-    <view class="menu-divider"></view>
-    <view class="menu-row" bindtap="onAbout">
-      <view class="menu-icon">
-        <image class="mine-menu-ico" src="/assets/icons/func/favorite@3x.png" mode="aspectFit" />
-      </view>
-      <view class="menu-text">
-        <view class="menu-title">关于我们</view>
-        <view class="menu-sub">v1.0.0</view>
-      </view>
-      <view class="menu-arrow">›</view>
     </view>
   </view>
 
-  <view class="bottom-quote">谢谢遇见，愿你每一张小票都温柔可爱</view>
+  <!-- 关于与协议 -->
+  <view class="section-title reveal-4">关于与帮助</view>
+  <view class="bezel-tray menu-bezel-tray reveal-4">
+    <view class="bezel-core menu-bezel-core">
+      <view class="menu-row" bindtap="onPrivacy">
+        <view class="icon-circle icon-circle-yellow">
+          <image class="mine-menu-ico" src="{{icons.pdf}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">隐私政策与合规承诺</view>
+          <view class="menu-sub">纯本地工具，无信息外泄风险</view>
+        </view>
+        <view class="menu-arrow">›</view>
+      </view>
+      <view class="menu-divider"></view>
+      <view class="menu-row" bindtap="onAbout">
+        <view class="icon-circle icon-circle-pink">
+          <image class="mine-menu-ico" src="{{icons.favorite}}" mode="aspectFit" />
+        </view>
+        <view class="menu-text">
+          <view class="menu-title">关于小票日记</view>
+          <view class="menu-sub">v1.2.0 (手账重构版)</view>
+        </view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-quote">愿你记录的每一笔开销，都化作平淡生活里的小确幸 🌿</view>
+</view>
+
+<!-- 回收站管理弹窗 -->
+<view wx:if="{{showTrashModal}}" class="mask" catchtouchmove="">
+  <view class="sheet trash-sheet" catchtap="">
+    <view class="sheet-handle"></view>
+    <view class="trash-header">
+      <view class="sheet-title" style="margin: 0;">小票回收站 ({{trashCount}})</view>
+      <view class="trash-clear-btn" bindtap="onClearAllTrash">清空回收站</view>
+    </view>
+    <view class="trash-tip">已删除的小票将保留在回收站中，可随时一键恢复</view>
+
+    <scroll-view class="trash-scroll" scroll-y>
+      <view wx:for="{{trashList}}" wx:key="id" class="trash-item">
+        <view class="icon-circle icon-circle-{{item.color || 'coffee'}} trash-thumb">
+          <image class="trash-thumb-img" src="{{item._thumb}}" mode="aspectFit" />
+        </view>
+        <view class="trash-info">
+          <view class="trash-merchant">{{item.merchant}}</view>
+          <view class="trash-meta">{{item._dateText}} · {{item._amountText}}</view>
+        </view>
+        <view class="trash-actions">
+          <view class="trash-btn-restore" bindtap="onRestoreItem" data-id="{{item.id}}">恢复</view>
+          <view class="trash-btn-delete" bindtap="onDeleteForever" data-id="{{item.id}}">删除</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="sheet-actions">
+      <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseTrash">关闭</view>
+      <view class="btn btn-primary flex-1" bindtap="onRestoreAllTrash">全部恢复</view>
+    </view>
+  </view>
 </view>

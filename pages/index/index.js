@@ -2,41 +2,42 @@
 const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
+const icons = require('../../utils/icons.js');
 
 Page({
   data: {
-    statusBarHeight: 0,
-    navHeight: 88,
+    themeClass: '',
     keyword: '',
+    greeting: '',
     categories: [],
     receipts: [],
     filtered: [],
     monthTotal: '0.00',
     monthCount: 0,
-    today: ''
+    today: '',
+    icons: {
+      mascot: icons.FUNC.mascot,
+      search: icons.FUNC.search,
+      basket: icons.FUNC.basket,
+      camera: icons.FUNC.camera,
+      album: icons.FUNC.album,
+      empty: icons.FUNC.empty,
+      stats: icons.FUNC.stats
+    }
   },
 
   onLoad() {
-    let statusBarHeight = 0;
-    let navHeight = 88;
-    try {
-      const win = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
-      const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null;
-      statusBarHeight = win.statusBarHeight || 0;
-      if (menu) navHeight = (menu.top - statusBarHeight) * 2 + menu.height;
-    } catch (e) {
-      statusBarHeight = 0;
-      navHeight = 88;
-    }
     this.setData({
-      today: format.formatDate(Date.now(), 'YYYY年MM月DD日'),
-      statusBarHeight,
-      navHeight
+      today: format.formatDate(Date.now(), 'YYYY年MM月DD日')
     });
   },
 
   onShow() {
     tabbar.setSelected(this, tabbar.TabIndex.INDEX);
+    this.setData({
+      themeClass: storage.getThemeClass(),
+      greeting: format.getGreetingText()
+    });
     this.loadData();
   },
 
@@ -61,19 +62,25 @@ Page({
       }
     });
 
-    const categoryNameMap = {};
-    allCats.forEach(c => { categoryNameMap[c.id] = c.name; });
-    const decoratedReceipts = allReceipts.map(r =>
-      Object.assign({}, r, { categoryName: categoryNameMap[r.categoryId] || '其他' })
-    );
+    const categoryMap = {};
+    allCats.forEach(c => { categoryMap[c.id] = c; });
+    const decoratedReceipts = allReceipts.map(r => {
+      const cat = categoryMap[r.categoryId] || { name: '其他', color: 'coffee' };
+      return Object.assign({}, r, {
+        categoryName: cat.name,
+        color: r.color || cat.color || 'coffee'
+      });
+    });
 
-    const decorateCat = (c) => Object.assign({}, c, { _iconIsImg: !!(c.icon && c.icon.charAt(0) === '/') });
+    const decorateCat = (c) => Object.assign({}, c, {
+      _iconIsImg: !!(c.icon && (c.icon.startsWith('data:image/svg+xml') || c.icon.startsWith('/')))
+    });
 
-    // 首页按设计稿展示 4 个常用分类 + 更多
-    const cats = allCats.slice(0, 4).map(decorateCat).concat([{
+    // 首页展示 7 个高频分类 + 1 个「更多」，刚好构成完美的 2行×4列 宫格
+    const cats = allCats.slice(0, 7).map(decorateCat).concat([{
       id: 'more',
       name: '更多',
-      icon: '/assets/icons/func/other@3x.png',
+      icon: icons.FUNC.other,
       color: 'coffee',
       _iconIsImg: true
     }]);
@@ -88,13 +95,17 @@ Page({
   },
 
   applyFilter(list, kw) {
-    if (!kw) return list.slice(0, 12);
-    const k = kw.trim().toLowerCase();
-    return list.filter(r => {
-      return (r.merchant || '').toLowerCase().includes(k) ||
-             (r.items || '').toLowerCase().includes(k) ||
-             (r.note || '').toLowerCase().includes(k);
-    });
+    let res = list;
+    if (kw && kw.trim()) {
+      const k = kw.trim().toLowerCase();
+      res = res.filter(r => {
+        return (r.merchant || '').toLowerCase().includes(k) ||
+               (r.items || '').toLowerCase().includes(k) ||
+               (r.note || '').toLowerCase().includes(k) ||
+               (r.categoryName || '').toLowerCase().includes(k);
+      });
+    }
+    return res.slice(0, 15);
   },
 
   onInput(e) {
@@ -113,30 +124,29 @@ Page({
   },
 
   goAdd(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const mode = e.currentTarget.dataset.mode || 'camera';
     wx.navigateTo({ url: '/pages/add/add?mode=' + mode });
   },
 
   goCategory(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const id = e.currentTarget.dataset.id;
     if (id === 'more') {
       wx.switchTab({ url: '/pages/category/category' });
       return;
     }
-    // 先暂存高亮分类，再切换 Tab，对方页面 onShow 会读取
     storage.set('jump_category_id', id);
     wx.switchTab({ url: '/pages/category/category' });
   },
 
-  goAllCategories() {
-    wx.switchTab({ url: '/pages/category/category' });
-  },
-
-  goAllReceipts() {
+  goCategoryTab() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.switchTab({ url: '/pages/category/category' });
   },
 
   goStats() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.navigateTo({ url: '/pages/stats/stats' });
   }
 });

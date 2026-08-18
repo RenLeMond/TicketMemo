@@ -6,10 +6,13 @@ const icons = require('../../utils/icons.js');
 
 Page({
   data: {
-    step: 'pick',          // pick / scan / edit
+    themeClass: '',
+    isEdit: false,
+    editId: '',
+    step: 'pick', // pick / scan / edit
     image: '',
     placeholder: icons.FUNC.tag,
-    placeholderColor: 'coffee',
+    placeholderColor: 'yellow',
     merchant: '',
     amount: '',
     dateText: '',
@@ -21,17 +24,64 @@ Page({
     tags: [],
     selectedTagIds: [],
     placeholderOptions: icons.PLACEHOLDER_PICKS,
+    showAddTagModal: false,
+    newTagName: '',
+    newTagColor: 'coffee',
+    tagColorOptions: ['green','orange','coffee','pink','blue','yellow','purple','gray'],
+    // 防重提示
+    duplicateWarning: null,
+    icons: {
+      camera: icons.FUNC.camera,
+      album: icons.FUNC.album,
+      tag: icons.FUNC.tag,
+      search: icons.FUNC.search,
+      edit: icons.FUNC.edit,
+      calendar: icons.FUNC.calendar
+    }
   },
 
   onLoad(options) {
     const cats = storage.getCategories().map(c => Object.assign({}, c, {
-      _iconIsImg: !!(c.icon && c.icon.charAt(0) === '/')
+      _iconIsImg: !!(c.icon && (c.icon.startsWith('data:image/svg+xml') || c.icon.startsWith('/')))
     }));
+    const allTags = storage.getTags();
+    const todayTs = Date.now();
+    const todayText = format.formatDate(todayTs, 'YYYY-MM-DD');
+
     this.setData({
+      themeClass: storage.getThemeClass(),
       categories: cats,
-      tags: storage.getTags(),
-      categoryId: cats.length > 0 ? cats[0].id : 'cat_other'
+      tags: allTags,
+      categoryId: cats.length > 0 ? cats[0].id : 'cat_other',
+      dateTs: todayTs,
+      dateText: todayText
     });
+
+    if (options.id) {
+      const allReceipts = storage.getReceipts();
+      const r = allReceipts.find(x => x.id === options.id);
+      if (r) {
+        this.setData({
+          isEdit: true,
+          editId: r.id,
+          step: 'edit',
+          image: r.image || '',
+          placeholder: r.placeholder || icons.FUNC.tag,
+          placeholderColor: r.color || 'yellow',
+          merchant: r.merchant || '',
+          amount: String(r.amount !== undefined ? r.amount : ''),
+          dateTs: r.date || todayTs,
+          dateText: format.formatDate(r.date || todayTs, 'YYYY-MM-DD'),
+          items: r.items || '',
+          note: r.note || '',
+          categoryId: r.categoryId || (cats.length > 0 ? cats[0].id : 'cat_other'),
+          selectedTagIds: r.tags ? r.tags.slice() : []
+        });
+        wx.setNavigationBarTitle({ title: '编辑小票' });
+        return;
+      }
+    }
+
     if (options.mode === 'album') {
       wx.nextTick(() => this.onPickAlbum());
     } else if (options.mode === 'camera') {
@@ -40,6 +90,7 @@ Page({
   },
 
   onPickCamera() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -50,11 +101,11 @@ Page({
           this.afterPick(res.tempFiles[0].tempFilePath);
         }
       }
-      // 用户取消时保持在 pick 步骤
     });
   },
 
   onPickAlbum() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -67,7 +118,43 @@ Page({
     });
   },
 
+  onChangeImage() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    wx.showActionSheet({
+      itemList: ['重新拍照', '从相册选取新图', '移除图片（使用手账图标）'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          wx.chooseMedia({
+            count: 1,
+            mediaType: ['image'],
+            sourceType: ['camera'],
+            camera: 'back',
+            success: (r) => {
+              if (r.tempFiles && r.tempFiles[0]) {
+                this.setData({ image: r.tempFiles[0].tempFilePath });
+              }
+            }
+          });
+        } else if (res.tapIndex === 1) {
+          wx.chooseMedia({
+            count: 1,
+            mediaType: ['image'],
+            sourceType: ['album'],
+            success: (r) => {
+              if (r.tempFiles && r.tempFiles[0]) {
+                this.setData({ image: r.tempFiles[0].tempFilePath });
+              }
+            }
+          });
+        } else if (res.tapIndex === 2) {
+          this.setData({ image: '' });
+        }
+      }
+    });
+  },
+
   onSkip() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     this.setData({
       image: '',
       step: 'edit',
@@ -90,6 +177,8 @@ Page({
         dateText: format.formatDate(result.date, 'YYYY-MM-DD'),
         items: result.items,
         step: 'edit'
+      }, () => {
+        this.checkDuplicate();
       });
     }).catch(() => {
       this.setData({
@@ -101,12 +190,32 @@ Page({
         items: '',
         note: ''
       });
-      wx.showToast({ title: 'OCR 识别失败，请手动录入', icon: 'none' });
+      wx.showToast({ title: 'OCR 识别完毕，请补充详情', icon: 'none' });
     });
   },
 
-  onMerchantInput(e) { this.setData({ merchant: e.detail.value }); },
-  onAmountInput(e)   { this.setData({ amount:   e.detail.value }); },
+  checkDuplicate() {
+    const { merchant, amount, dateTs, isEdit, editId } = this.data;
+    if (!merchant || !amount) {
+      this.setData({ duplicateWarning: null });
+      return;
+    }
+    const dup = storage.findDuplicateReceipt(merchant, amount, dateTs, isEdit ? editId : null);
+    if (dup) {
+      this.setData({
+        duplicateWarning: `提示：已有一张同日期（${format.formatDate(dup.date, 'MM-DD')}）同金额（¥${dup.amount}）的「${dup.merchant}」小票`
+      });
+    } else {
+      this.setData({ duplicateWarning: null });
+    }
+  },
+
+  onMerchantInput(e) {
+    this.setData({ merchant: e.detail.value }, () => this.checkDuplicate());
+  },
+  onAmountInput(e) {
+    this.setData({ amount: e.detail.value }, () => this.checkDuplicate());
+  },
   onItemsInput(e)    { this.setData({ items:    e.detail.value }); },
   onNoteInput(e)     { this.setData({ note:     e.detail.value }); },
 
@@ -114,20 +223,23 @@ Page({
     const v = e.detail.value;
     const parts = v.split('-').map(Number);
     const ts = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0).getTime();
-    this.setData({ dateTs: ts, dateText: v });
+    this.setData({ dateTs: ts, dateText: v }, () => this.checkDuplicate());
   },
 
   onPickCategory(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     this.setData({ categoryId: e.currentTarget.dataset.id });
   },
 
   onPickPlaceholder(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const idx = e.currentTarget.dataset.idx;
     const opt = this.data.placeholderOptions[idx];
     this.setData({ placeholder: opt.src, placeholderColor: opt.color });
   },
 
   onToggleTag(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const id = e.currentTarget.dataset.id;
     const list = this.data.selectedTagIds.slice();
     const i = list.indexOf(id);
@@ -135,33 +247,94 @@ Page({
     this.setData({ selectedTagIds: list });
   },
 
+  onOpenAddTag() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    this.setData({ showAddTagModal: true, newTagName: '', newTagColor: 'coffee' });
+  },
+
+  onCloseAddTag() {
+    this.setData({ showAddTagModal: false });
+  },
+
+  onNewTagNameInput(e) {
+    this.setData({ newTagName: e.detail.value });
+  },
+
+  onPickNewTagColor(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    this.setData({ newTagColor: e.currentTarget.dataset.color });
+  },
+
+  onSaveNewTag() {
+    const name = (this.data.newTagName || '').trim();
+    if (!name) {
+      wx.showToast({ title: '请输入标签名称', icon: 'none' });
+      return;
+    }
+    const newTag = {
+      id: format.uid('t'),
+      name,
+      color: this.data.newTagColor || 'coffee'
+    };
+    storage.addTag(newTag);
+    const tags = storage.getTags();
+    const selected = this.data.selectedTagIds.slice();
+    if (selected.indexOf(newTag.id) < 0) selected.push(newTag.id);
+    this.setData({
+      tags,
+      selectedTagIds: selected,
+      showAddTagModal: false,
+      newTagName: ''
+    });
+    wx.showToast({ title: '标签已添加 🌿', icon: 'success' });
+  },
+
   onSave() {
-    const { merchant, amount, dateTs, dateText, items, note, categoryId, selectedTagIds, image, placeholder, placeholderColor } = this.data;
+    const { isEdit, editId, merchant, amount, dateTs, items, note, categoryId, selectedTagIds, image, placeholder, placeholderColor } = this.data;
     if (!merchant || !merchant.trim()) {
       wx.showToast({ title: '请填写商家名称', icon: 'none' });
       return;
     }
-    const amt = Number(amount);
+    const amt = Number(parseFloat(amount).toFixed(2));
     if (isNaN(amt) || amt <= 0) {
       wx.showToast({ title: '请填写有效金额', icon: 'none' });
       return;
     }
-    const receipt = {
-      id: format.uid('r'),
-      merchant: merchant.trim(),
-      amount: amt,
-      date: dateTs || Date.now(),
-      categoryId: categoryId || 'cat_other',
-      tags: selectedTagIds,
-      items: items || '',
-      note: note || '',
-      image: image || '',
-      placeholder,
-      color: placeholderColor
-    };
-    storage.addReceipt(receipt);
-    wx.showToast({ title: '已保存 🌿', icon: 'success', duration: 600 });
-    setTimeout(() => wx.navigateBack(), 800);
+
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+
+    if (isEdit) {
+      storage.updateReceipt(editId, {
+        merchant: merchant.trim(),
+        amount: amt,
+        date: dateTs || Date.now(),
+        categoryId: categoryId || 'cat_other',
+        tags: selectedTagIds,
+        items: items || '',
+        note: note || '',
+        image: image || '',
+        placeholder,
+        color: placeholderColor
+      });
+      wx.showToast({ title: '已保存修改 🌿', icon: 'success', duration: 700 });
+    } else {
+      const receipt = {
+        id: format.uid('r'),
+        merchant: merchant.trim(),
+        amount: amt,
+        date: dateTs || Date.now(),
+        categoryId: categoryId || 'cat_other',
+        tags: selectedTagIds,
+        items: items || '',
+        note: note || '',
+        image: image || '',
+        placeholder,
+        color: placeholderColor
+      };
+      storage.addReceipt(receipt);
+      wx.showToast({ title: '小票已入账 🌿', icon: 'success', duration: 700 });
+    }
+    setTimeout(() => wx.navigateBack(), 750);
   },
 
   onCancel() {

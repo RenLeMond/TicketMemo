@@ -1,98 +1,170 @@
 // pages/mine/mine.js
 const storage = require('../../utils/storage.js');
+const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
+const icons = require('../../utils/icons.js');
 
 Page({
   data: {
+    themeClass: '',
     receiptCount: 0,
     eventCount: 0,
     trashCount: 0,
-    settings: {}
+    totalExpense: '0.00',
+    settings: {},
+    showTrashModal: false,
+    trashList: [],
+    icons: {
+      mine: icons.TAB.mine,
+      encrypt: icons.FUNC.encrypt,
+      stats: icons.FUNC.stats,
+      backup: icons.FUNC.backup,
+      export: icons.FUNC.export,
+      trash: icons.FUNC.trash,
+      settings: icons.FUNC.settings,
+      pdf: icons.FUNC.pdf,
+      favorite: icons.FUNC.favorite,
+      mascot: icons.FUNC.mascot
+    }
   },
 
   onShow() {
     tabbar.setSelected(this, tabbar.TabIndex.MINE);
+    const receipts = storage.getReceipts();
+    const total = receipts.reduce((s, r) => s + format.safeAmount(r), 0);
+
     this.setData({
-      receiptCount: storage.getReceipts().length,
+      themeClass: storage.getThemeClass(),
+      receiptCount: receipts.length,
       eventCount: storage.getEvents().length,
-      trashCount: storage.get('trash', []).length,
+      trashCount: storage.getTrash().length,
+      totalExpense: total.toFixed(2),
       settings: storage.getSettings()
     });
+
+    if (this.data.showTrashModal) {
+      this.refreshTrashModal();
+    }
   },
 
   goExport() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.navigateTo({ url: '/pages/export/export' });
   },
 
   goSettings() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.navigateTo({ url: '/pages/settings/settings' });
   },
 
   goStats() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     wx.navigateTo({ url: '/pages/stats/stats' });
   },
 
+  formatTrashItems(trash) {
+    return trash.map(t => Object.assign({}, t, {
+      _amountText: format.formatMoney(t.amount),
+      _dateText: format.formatDate(t.date, 'YYYY-MM-DD'),
+      _deletedText: t.deletedAt ? format.relativeDate(t.deletedAt) : '',
+      _thumb: icons.receiptThumbUrl(t)
+    }));
+  },
+
+  refreshTrashModal() {
+    const trash = storage.getTrash();
+    this.setData({
+      trashCount: trash.length,
+      trashList: this.formatTrashItems(trash),
+      showTrashModal: trash.length > 0
+    });
+    this.setData({
+      receiptCount: storage.getReceipts().length
+    });
+  },
+
   goTrash() {
-    const trash = storage.get('trash', []);
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    const trash = storage.getTrash();
     if (trash.length === 0) {
-      wx.showToast({ title: '回收站是空的', icon: 'none' });
+      wx.showToast({ title: '回收站是空的 🌿', icon: 'none' });
       return;
     }
+    this.setData({
+      showTrashModal: true,
+      trashList: this.formatTrashItems(trash)
+    });
+  },
+
+  onCloseTrash() {
+    this.setData({ showTrashModal: false });
+  },
+
+  onRestoreItem(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    storage.restoreReceipt(id);
+    this.refreshTrashModal();
+    wx.showToast({ title: '已恢复小票 🌿', icon: 'success', duration: 700 });
+  },
+
+  onDeleteForever(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
     wx.showModal({
-      title: '回收站（30 天内可恢复）',
-      content: '当前有 ' + trash.length + ' 条已删除的小票\n点击"确定"恢复全部',
-      showCancel: true,
-      confirmText: '恢复全部',
+      title: '彻底永久删除',
+      content: '确认彻底删除该小票？删除后将无法恢复。',
+      confirmColor: '#B86F65',
       success: (r) => {
         if (!r.confirm) return;
-        const currentTrash = storage.get('trash', []);
-        if (currentTrash.length === 0) {
-          wx.showToast({ title: '回收站是空的', icon: 'none' });
-          return;
-        }
-        const receipts = storage.getReceipts();
-        currentTrash.forEach(t => {
-          receipts.push(Object.assign({}, t));
-          delete receipts[receipts.length - 1].deletedAt;
-        });
-        storage.setReceipts(receipts);
-        storage.set('trash', []);
-        this.onShow();
-        wx.showToast({ title: '已全部恢复', icon: 'success' });
+        storage.permanentDeleteTrash(id);
+        this.refreshTrashModal();
+        wx.showToast({ title: '已彻底删除', icon: 'none' });
       }
     });
   },
 
-  onClearAll() {
+  onRestoreAllTrash() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+    const count = storage.restoreAllTrash();
+    this.setData({ showTrashModal: false });
+    this.onShow();
+    wx.showToast({ title: '已全部恢复 ' + count + ' 张小票 🌿', icon: 'success' });
+  },
+
+  onClearAllTrash() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
     wx.showModal({
-      title: '一键清空所有数据',
-      content: '将永久删除全部小票、事件、分类与设置，且不可恢复。确认操作？',
-      confirmColor: '#C97B47',
+      title: '清空回收站',
+      content: '将永久删除回收站内的全部小票，不可恢复。确认清空？',
+      confirmColor: '#B86F65',
       success: (r) => {
         if (!r.confirm) return;
-        storage.clear();
-        storage.set('app_inited', false);
-        const app = getApp();
-        if (app && typeof app.onLaunch === 'function') app.onLaunch();
-        setTimeout(() => this.onShow(), 600);
-        wx.showToast({ title: '已清空并重置', icon: 'success' });
+        storage.clearTrash();
+        this.setData({ showTrashModal: false });
+        this.onShow();
+        wx.showToast({ title: '回收站已清空', icon: 'none' });
       }
     });
   },
 
   onAbout() {
     wx.showModal({
-      title: '关于 小票日记',
-      content: '一款手账风格的纯本地小票管理工具。\n\n所有数据仅存储在你的手机本地，无社交、无广告、无数据上传。\n\nv1.0.0',
-      showCancel: false
+      title: '关于 小票日记 (TicketMemo)',
+      content: '一款专注于纯个人私密小票归档、事件手账与离线数据统计的轻量工具。\n\n• 零位图 SVG 极简架构\n• 100% 本地离线隐私安全\n• 纯纯的手账质感与陪伴\n\n版本：v1.2.0 (手账重构版)',
+      showCancel: false,
+      confirmText: '我知道了'
     });
   },
 
   onPrivacy() {
     wx.showModal({
-      title: '隐私协议',
-      content: '本小程序为纯个人工具，不收集、不存储、不共享你的小票信息及个人数据。所有功能均在本地设备执行，无数据外传。',
-      showCancel: false
+      title: '纯本地隐私合规承诺',
+      content: '1. 本小程序为个人纯私密离线工具，绝无用户社交与广场；\n2. 绝不收集手机号、微信号、身份证等任何个人信息；\n3. 小票数据仅保存在手机 Storage，无后台云端服务器；\n4. 仅申请拍照、相册导入必要权限。',
+      showCancel: false,
+      confirmText: '我了解'
     });
   }
 });

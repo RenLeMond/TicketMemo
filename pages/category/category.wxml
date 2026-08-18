@@ -1,21 +1,33 @@
-<view class="page-container">
+<view class="page-container cat-page {{themeClass}}">
 
-  <!-- 标题区 -->
-  <view class="cat-hero">
-    <view class="cat-hero-title">分类</view>
-    <view class="cat-hero-sub">把每张小票都安放在合适的小窝</view>
+  <!-- 顶部标题区（避开微信右上角胶囊） -->
+  <view class="cat-hero reveal-1">
+    <view class="cat-hero-left">
+      <view class="eyebrow-tag">CATEGORY ARCHIVE · 分类归档</view>
+      <view class="cat-hero-title font-display">分类手账</view>
+      <view class="cat-hero-sub">长按自建分类可编辑或删除 🌿</view>
+    </view>
+    <view class="cat-add-pill" bindtap="onAddCategory">
+      <text class="cat-add-plus">+</text>
+      <text>新建分类</text>
+    </view>
   </view>
 
-  <!-- 分类导航 -->
-  <scroll-view class="cat-nav" scroll-x enable-flex>
+  <!-- 横向滑动分类胶囊栏 -->
+  <scroll-view class="cat-capsule-scroll reveal-2" scroll-x enable-flex show-scrollbar="{{false}}">
+    <!-- 全部小票胶囊 -->
     <view
       class="cat-chip {{currentId === 'all' ? 'cat-chip-active' : ''}}"
       bindtap="onSwitchCat"
       data-id="all"
     >
-      <image class="chip-ico" src="/assets/icons/category/misc@3x.png" mode="aspectFit" />
-      <text>全部</text>
+      <view class="icon-circle icon-circle-coffee cat-chip-icon">
+        <image class="cat-chip-img" src="{{allIcon}}" mode="aspectFit" />
+      </view>
+      <text class="cat-chip-name">全部</text>
     </view>
+
+    <!-- 各分类胶囊 -->
     <view
       wx:for="{{categories}}"
       wx:key="id"
@@ -24,90 +36,110 @@
       bindlongpress="onLongPressCat"
       data-id="{{item.id}}"
     >
-      <image wx:if="{{item._iconIsImg}}" class="chip-ico" src="{{item.icon}}" mode="aspectFit" />
-      <text wx:else class="chip-emoji">{{item.icon}}</text>
-      <text>{{item.name}}</text>
+      <view class="icon-circle icon-circle-{{item.color || 'coffee'}} cat-chip-icon">
+        <image wx:if="{{item._iconIsImg}}" class="cat-chip-img" src="{{item.icon}}" mode="aspectFit" />
+        <text wx:else class="cat-chip-emoji">{{item.icon}}</text>
+      </view>
+      <text class="cat-chip-name">{{item.name}}</text>
     </view>
-    <view class="cat-chip cat-chip-add" bindtap="onAddCategory">
-      <text class="chip-emoji">＋</text>
-      <text>新建</text>
+
+    <!-- 列表末尾新建分类入口 -->
+    <view class="cat-chip cat-chip-new" bindtap="onAddCategory">
+      <view class="icon-circle icon-circle-green cat-chip-icon">
+        <text class="cat-chip-new-plus">+</text>
+      </view>
+      <text class="cat-chip-name">新建</text>
     </view>
   </scroll-view>
 
-  <view class="cat-current">
-    <text class="cat-current-label">当前：</text>
-    <text class="cat-current-name">{{currentName}}</text>
-  </view>
+  <!-- 当前选中分类总览便签卡（Double-Bezel 托盘架构） -->
+  <view class="bezel-tray cat-summary-tray reveal-2">
+    <view class="tape tape-left tape-green"></view>
+    <view class="bezel-core cat-summary-core">
+      <view class="cat-summary-header">
+        <view class="cat-summary-main">
+          <view class="icon-circle icon-circle-{{currentSummary.color || 'coffee'}} cat-summary-icon">
+            <image wx:if="{{currentSummary._iconIsImg}}" class="cat-sum-img" src="{{currentSummary.icon}}" mode="aspectFit" />
+            <text wx:else class="cat-sum-emoji">{{currentSummary.icon}}</text>
+          </view>
+          <view class="cat-summary-info">
+            <view class="cat-summary-title font-display">{{currentSummary.name}}</view>
+            <view class="cat-summary-sub">共记录 {{currentSummary.count}} 笔账目 · 占总开支 {{currentSummary.pct}}%</view>
+          </view>
+        </view>
+        <view class="cat-summary-amount-box">
+          <text class="cat-sum-cur font-number">¥</text>
+          <text class="cat-sum-val font-number">{{currentSummary.total}}</text>
+        </view>
+      </view>
 
-  <view class="cat-list-card">
-    <view
-      wx:for="{{categorySummaries}}"
-      wx:key="id"
-      class="cat-row {{currentId === item.id ? 'cat-row-active' : ''}}"
-      bindtap="onOpenCategory"
-      bindlongpress="onLongPressCat"
-      data-id="{{item.id}}"
-    >
-      <view class="cat-row-icon icon-circle-{{item.color}}">
-        <image wx:if="{{item._iconIsImg}}" class="cat-row-img" src="{{item.icon}}" mode="aspectFit" />
-        <text wx:else>{{item.icon}}</text>
-      </view>
-      <view class="cat-row-body">
-        <view class="cat-row-title">{{item.name}}</view>
-        <view class="cat-row-sub">{{item.count}} 张小票</view>
-      </view>
-      <view class="cat-row-right">
-        <view class="cat-row-amount">¥{{item.total}}</view>
-        <view class="cat-row-arrow">›</view>
+      <view class="cat-progress-box">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{currentSummary.pct}}%;"></view>
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 列表（按月分组） -->
-  <block wx:if="{{list.length > 0}}">
-    <view class="section-title">{{currentName}}小票</view>
-    <view wx:for="{{list}}" wx:for-item="g" wx:key="month" class="month-group">
-      <view class="month-header">
-        <view class="month-label">{{g.month}}</view>
-        <view class="month-total">¥{{g.total.toFixed(2)}}</view>
-      </view>
-      <ticket-card
-        wx:for="{{g.list}}"
-        wx:for-item="r"
-        wx:key="id"
-        receipt="{{r}}"
-      />
+  <!-- 列表小标题与排序小胶囊 -->
+  <view class="section-title reveal-3">
+    小票时间线
+    <view class="sort-toggle-pill" bindtap="onToggleSort">
+      <text class="sort-icon">⇅</text>
+      <text>{{sortMode === 'date' ? '按最新日期' : '按最高金额'}}</text>
     </view>
-  </block>
+  </view>
 
-  <empty-state
-    wx:else
-    iconSrc="/assets/icons/tab/home@3x.png"
-    text="这个分类还没有小票"
-    sub="去首页拍一张吧"
-  />
+  <!-- 按月份时间线展示小票卡片 -->
+  <view class="reveal-3">
+    <block wx:if="{{list.length > 0}}">
+      <view wx:for="{{list}}" wx:key="month" class="month-group">
+        <view class="month-header">
+          <view class="month-label font-display">{{item.month}}</view>
+          <view class="month-sub-total font-number">
+            {{item.count}} 笔 · 共 ¥{{item.total.toFixed(2)}}
+          </view>
+        </view>
+        <ticket-card
+          wx:for="{{item.receipts}}"
+          wx:for-item="r"
+          wx:key="id"
+          receipt="{{r}}"
+          showDate="{{true}}"
+        />
+      </view>
+    </block>
+
+    <empty-state
+      wx:else
+      iconSrc="{{emptyIcon}}"
+      text="该分类下暂无小票"
+      sub="点底部「+」拍照入账一张吧"
+    />
+  </view>
+
 </view>
 
-<!-- 新建分类弹窗 -->
+<!-- 新建/编辑分类弹窗 -->
 <view wx:if="{{showAddModal}}" class="mask" catchtouchmove="">
   <view class="sheet" catchtap="">
     <view class="sheet-handle"></view>
-    <view class="sheet-title">新建分类</view>
+    <view class="sheet-title">{{editingCatId ? '编辑分类' : '新建分类'}}</view>
 
-    <view class="form-label">名称</view>
+    <view class="form-label">分类名称</view>
     <view class="input-wrap">
       <input
         class="input"
-        placeholder="给新分类起个名字"
+        placeholder="例如 宠物、数码、手办、露营"
         placeholder-class="input-placeholder"
         value="{{newCatName}}"
         bindinput="onCatNameInput"
-        maxlength="8"
+        maxlength="6"
       />
     </view>
 
-    <view class="form-label">图标</view>
-    <view class="icon-grid">
+    <view class="form-label">选择手账图标</view>
+    <view class="icon-picker-grid">
       <view
         wx:for="{{iconOptions}}"
         wx:key="*this"
@@ -119,7 +151,7 @@
       </view>
     </view>
 
-    <view class="form-label">颜色</view>
+    <view class="form-label">色彩标签</view>
     <view class="color-row">
       <view
         wx:for="{{colorOptions}}"
@@ -132,7 +164,7 @@
 
     <view class="sheet-actions">
       <view class="btn btn-ghost flex-1 mr-8" bindtap="onCloseModal">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存</view>
+      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存分类</view>
     </view>
   </view>
 </view>

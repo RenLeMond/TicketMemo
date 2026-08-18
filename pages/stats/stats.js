@@ -4,7 +4,7 @@ const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
 
 const COLOR_HEX = {
-  green:  '#A8C5A0',
+  green:  '#8FAE85',
   orange: '#E8A87C',
   coffee: '#B89968',
   pink:   '#E8A8AB',
@@ -16,26 +16,52 @@ const COLOR_HEX = {
 
 Page({
   data: {
-    range: 'month',         // week / month / year
+    themeClass: '',
+    range: 'month', // week / month / year
     rangeText: '本月',
     monthTotal: '0.00',
     monthCount: 0,
     avgDay: '0.00',
-    pieList: [],            // 分类占比
-    trendList: [],          // 趋势点数组（柱状）
+    pieList: [],
+    trendList: [],
     maxTrend: 1,
-    topCats: []             // top 分类
+    topCats: [],
+    activeTrendIdx: -1,
+    activeTrendInfo: null,
+    icons: {
+      stats: icons.FUNC.stats,
+      empty: icons.FUNC.empty
+    }
   },
 
   onShow() {
+    this.setData({
+      themeClass: storage.getThemeClass()
+    });
     this.compute();
   },
 
+  goBack() {
+    wx.navigateBack();
+  },
+
   switchRange(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const r = e.currentTarget.dataset.range;
     const map = { week: '本周', month: '本月', year: '本年' };
-    this.setData({ range: r, rangeText: map[r] });
+    this.setData({ range: r, rangeText: map[r], activeTrendIdx: -1, activeTrendInfo: null });
     this.compute();
+  },
+
+  onTapTrendBar(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    const idx = Number(e.currentTarget.dataset.idx);
+    const item = this.data.trendList[idx];
+    if (this.data.activeTrendIdx === idx) {
+      this.setData({ activeTrendIdx: -1, activeTrendInfo: null });
+    } else {
+      this.setData({ activeTrendIdx: idx, activeTrendInfo: item });
+    }
   },
 
   compute() {
@@ -71,6 +97,7 @@ Page({
     inRange.forEach(r => {
       catSum[r.categoryId] = (catSum[r.categoryId] || 0) + format.safeAmount(r);
     });
+
     const pieList = Object.keys(catSum).map(cid => {
       const c = cats.find(x => x.id === cid) || { name: '其他', icon: icons.CATEGORY_BY_ID.cat_other, color: 'gray' };
       const icon = icons.isAssetPath(c.icon) ? c.icon : icons.categoryIconUrl(cid);
@@ -79,7 +106,7 @@ Page({
         id: cid,
         name: c.name,
         icon,
-        color: c.color,
+        color: c.color || 'coffee',
         hex: COLOR_HEX[c.color] || COLOR_HEX.gray,
         amount: catSum[cid].toFixed(2),
         pct: pct.toFixed(1),
@@ -87,7 +114,7 @@ Page({
       };
     }).sort((a, b) => b.pctNum - a.pctNum);
 
-    // 趋势
+    // 趋势分桶
     const buckets = new Array(bucketCount).fill(0);
     inRange.forEach(r => {
       const d = new Date(r.date);
@@ -104,17 +131,23 @@ Page({
       }
       if (idx >= 0 && idx < bucketCount) buckets[idx] += format.safeAmount(r);
     });
+
     const maxTrend = Math.max.apply(null, buckets.concat([1]));
     const trendList = buckets.map((v, i) => ({
       idx: i,
       value: v.toFixed(2),
-      h: maxTrend > 0 ? Math.max(4, Math.round(v / maxTrend * 100)) : 4,
+      h: maxTrend > 0 ? Math.max(6, Math.round(v / maxTrend * 100)) : 6,
       label: this.bucketLabel(i, bucketUnit)
     }));
 
     // 平均日消费
     const dayCount = bucketUnit === 'day' ? Math.max(1, bucketCount) : 365 / 12 * bucketCount;
     const avg = (total / dayCount).toFixed(2);
+
+    const medals = ['🥇', '🥈', '🥉', '4.'];
+    const topCats = pieList.slice(0, 4).map((c, i) => Object.assign({}, c, {
+      rank: medals[i] || (i + 1) + '.'
+    }));
 
     this.setData({
       monthTotal: total.toFixed(2),
@@ -123,11 +156,13 @@ Page({
       pieList,
       trendList,
       maxTrend,
-      topCats: pieList.slice(0, 4)
+      topCats
     });
 
-    // 绘制饼图
-    this.drawPie(pieList);
+    // 绘制高清 Canvas 2D 环形图
+    wx.nextTick(() => {
+      this.drawPie(pieList);
+    });
   },
 
   bucketLabel(i, unit) {
@@ -146,7 +181,7 @@ Page({
         if (!res[0] || !res[0].node) return;
         const canvas = res[0].node;
         const ctx = canvas.getContext('2d');
-        const dpr = (wx.getWindowInfo && wx.getWindowInfo().pixelRatio) || wx.getSystemInfoSync().pixelRatio;
+        const dpr = (wx.getWindowInfo && wx.getWindowInfo().pixelRatio) || wx.getSystemInfoSync().pixelRatio || 2;
         const w = res[0].width;
         const h = res[0].height;
         canvas.width = w * dpr;
@@ -155,23 +190,29 @@ Page({
         ctx.clearRect(0, 0, w, h);
 
         const cx = w / 2, cy = h / 2;
-        const outerR = Math.min(w, h) / 2 - 8;
-        const innerR = outerR - 28;
+        const outerR = Math.min(w, h) / 2 - 6;
+        const innerR = outerR - 26;
+
+        const isDark = storage.getSettings().theme === 'dark';
+        const cardBg = isDark ? '#282522' : '#FFFCF7';
+        const trackBg = isDark ? '#3D3833' : '#EFE8D8';
 
         if (!pieList || pieList.length === 0 || pieList.every(p => p.pctNum === 0)) {
           ctx.beginPath();
           ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
-          ctx.fillStyle = '#EFE6D1';
+          ctx.fillStyle = trackBg;
           ctx.fill();
+
           ctx.beginPath();
           ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
-          ctx.fillStyle = '#FFFCF7';
+          ctx.fillStyle = cardBg;
           ctx.fill();
           return;
         }
 
         let start = -Math.PI / 2;
         pieList.forEach(p => {
+          if (p.pctNum <= 0) return;
           const angle = (p.pctNum / 100) * Math.PI * 2;
           const end = start + angle;
           ctx.beginPath();
@@ -183,10 +224,10 @@ Page({
           start = end;
         });
 
-        // 内圆挖空
+        // 环形中心镂空
         ctx.beginPath();
         ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFFCF7';
+        ctx.fillStyle = cardBg;
         ctx.fill();
       });
   }

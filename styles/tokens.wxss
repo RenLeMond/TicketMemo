@@ -1,51 +1,207 @@
 /**
- * TicketMemo / 小票日记 — Design Tokens
- * 小程序基础库 ≥ 2.9.1 支持 page 级 CSS 变量，其他页面 wxss 可间接继承。
- * 改主题时优先只改本文件。
+ * TicketMemo / 小票日记 — Design Tokens (Awwwards-Tier High-End Luxury Edition)
+ * 支持双层边框硬件拟物 (Double-Bezel) / 内发光微质感 / 弹簧动力学 / 3 套完整主题
  */
 page {
-  /* 背景与表面 */
-  --tm-bg-page: #faf6ee;
-  --tm-bg-card: #fffcf7;
-  --tm-bg-soft-green: #dce9d1;
-  --tm-bg-soft-orange: #fae2cb;
-  --tm-bg-soft-coffee: #ebdfc8;
+  /* ==================== 默认主题：米白手账 (Light) ==================== */
+  --tm-bg-page: #FAF6EE;
+  --tm-bg-card: #FFFCF7;
+  --tm-bg-card-subtle: #F7F1E6;
+  --tm-bg-tray: rgba(232, 223, 201, 0.45);
+  --tm-bg-inset: #F3ECE0;
+  --tm-bg-tag-default: #EFE6D5;
 
-  /* 文本 */
-  --tm-text: #5c4a3a;
-  --tm-text-muted: #a89c8a;
-  --tm-text-light: #c9bda8;
-  --tm-tab-inactive: #b5a88e;
+  /* 品牌与点缀色 (温润莫兰迪森系) */
+  --tm-primary: #8FAE85;
+  --tm-primary-deep: #658557;
+  --tm-primary-light: #DCE9D1;
+  --tm-primary-tray: rgba(143, 174, 133, 0.16);
+  
+  --tm-accent: #E8A87C;
+  --tm-accent-deep: #C4723B;
+  --tm-accent-light: #FAE2CB;
+  --tm-accent-tray: rgba(232, 168, 124, 0.18);
 
-  /* 品牌 */
-  --tm-primary: #8fae85;
-  --tm-primary-deep: #6b8c5e;
-  --tm-accent: #e8a87c;
-  --tm-coffee: #b89968;
+  --tm-coffee: #B89968;
+  --tm-coffee-light: #EBDFC8;
+  --tm-pink: #E8A8AB;
+  --tm-pink-light: #F8DDD8;
+  --tm-blue: #A0B8CC;
+  --tm-blue-light: #D8E4EC;
+  --tm-yellow: #E0C875;
+  --tm-yellow-light: #F5E6B8;
+  --tm-purple: #B5A0C8;
+  --tm-purple-light: #E2D5E8;
+  --tm-gray: #C0B5A4;
+  --tm-gray-light: #E8E2D5;
 
-  /* 描边与分割 */
-  --tm-border: #e8dfc9;
-  --tm-divider: #efe6d1;
-  --tm-border-card: rgba(232, 223, 201, 0.6);
+  /* 文本色彩层级 */
+  --tm-text-primary: #524233;
+  --tm-text-secondary: #846F53;
+  --tm-text-muted: #A39683;
+  --tm-text-light: #C7BAA5;
+  --tm-text-inverse: #FFFFFF;
 
-  /* TabBar（与 app.json 语义一致，自定义 tabBar 内可复用） */
-  --tm-tab-selected: #8fae85;
+  /* 边框与分割线 */
+  --tm-border: #E8DFC9;
+  --tm-border-light: rgba(232, 223, 201, 0.65);
+  --tm-border-highlight: rgba(255, 255, 255, 0.85);
+  --tm-divider: #EFE6D1;
+  --tm-dotted-line: #D6CAB2;
 
-  /* 圆角阶梯 */
-  --tm-radius-sm: 20rpx;
-  --tm-radius-md: 24rpx;
-  --tm-radius-lg: 28rpx;
-  --tm-radius-xl: 32rpx;
-  --tm-radius-pill: 40rpx;
+  /* 高级双层内高光与多层柔和暖调阴影 */
+  --tm-inset-highlight: inset 0 1rpx 2rpx rgba(255, 255, 255, 0.8), inset 0 -1rpx 2rpx rgba(184, 153, 104, 0.04);
+  --tm-shadow-sm: 0 2rpx 8rpx rgba(184, 153, 104, 0.06);
+  --tm-shadow-card: 0 4rpx 20rpx rgba(184, 153, 104, 0.07), 0 1rpx 4rpx rgba(184, 153, 104, 0.04);
+  --tm-shadow-float: 0 10rpx 32rpx rgba(184, 153, 104, 0.12), 0 2rpx 8rpx rgba(184, 153, 104, 0.06);
+  --tm-shadow-glow: 0 8rpx 24rpx rgba(143, 174, 133, 0.28);
 
-  /* 阴影 */
-  --tm-shadow-card: 0 4rpx 18rpx rgba(184, 153, 104, 0.08);
-  --tm-shadow-float: 0 6rpx 24rpx rgba(184, 153, 104, 0.06);
+  /* 和纸胶带专用色彩 */
+  --tm-tape-bg: rgba(250, 226, 203, 0.88);
+  --tm-tape-border: rgba(184, 153, 104, 0.25);
+  --tm-tape-green: rgba(220, 233, 209, 0.9);
+  --tm-tape-pink: rgba(248, 221, 216, 0.9);
+  --tm-tape-blue: rgba(216, 228, 236, 0.9);
 
-  /* 展示标题：无网络字体时为「略手帐感」宋体类；可配合 app.js loadFontFace 替换 */
-  --tm-font-display: "Songti SC", "STSong", "STKaiti", "KaiTi", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --tm-font-body: -apple-system, BlinkMacSystemFont, "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
+  /* 圆角同心阶梯 */
+  --tm-radius-tray: 36rpx;
+  --tm-radius-core: 28rpx;
+  --tm-radius-xs: 12rpx;
+  --tm-radius-sm: 18rpx;
+  --tm-radius-md: 26rpx;
+  --tm-radius-lg: 34rpx;
+  --tm-radius-xl: 44rpx;
+  --tm-radius-pill: 999rpx;
+
+  /* 动力学弹簧贝塞尔曲线 */
+  --tm-spring-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --tm-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* 字体规范 */
+  --tm-font-display: "Songti SC", "STSong", "STKaiti", "KaiTi", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", serif;
+  --tm-font-number: "DIN Alternate", "Trebuchet MS", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  --tm-font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+
+  /* TabBar 变量 */
+  --tm-tab-bg: rgba(255, 252, 247, 0.94);
+  --tm-tab-border: rgba(232, 223, 201, 0.6);
+  --tm-tab-text: #9E917D;
+  --tm-tab-active: #8FAE85;
+}
+
+/* ==================== 薄荷小屋主题 (Green) ==================== */
+page.theme-green, .theme-green {
+  --tm-bg-page: #F1F8F0;
+  --tm-bg-card: #F9FDF8;
+  --tm-bg-card-subtle: #EBF5EA;
+  --tm-bg-tray: rgba(215, 232, 213, 0.5);
+  --tm-bg-inset: #E3EFE2;
+  --tm-bg-tag-default: #DEEEDE;
+
+  --tm-primary: #6DA36E;
+  --tm-primary-deep: #4B784C;
+  --tm-primary-light: #D5ECDC;
+  --tm-primary-tray: rgba(109, 163, 110, 0.16);
+
+  --tm-accent: #E5A278;
+  --tm-accent-deep: #C46F3D;
+  --tm-accent-light: #F7DFC9;
+  --tm-accent-tray: rgba(229, 162, 120, 0.18);
+
+  --tm-coffee: #9E8963;
+  --tm-coffee-light: #E2DAC8;
+  --tm-pink: #E8A8AB;
+  --tm-pink-light: #F8DDD8;
+  --tm-blue: #94ADC4;
+  --tm-blue-light: #D5E2EC;
+  --tm-yellow: #DECA72;
+  --tm-yellow-light: #F4E7BD;
+  --tm-purple: #B29CC5;
+  --tm-purple-light: #E0D4E7;
+  --tm-gray: #BDB4A5;
+  --tm-gray-light: #E6E1D7;
+
+  --tm-text-primary: #334833;
+  --tm-text-secondary: #526B52;
+  --tm-text-muted: #88A288;
+  --tm-text-light: #B0C6B0;
+
+  --tm-border: #D7E8D5;
+  --tm-border-light: rgba(215, 232, 213, 0.7);
+  --tm-border-highlight: rgba(255, 255, 255, 0.9);
+  --tm-divider: #E4EFE2;
+  --tm-dotted-line: #C5D8C3;
+
+  --tm-inset-highlight: inset 0 1rpx 2rpx rgba(255, 255, 255, 0.85), inset 0 -1rpx 2rpx rgba(109, 163, 110, 0.05);
+  --tm-shadow-sm: 0 2rpx 8rpx rgba(109, 163, 110, 0.06);
+  --tm-shadow-card: 0 4rpx 20rpx rgba(109, 163, 110, 0.08), 0 1rpx 4rpx rgba(109, 163, 110, 0.04);
+  --tm-shadow-float: 0 10rpx 32rpx rgba(109, 163, 110, 0.14), 0 2rpx 8rpx rgba(109, 163, 110, 0.06);
+  --tm-shadow-glow: 0 8rpx 24rpx rgba(109, 163, 110, 0.28);
+
+  --tm-tape-bg: rgba(213, 236, 220, 0.88);
+  --tm-tape-border: rgba(109, 163, 110, 0.25);
+
+  --tm-tab-bg: rgba(249, 253, 248, 0.95);
+  --tm-tab-border: rgba(215, 232, 213, 0.65);
+  --tm-tab-text: #88A288;
+  --tm-tab-active: #6DA36E;
+}
+
+/* ==================== 夜读深色模式 (Dark) ==================== */
+page.theme-dark, .theme-dark {
+  --tm-bg-page: #181614;
+  --tm-bg-card: #24211E;
+  --tm-bg-card-subtle: #2C2824;
+  --tm-bg-tray: rgba(56, 50, 44, 0.65);
+  --tm-bg-inset: #1E1B18;
+  --tm-bg-tag-default: #332F2A;
+
+  --tm-primary: #98B690;
+  --tm-primary-deep: #B4CEAC;
+  --tm-primary-light: #2D3D2B;
+  --tm-primary-tray: rgba(152, 182, 144, 0.2);
+
+  --tm-accent: #E5A278;
+  --tm-accent-deep: #F0B894;
+  --tm-accent-light: #443224;
+  --tm-accent-tray: rgba(229, 162, 120, 0.2);
+
+  --tm-coffee: #C4A97D;
+  --tm-coffee-light: #3B3326;
+  --tm-pink: #E8A8AB;
+  --tm-pink-light: #422D30;
+  --tm-blue: #9BB8D0;
+  --tm-blue-light: #25333E;
+  --tm-yellow: #E6D084;
+  --tm-yellow-light: #3D3723;
+  --tm-purple: #C2B0D4;
+  --tm-purple-light: #332A3B;
+  --tm-gray: #AFA699;
+  --tm-gray-light: #302D29;
+
+  --tm-text-primary: #E8DFD3;
+  --tm-text-secondary: #C7BCAE;
+  --tm-text-muted: #948A7B;
+  --tm-text-light: #665F55;
+  --tm-text-inverse: #181614;
+
+  --tm-border: #3D3833;
+  --tm-border-light: rgba(61, 56, 51, 0.85);
+  --tm-border-highlight: rgba(255, 255, 255, 0.08);
+  --tm-divider: #332F2A;
+  --tm-dotted-line: #47413B;
+
+  --tm-inset-highlight: inset 0 1rpx 2rpx rgba(255, 255, 255, 0.08), inset 0 -1rpx 2rpx rgba(0, 0, 0, 0.4);
+  --tm-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.35);
+  --tm-shadow-card: 0 4rpx 20rpx rgba(0, 0, 0, 0.45), 0 1rpx 4rpx rgba(0, 0, 0, 0.25);
+  --tm-shadow-float: 0 10rpx 32rpx rgba(0, 0, 0, 0.55), 0 2rpx 8rpx rgba(0, 0, 0, 0.35);
+  --tm-shadow-glow: 0 8rpx 26rpx rgba(152, 182, 144, 0.25);
+
+  --tm-tape-bg: rgba(68, 59, 44, 0.92);
+  --tm-tape-border: rgba(196, 169, 125, 0.3);
+
+  --tm-tab-bg: rgba(36, 33, 30, 0.96);
+  --tm-tab-border: rgba(61, 56, 51, 0.8);
+  --tm-tab-text: #948A7B;
+  --tm-tab-active: #98B690;
 }

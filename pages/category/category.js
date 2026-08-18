@@ -6,85 +6,154 @@ const icons = require('../../utils/icons.js');
 
 function decorateCategories(list) {
   return list.map(c =>
-    Object.assign({}, c, { _iconIsImg: !!(c.icon && c.icon.charAt(0) === '/') })
+    Object.assign({}, c, {
+      _iconIsImg: !!(c.icon && (c.icon.startsWith('data:image/svg+xml') || c.icon.startsWith('/')))
+    })
   );
 }
 
 Page({
   data: {
+    themeClass: '',
     categories: [],
     categorySummaries: [],
     currentId: 'all',
     currentName: '全部',
+    sortMode: 'date', // date / amount
+    currentSummary: {
+      id: 'all',
+      name: '全部小票',
+      count: 0,
+      total: '0.00',
+      pct: '100.0',
+      color: 'coffee',
+      icon: icons.CATEGORY_BY_ID.cat_other,
+      _iconIsImg: true
+    },
     list: [],
     showAddModal: false,
+    editingCatId: null,
     newCatName: '',
     newCatIcon: icons.NEW_CATEGORY_ICON_PICKS[0],
     newCatColor: 'coffee',
     iconOptions: icons.NEW_CATEGORY_ICON_PICKS,
-    colorOptions: ['green','orange','coffee','pink','blue','yellow','purple','gray']
+    colorOptions: ['green','orange','coffee','pink','blue','yellow','purple','gray'],
+    allIcon: icons.CATEGORY_BY_ID.cat_other,
+    emptyIcon: icons.FUNC.empty
   },
 
   onShow() {
     tabbar.setSelected(this, tabbar.TabIndex.CATEGORY);
     const cats = storage.getCategories();
     const jumpId = storage.get('jump_category_id');
+    const themeClass = storage.getThemeClass();
+
     if (jumpId) {
       storage.remove('jump_category_id');
       this.setData({
+        themeClass,
         categories: decorateCategories(cats),
         currentId: jumpId
       });
     } else {
-      this.setData({ categories: decorateCategories(cats) });
+      this.setData({
+        themeClass,
+        categories: decorateCategories(cats)
+      });
     }
     this.loadList();
   },
 
+  onPullDownRefresh() {
+    this.loadList();
+    wx.stopPullDownRefresh();
+  },
+
+  onToggleSort() {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    const nextMode = this.data.sortMode === 'date' ? 'amount' : 'date';
+    this.setData({ sortMode: nextMode }, () => {
+      this.loadList();
+    });
+  },
+
   loadList() {
     const all = storage.getReceipts();
+    const grandTotal = all.reduce((sum, r) => sum + format.safeAmount(r), 0);
+
     const catGroups = {};
     all.forEach(r => {
       if (!catGroups[r.categoryId]) catGroups[r.categoryId] = [];
       catGroups[r.categoryId].push(r);
     });
+
     const categorySummaries = this.data.categories.map(c => {
       const receipts = catGroups[c.id] || [];
       const total = receipts.reduce((sum, r) => sum + format.safeAmount(r), 0);
+      const pct = grandTotal > 0 ? ((total / grandTotal) * 100).toFixed(1) : '0.0';
       return Object.assign({}, c, {
         count: receipts.length,
-        total: total.toFixed(2)
+        total: total.toFixed(2),
+        pct
       });
     });
+
     const id = this.data.currentId;
-    let list = all;
-    let name = '全部';
+    let list = all.slice();
+    let name = '全部小票';
+    let currentCat = null;
+
     if (id !== 'all') {
       list = all.filter(r => r.categoryId === id);
-      const cat = this.data.categories.find(c => c.id === id);
-      name = cat ? cat.name : '';
+      currentCat = this.data.categories.find(c => c.id === id);
+      name = currentCat ? currentCat.name : '';
     }
+
+    if (this.data.sortMode === 'amount') {
+      list.sort((a, b) => format.safeAmount(b) - format.safeAmount(a));
+    } else {
+      list.sort((a, b) => b.date - a.date);
+    }
+
+    const currentTotal = list.reduce((sum, r) => sum + format.safeAmount(r), 0);
+    const currentPct = grandTotal > 0 ? ((currentTotal / grandTotal) * 100).toFixed(1) : '100.0';
+
+    const currentSummary = {
+      id,
+      name,
+      count: list.length,
+      total: currentTotal.toFixed(2),
+      pct: currentPct,
+      color: currentCat ? currentCat.color : 'coffee',
+      icon: currentCat ? currentCat.icon : this.data.allIcon,
+      _iconIsImg: currentCat ? currentCat._iconIsImg : true
+    };
+
     // 按月分组展示
     const groups = format.groupByMonth(list);
-    this.setData({ list: groups, currentName: name, categorySummaries });
+    this.setData({ list: groups, currentName: name, categorySummaries, currentSummary });
   },
 
   onSwitchCat(e) {
     const id = e.currentTarget.dataset.id;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     this.setData({ currentId: id });
     this.loadList();
   },
 
-  onOpenCategory(e) {
-    this.onSwitchCat(e);
-  },
-
   onAddCategory() {
-    this.setData({ showAddModal: true, newCatName: '', newCatIcon: icons.NEW_CATEGORY_ICON_PICKS[0], newCatColor: 'coffee' });
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
+    this.setData({
+      showAddModal: true,
+      editingCatId: null,
+      newCatName: '',
+      newCatIcon: icons.NEW_CATEGORY_ICON_PICKS[0],
+      newCatColor: 'coffee'
+    });
   },
 
   onCloseModal() {
-    this.setData({ showAddModal: false });
+    this.setData({ showAddModal: false, editingCatId: null });
   },
 
   onCatNameInput(e) {
@@ -92,65 +161,107 @@ Page({
   },
 
   onPickIcon(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const idx = Number(e.currentTarget.dataset.idx);
     const item = this.data.iconOptions[idx];
     if (item) this.setData({ newCatIcon: item });
   },
 
   onPickColor(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     this.setData({ newCatColor: e.currentTarget.dataset.color });
   },
 
   onSaveCategory() {
-    const { newCatName, newCatIcon, newCatColor } = this.data;
+    const { editingCatId, newCatName, newCatIcon, newCatColor } = this.data;
     const name = (newCatName || '').trim();
     if (!name) {
       wx.showToast({ title: '请输入名称', icon: 'none' });
       return;
     }
-    const fresh = storage.getCategories();
-    const cat = {
-      id: format.uid('cat'),
-      name,
-      icon: newCatIcon,
-      color: newCatColor,
-      isDefault: false
-    };
-    const merged = fresh.concat([cat]);
-    storage.setCategories(merged);
-    this.setData({
-      categories: decorateCategories(merged),
-      showAddModal: false,
-      currentId: cat.id
-    });
-    this.loadList();
-    wx.showToast({ title: '已添加', icon: 'success' });
+
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+
+    if (editingCatId) {
+      storage.updateCategory(editingCatId, {
+        name,
+        icon: newCatIcon,
+        color: newCatColor
+      });
+      const updated = storage.getCategories();
+      this.setData({
+        categories: decorateCategories(updated),
+        showAddModal: false,
+        editingCatId: null
+      });
+      this.loadList();
+      wx.showToast({ title: '分类已更新 🌿', icon: 'success' });
+    } else {
+      const fresh = storage.getCategories();
+      const cat = {
+        id: format.uid('cat'),
+        name,
+        icon: newCatIcon,
+        color: newCatColor,
+        isDefault: false
+      };
+      const merged = fresh.concat([cat]);
+      storage.setCategories(merged);
+      this.setData({
+        categories: decorateCategories(merged),
+        showAddModal: false,
+        editingCatId: null,
+        currentId: cat.id
+      });
+      this.loadList();
+      wx.showToast({ title: '已新建分类 🌿', icon: 'success' });
+    }
   },
 
   onLongPressCat(e) {
     const id = e.currentTarget.dataset.id;
     const cat = this.data.categories.find(c => c.id === id);
     if (!cat) return;
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+
     if (cat.isDefault) {
-      wx.showToast({ title: '默认分类不可删除', icon: 'none' });
+      wx.showToast({ title: '预设分类不可修改或删除', icon: 'none' });
       return;
     }
-    wx.showModal({
-      title: '删除分类',
-      content: '确定删除「' + cat.name + '」吗？该分类下小票将归入「其他」',
+
+    wx.showActionSheet({
+      itemList: ['编辑分类', '删除分类'],
       success: (res) => {
-        if (!res.confirm) return;
-        const cats = storage.getCategories().filter(c => c.id !== id);
-        const receipts = storage.getReceipts().map(r =>
-          r.categoryId === id ? Object.assign({}, r, { categoryId: 'cat_other' }) : r
-        );
-        storage.setCategories(cats);
-        storage.setReceipts(receipts);
-        this.setData({
-          categories: decorateCategories(cats),
-          currentId: this.data.currentId === id ? 'all' : this.data.currentId
-        });
-        this.loadList();
+        if (res.tapIndex === 0) {
+          this.setData({
+            showAddModal: true,
+            editingCatId: cat.id,
+            newCatName: cat.name,
+            newCatIcon: cat.icon,
+            newCatColor: cat.color || 'coffee'
+          });
+        } else if (res.tapIndex === 1) {
+          wx.showModal({
+            title: '删除分类',
+            content: '确定删除「' + cat.name + '」吗？该分类下小票将自动归入「其他」',
+            confirmColor: '#B86F65',
+            success: (r) => {
+              if (!r.confirm) return;
+              const cats = storage.getCategories().filter(c => c.id !== id);
+              const receipts = storage.getReceipts().map(rec =>
+                rec.categoryId === id ? Object.assign({}, rec, { categoryId: 'cat_other' }) : rec
+              );
+              storage.setCategories(cats);
+              storage.setReceipts(receipts);
+              this.setData({
+                categories: decorateCategories(cats),
+                currentId: this.data.currentId === id ? 'all' : this.data.currentId
+              });
+              this.loadList();
+              wx.showToast({ title: '已删除', icon: 'none' });
+            }
+          });
+        }
       }
     });
   }

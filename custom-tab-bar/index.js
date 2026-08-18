@@ -11,6 +11,9 @@ function tabList() {
 }
 
 Component({
+  options: {
+    styleIsolation: 'apply-shared'
+  },
   data: {
     selected: 0,
     safeBottom: 0,
@@ -46,6 +49,9 @@ Component({
       const path = e.currentTarget.dataset.path;
       const index = Number(e.currentTarget.dataset.index);
       if (!path || Number.isNaN(index)) return;
+      try {
+        if (wx.vibrateShort) wx.vibrateShort({ type: 'light' });
+      } catch (err) {}
       if (path === '/pages/add/add') {
         wx.navigateTo({ url: '/pages/add/add?mode=camera' });
         return;

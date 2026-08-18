@@ -1,165 +1,327 @@
-.ev-hero {
+@import "../../styles/tokens.wxss";
+
+.event-page {
+  padding-bottom: 220rpx;
+}
+
+/* 顶部标题区（防胶囊遮挡） */
+.event-hero {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 12rpx 8rpx 18rpx;
+  padding: 10rpx 4rpx 20rpx;
+  flex-wrap: wrap;
+  gap: 16rpx;
 }
-.ev-hero-title {
-  font-size: 44rpx;
-  font-weight: 600;
-  color: #5C4A3A;
+
+.event-hero-left {
+  flex: 1;
+  min-width: 360rpx;
 }
-.ev-hero-sub {
+
+.event-hero-title {
+  font-size: 46rpx;
+  font-weight: 800;
+  color: var(--tm-text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.event-hero-sub {
   font-size: 24rpx;
-  color: #A89C8A;
-  margin-top: 6rpx;
+  color: var(--tm-text-muted);
+  margin-top: 8rpx;
 }
 
-.ev-add {
-  display: flex;
+.event-create-pill {
+  display: inline-flex;
   align-items: center;
-  height: 64rpx;
-  padding: 0 22rpx;
-  border-radius: 32rpx;
-  background: linear-gradient(135deg, #F2B68B 0%, #E8A87C 100%);
+  gap: 8rpx;
+  padding: 12rpx 28rpx;
+  border-radius: var(--tm-radius-pill);
+  background: linear-gradient(135deg, var(--tm-primary) 0%, var(--tm-primary-deep) 100%);
   color: #FFFFFF;
-  font-size: 26rpx;
-  box-shadow: 0 4rpx 14rpx rgba(232, 168, 124, 0.35);
+  font-size: 24rpx;
+  font-weight: 600;
+  box-shadow: var(--tm-shadow-glow);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.18s var(--tm-spring-bounce);
+  margin-bottom: 4rpx;
 }
-.ev-add-plus { font-size: 32rpx; margin-right: 8rpx; }
 
-.ev-list {
-  padding: 6rpx 0 8rpx;
+.event-create-plus {
+  font-size: 32rpx;
+  line-height: 1;
+  font-weight: bold;
 }
 
-.ev-card {
+/* 事件卡片列表 */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  margin-top: 10rpx;
+}
+
+.event-bezel-card {
+  padding: 6rpx;
+  transition: transform 0.22s var(--tm-spring-ease), box-shadow 0.22s ease;
+}
+
+.event-card-tilt {
+  transform: rotate(-0.6deg);
+}
+
+.event-card-tilt-alt {
+  transform: rotate(0.6deg);
+}
+
+.event-core-card {
+  padding: 28rpx 26rpx 22rpx;
+}
+
+.event-polaroid-head {
   display: flex;
   align-items: center;
-  min-height: 210rpx;
-  padding: 28rpx 24rpx 24rpx 28rpx;
-  margin-bottom: 22rpx;
-  border-radius: 26rpx;
-  background:
-    linear-gradient(180deg, rgba(255, 252, 247, 0.96) 0%, rgba(250, 246, 238, 0.98) 100%),
-    #FFFCF7;
-  border: 1rpx solid rgba(232, 223, 201, 0.6);
-  box-shadow: 0 4rpx 18rpx rgba(184, 153, 104, 0.08);
-  position: relative;
-  overflow: visible;
 }
 
-.ev-card-active {
-  border-color: #8FAE85;
-  box-shadow: 0 6rpx 22rpx rgba(143, 174, 133, 0.22);
-  background: linear-gradient(180deg, #FFFCF7 0%, #F4F8EA 100%);
+.event-cover-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 24rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  box-shadow: var(--tm-shadow-sm);
+  overflow: hidden;
 }
 
-.ev-card::before {
-  content: "";
-  position: absolute;
-  top: -12rpx;
-  left: 58rpx;
-  width: 120rpx;
-  height: 28rpx;
-  border-radius: 6rpx;
-  background: rgba(235, 223, 200, 0.8);
-  border: 1rpx solid rgba(184, 153, 104, 0.18);
-  transform: rotate(-2deg);
+.event-cover-img {
+  width: 68rpx;
+  height: 68rpx;
 }
 
-.ev-card-main {
+.event-head-info {
   flex: 1;
   min-width: 0;
 }
 
-.ev-polaroid {
-  width: 156rpx;
-  height: 130rpx;
-  border-radius: 18rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 18rpx;
-  background-color: #fffaf1;
-  border: 8rpx solid #fffcf7;
-  box-shadow: 0 6rpx 14rpx rgba(92, 74, 58, 0.08);
-  transform: rotate(2deg);
-}
-.ev-cover-img {
-  width: 112rpx;
-  height: 112rpx;
-}
-
-.ev-card-name {
+.event-name {
   font-size: 32rpx;
-  color: #5C4A3A;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--tm-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ev-card-date {
+.event-date {
   font-size: 22rpx;
-  color: #A89C8A;
-  margin-top: 10rpx;
+  color: var(--tm-text-muted);
+  margin-top: 4rpx;
 }
 
-.ev-card-total {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #C97B47;
-  font-weight: 600;
+.event-count-badge {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  margin-left: 12rpx;
+  flex-shrink: 0;
 }
 
-.ev-card-count {
-  margin-top: 14rpx;
-  font-size: 22rpx;
-  color: #8B7355;
+.event-note-quote {
+  font-size: 24rpx;
+  color: var(--tm-text-secondary);
+  font-style: italic;
+  background-color: var(--tm-bg-inset);
+  padding: 12rpx 18rpx;
+  border-radius: 12rpx;
+  margin-top: 18rpx;
+  line-height: 1.45;
+  border: 1rpx solid var(--tm-border-light);
 }
 
-/* 事件明细 */
-.ev-detail { margin-top: 28rpx; }
-
-.ev-detail-header {
+.event-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 12rpx 0 18rpx 0;
 }
 
-.ev-anim-btn {
+.event-total-box {
   display: flex;
-  align-items: center;
-  height: 56rpx;
-  padding: 0 20rpx;
-  border-radius: 28rpx;
-  background-color: #DCE9D1;
-  color: #6B8C5E;
+  flex-direction: column;
+}
+
+.event-total-label {
+  font-size: 20rpx;
+  color: var(--tm-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.event-total-amount {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: var(--tm-accent-deep);
+  letter-spacing: -0.01em;
+}
+
+.event-quick-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.event-quick-actions .btn-nested {
+  height: 72rpx;
+  padding: 0 12rpx 0 24rpx;
+}
+
+.event-quick-actions .btn-nested-tray {
+  width: 48rpx;
+  height: 48rpx;
+  margin-left: 10rpx;
+}
+
+.event-quick-actions .btn-nested-ico {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.event-btn-text {
   font-size: 24rpx;
 }
-.ev-anim-icon { margin-right: 8rpx; }
 
-.ev-summary {
+.event-tip {
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-top: 36rpx;
+}
+
+/* 翻页画册弹窗 */
+.flip-modal {
+  width: 640rpx;
+  background-color: var(--tm-bg-page);
+  border-radius: 36rpx;
+  padding: 30rpx 24rpx 40rpx;
+  box-shadow: 0 16rpx 60rpx rgba(0, 0, 0, 0.35);
+  margin: auto;
+  align-self: center;
+}
+
+.flip-header {
   display: flex;
   align-items: center;
-  background-color: #FFFCF7;
-  border-radius: 24rpx;
-  padding: 28rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(184, 153, 104, 0.06);
-  border: 1rpx solid rgba(232, 223, 201, 0.5);
+  justify-content: space-between;
+  padding: 0 10rpx 20rpx;
 }
-.ev-summary-item { flex: 1; text-align: center; }
-.ev-summary-divider {
-  width: 1rpx;
-  height: 60rpx;
-  background-color: #EFE6D1;
+
+.flip-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--tm-text-primary);
 }
-.ev-summary-label { font-size: 22rpx; color: #A89C8A; }
-.ev-summary-value {
+
+.flip-close {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: var(--tm-border);
+  color: var(--tm-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+.flip-swiper {
+  width: 100%;
+  height: 720rpx;
+}
+
+.flip-page-card {
+  position: relative;
+  width: 560rpx;
+  height: 640rpx;
+  background-color: var(--tm-bg-card);
+  border-radius: 28rpx;
+  margin: 10rpx auto 0;
+  padding: 36rpx 28rpx 24rpx;
+  box-shadow: var(--tm-shadow-card);
+  border: 1rpx solid var(--tm-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.flip-merchant {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--tm-text-primary);
+  margin-top: 10rpx;
+}
+
+.flip-date {
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-top: 4rpx;
+}
+
+.flip-img-wrap {
+  width: 100%;
+  height: 260rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin: 18rpx 0;
+}
+
+.flip-img {
+  width: 100%;
+  height: 100%;
+}
+
+.flip-placeholder-wrap {
+  width: 130rpx;
+  height: 130rpx;
+  margin: 40rpx 0;
+  overflow: hidden;
+}
+
+.flip-placeholder-img {
+  width: 78rpx;
+  height: 78rpx;
+}
+
+.flip-amount {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: var(--tm-accent-deep);
+}
+
+.flip-note {
+  font-size: 22rpx;
+  color: var(--tm-text-secondary);
+  font-style: italic;
   margin-top: 8rpx;
-  font-size: 38rpx;
-  font-weight: 600;
-  color: #5C4A3A;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flip-index-badge {
+  margin-top: auto;
+  font-size: 20rpx;
+  color: var(--tm-text-light);
+}
+
+/* 隐藏渲染画布 */
+.hidden-poster-canvas {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  width: 375px;
+  height: 600px;
 }

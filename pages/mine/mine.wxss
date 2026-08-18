@@ -1,146 +1,294 @@
-.me-card {
-  display: flex;
-  align-items: center;
-  padding: 30rpx 8rpx 26rpx;
-  margin-bottom: 12rpx;
+@import "../../styles/tokens.wxss";
+
+.mine-page {
+  padding-bottom: 220rpx;
 }
 
-.me-mascot {
-  width: 108rpx;
-  height: 108rpx;
+/* 个人中心手账卡片（Double-Bezel） */
+.me-bezel-tray {
+  margin-bottom: 30rpx;
+}
+
+.me-core-card {
+  padding: 32rpx 28rpx 24rpx;
+}
+
+.me-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28rpx;
+}
+
+.me-mascot-box {
+  width: 104rpx;
+  height: 104rpx;
   border-radius: 50%;
-  background-color: #fffcf7;
+  background: linear-gradient(135deg, var(--tm-accent-light) 0%, var(--tm-coffee-light) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 22rpx;
-  box-shadow: 0 4rpx 14rpx rgba(184, 153, 104, 0.16);
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  box-shadow: var(--tm-shadow-sm);
+  overflow: hidden;
 }
 
 .me-mascot-img {
-  width: 72rpx;
-  height: 72rpx;
+  width: 74rpx;
+  height: 74rpx;
 }
 
-.me-body {
+.me-info {
   flex: 1;
+  min-width: 0;
 }
 
 .me-title {
-  font-size: 34rpx;
-  color: #5c4a3a;
-  font-weight: 600;
+  font-size: 38rpx;
+  font-weight: 700;
+  color: var(--tm-text-primary);
+  letter-spacing: 0.02em;
 }
 
 .me-sub {
-  font-size: 23rpx;
-  color: #8b7355;
-  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--tm-text-muted);
+  margin-top: 6rpx;
 }
 
-.me-arrow {
-  color: #c9bda8;
-  font-size: 42rpx;
-  padding-right: 10rpx;
+/* 统计小罗盘 */
+.me-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 24rpx;
+  border-top: 1rpx dashed var(--tm-dotted-line);
 }
 
+.me-stat-item {
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+}
+
+.me-stat-val {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: var(--tm-accent-deep);
+}
+
+.me-stat-lbl {
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-top: 4rpx;
+}
+
+.me-stat-divider {
+  width: 1rpx;
+  height: 40rpx;
+  background-color: var(--tm-divider);
+}
+
+/* 隐私安全小卡片 */
 .safe-card {
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, #eef5df 0%, #fffcf7 100%);
-  border-radius: 20rpx;
-  padding: 20rpx 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(184, 153, 104, 0.06);
-  border: 1rpx solid rgba(232, 223, 201, 0.64);
-  margin-bottom: 24rpx;
+  background: linear-gradient(135deg, var(--tm-primary-light) 0%, var(--tm-primary-tray) 100%);
+  border-radius: var(--tm-radius-md);
+  padding: 22rpx 24rpx;
+  margin-bottom: 30rpx;
+  border: 1rpx solid var(--tm-border-light);
+  box-shadow: var(--tm-shadow-sm);
+  cursor: pointer;
+  transition: transform 0.18s var(--tm-spring-ease);
+  overflow: hidden;
 }
 
 .safe-icon {
-  width: 54rpx;
-  height: 54rpx;
-  border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16rpx;
+  width: 72rpx;
+  height: 72rpx;
+  margin-right: 18rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .safe-text {
   flex: 1;
+  min-width: 0;
+}
+
+.safe-title {
   font-size: 26rpx;
-  color: #5c4a3a;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--tm-primary-deep);
+}
+
+.safe-sub {
+  font-size: 20rpx;
+  color: var(--tm-text-secondary);
+  margin-top: 4rpx;
 }
 
 .safe-arrow {
-  color: #8fae85;
-  font-size: 34rpx;
+  font-size: 32rpx;
+  color: var(--tm-primary-deep);
+  font-weight: bold;
 }
 
-.menu-card {
-  padding: 0 24rpx;
-  margin-bottom: 24rpx;
-  border-radius: 22rpx;
+/* 菜单列表行（Double-Bezel） */
+.menu-bezel-tray {
+  margin-bottom: 28rpx;
+}
+
+.menu-bezel-core {
+  padding: 6rpx 24rpx;
 }
 
 .menu-row {
   display: flex;
   align-items: center;
-  min-height: 94rpx;
-  padding: 14rpx 0;
-}
-
-.menu-icon {
-  width: 54rpx;
-  height: 54rpx;
-  border-radius: 16rpx;
-  background: #faf6ee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 22rpx;
+  padding: 22rpx 0;
+  cursor: pointer;
 }
 
 .mine-menu-ico {
-  width: 34rpx;
-  height: 34rpx;
+  width: 44rpx;
+  height: 44rpx;
 }
 
 .menu-text {
   flex: 1;
-  min-width: 0;
+  margin-left: 20rpx;
 }
 
 .menu-title {
   font-size: 28rpx;
-  color: #5c4a3a;
+  font-weight: 600;
+  color: var(--tm-text-primary);
 }
 
 .menu-sub {
   font-size: 22rpx;
-  color: #a89c8a;
-  margin-top: 6rpx;
+  color: var(--tm-text-muted);
+  margin-top: 4rpx;
+}
+
+.menu-arrow {
+  font-size: 32rpx;
+  color: var(--tm-text-light);
+  font-weight: bold;
+}
+
+.menu-divider {
+  height: 1rpx;
+  background-color: var(--tm-divider);
+}
+
+.bottom-quote {
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-top: 36rpx;
+  font-style: italic;
+}
+
+/* 回收站弹窗 */
+.trash-sheet {
+  max-height: 85vh;
+}
+
+.trash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.trash-clear-btn {
+  font-size: 24rpx;
+  color: var(--tm-accent-deep);
+  font-weight: 600;
+  padding: 8rpx 16rpx;
+}
+
+.trash-tip {
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-bottom: 24rpx;
+}
+
+.trash-scroll {
+  max-height: 50vh;
+  margin-bottom: 28rpx;
+}
+
+.trash-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 14rpx;
+  background-color: var(--tm-bg-card-subtle);
+  border-radius: var(--tm-radius-sm);
+  margin-bottom: 14rpx;
+  border: 1rpx solid var(--tm-border-light);
+  overflow: hidden;
+}
+
+.trash-thumb {
+  width: 68rpx;
+  height: 68rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.trash-thumb-img {
+  width: 42rpx;
+  height: 42rpx;
+}
+
+.trash-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.trash-merchant {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--tm-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.menu-arrow {
-  font-size: 36rpx;
-  color: #c9bda8;
-  margin-left: 16rpx;
+.trash-meta {
+  font-size: 22rpx;
+  color: var(--tm-text-muted);
+  margin-top: 4rpx;
 }
 
-.menu-divider {
-  height: 1rpx;
-  background-color: #efe6d1;
-  margin-left: 76rpx;
+.trash-actions {
+  display: flex;
+  gap: 12rpx;
 }
 
-.bottom-quote {
-  margin-top: 54rpx;
-  text-align: center;
-  font-size: 24rpx;
-  color: #a89c8a;
-  padding-bottom: 40rpx;
+.trash-btn-restore {
+  padding: 6rpx 18rpx;
+  border-radius: 12rpx;
+  background: var(--tm-primary-light);
+  color: var(--tm-primary-deep);
+  font-size: 22rpx;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.trash-btn-delete {
+  padding: 6rpx 18rpx;
+  border-radius: 12rpx;
+  background: var(--tm-pink-light);
+  color: #B86F65;
+  font-size: 22rpx;
+  font-weight: 600;
+  overflow: hidden;
 }

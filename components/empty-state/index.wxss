@@ -1,19 +1,34 @@
+@import "../../styles/tokens.wxss";
+
 .empty {
   text-align: center;
-  padding: 80rpx 0 40rpx;
+  padding: 70rpx 40rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 .empty-img {
-  width: 120rpx;
-  height: 120rpx;
-  margin: 0 auto 18rpx;
+  width: 140rpx;
+  height: 140rpx;
+  margin: 0 auto 20rpx;
   display: block;
+  opacity: 0.85;
+  filter: drop-shadow(0 4rpx 12rpx rgba(184, 153, 104, 0.15));
 }
+
 .empty-text {
   font-size: 28rpx;
-  color: #8B7355;
+  font-weight: 600;
+  color: var(--tm-text-secondary);
   margin-bottom: 8rpx;
+  letter-spacing: 0.02em;
 }
+
 .empty-sub {
   font-size: 24rpx;
-  color: #B5A88E;
+  color: var(--tm-text-muted);
+  max-width: 480rpx;
+  line-height: 1.4;
 }

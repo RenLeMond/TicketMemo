@@ -46,122 +46,6 @@
   "packOptions": {
     "ignore": [
       {
-        "value": "images/UI页面样式总览.png",
-        "type": "file"
-      },
-      {
-        "value": "images/图标总览.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/加号.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/首页.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/分类.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/事件.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/我的.jpg",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_add.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_with_add.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_centered.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_replaced.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_sources_current.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_refined.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_equalized.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_add_adjusted.png",
-        "type": "file"
-      },
-      {
-        "value": "images/tabbar/_preview_tabbar_category_full.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-其他.jpg",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-婚礼.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-报销.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-旅行.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-生日.jpg",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-聚餐.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/事件-购物节.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/_preview_event_sources.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/_preview_event_covers.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/_preview_event_covers_stretched.png",
-        "type": "file"
-      },
-      {
-        "value": "images/事件/_preview_event_covers_equal_size.png",
-        "type": "file"
-      },
-      {
-        "value": "assets/icons/_preview.png",
-        "type": "file"
-      },
-      {
         "value": ".idea",
         "type": "folder"
       },
@@ -171,10 +55,6 @@
       },
       {
         "value": ".cut-tmp",
-        "type": "folder"
-      },
-      {
-        "value": "tools",
         "type": "folder"
       }
     ],

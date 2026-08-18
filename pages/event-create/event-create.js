@@ -5,6 +5,7 @@ const icons = require('../../utils/icons.js');
 
 Page({
   data: {
+    themeClass: '',
     isEdit: false,
     eventId: '',
     name: '',
@@ -15,12 +16,14 @@ Page({
     coverColor: icons.COVER_PICKS[0].color,
     coverOptions: icons.COVER_PICKS,
     receipts: [],
-    selectedIds: []
+    selectedIds: [],
+    emptyIcon: icons.FUNC.empty
   },
 
   onLoad(options) {
     const today = format.formatDate(Date.now(), 'YYYY-MM-DD');
     this.setData({
+      themeClass: storage.getThemeClass(),
       startDate: today,
       endDate: today,
       receipts: storage.getReceipts().map(r =>
@@ -40,7 +43,7 @@ Page({
           endDate: format.formatDate(ev.endDate, 'YYYY-MM-DD'),
           cover: icons.normalizeEventCover(ev.cover),
           coverColor: ev.coverColor || 'green',
-          selectedIds: ev.receiptIds.slice()
+          selectedIds: (ev.receiptIds || []).slice()
         });
         wx.setNavigationBarTitle({ title: '编辑事件' });
       }
@@ -53,12 +56,14 @@ Page({
   onEndDateChange(e) { this.setData({ endDate: e.detail.value }); },
 
   onPickCover(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const idx = e.currentTarget.dataset.idx;
     const opt = this.data.coverOptions[idx];
     this.setData({ cover: opt.src, coverColor: opt.color });
   },
 
   onToggleReceipt(e) {
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const id = e.currentTarget.dataset.id;
     const list = this.data.selectedIds.slice();
     const i = list.indexOf(id);
@@ -89,6 +94,8 @@ Page({
       return;
     }
 
+    try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
+
     if (isEdit) {
       const events = storage.getEvents();
       const idx = events.findIndex(e => e.id === eventId);
@@ -104,7 +111,7 @@ Page({
         });
         storage.setEvents(events);
       }
-      wx.showToast({ title: '已更新', icon: 'success', duration: 800 });
+      wx.showToast({ title: '事件已更新 🌿', icon: 'success', duration: 800 });
     } else {
       storage.addEvent({
         id: format.uid('ev'),
@@ -117,9 +124,9 @@ Page({
         receiptIds: selectedIds,
         createdAt: Date.now()
       });
-      wx.showToast({ title: '事件已创建', icon: 'success', duration: 800 });
+      wx.showToast({ title: '事件已创建 🌿', icon: 'success', duration: 800 });
     }
-    setTimeout(() => wx.navigateBack(), 1000);
+    setTimeout(() => wx.navigateBack(), 800);
   },
 
   onCancel() {
