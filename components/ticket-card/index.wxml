@@ -1,19 +1,19 @@
-<view class="t-card {{variant === 'ledger' ? 't-card-ledger' : ''}} {{isLast ? 't-card-last' : ''}} t-card-{{receipt.color || 'coffee'}}" bindtap="onTap">
-  <view class="t-thumb icon-circle icon-circle-{{receipt.color || 'coffee'}}">
+<view class="t-card {{variant === 'ledger' ? 't-card-ledger' : ''}} {{isLast ? 't-card-last' : ''}} t-card-{{viewReceipt.categoryColor || 'coffee'}}" bindtap="onTap">
+  <view class="t-thumb icon-circle icon-circle-{{viewReceipt.thumbColor || viewReceipt.categoryColor || 'coffee'}}">
     <image class="t-thumb-img" src="{{thumbSrc}}" mode="aspectFit" />
   </view>
   <view class="t-body">
     <view class="t-head-row">
-      <view class="t-title">{{receipt.merchant || '未命名小票'}}</view>
+      <view class="t-title">{{viewReceipt.merchant || '未命名小票'}}</view>
     </view>
     <view class="t-meta">
       <text wx:if="{{showDate && _dateText}}" class="t-date">{{_dateText}}</text>
-      <text wx:if="{{receipt.items}}" class="t-items">{{_dateText ? ' · ' : ''}}{{receipt.items}}</text>
-      <text wx:elif="{{receipt.note}}" class="t-items">{{_dateText ? ' · ' : ''}}{{receipt.note}}</text>
+      <text wx:if="{{viewReceipt.items}}" class="t-items">{{_dateText ? ' · ' : ''}}{{viewReceipt.items}}</text>
+      <text wx:elif="{{viewReceipt.note}}" class="t-items">{{_dateText ? ' · ' : ''}}{{viewReceipt.note}}</text>
     </view>
   </view>
   <view class="t-side">
     <view class="t-amount font-number">{{_amountText}}</view>
-    <view wx:if="{{receipt.categoryName}}" class="t-category tag tag-{{receipt.color || 'coffee'}}">{{receipt.categoryName}}</view>
+    <view wx:if="{{viewReceipt.categoryName}}" class="t-category tag tag-{{viewReceipt.categoryColor || 'coffee'}}">{{viewReceipt.categoryName}}</view>
   </view>
 </view>

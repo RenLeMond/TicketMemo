@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
 
 Page({
   data: {
@@ -59,11 +60,12 @@ Page({
   },
 
   formatTrashItems(trash) {
-    return trash.map(t => Object.assign({}, t, {
+    const cats = storage.getCategories();
+    const tags = storage.getTags();
+    return receiptDisplay.decorateReceipts(trash, cats, tags).map(t => Object.assign({}, t, {
       _amountText: format.formatMoney(t.amount),
       _dateText: format.formatDate(t.date, 'YYYY-MM-DD'),
-      _deletedText: t.deletedAt ? format.relativeDate(t.deletedAt) : '',
-      _thumb: icons.receiptThumbUrl(t)
+      _deletedText: t.deletedAt ? format.relativeDate(t.deletedAt) : ''
     }));
   },
 

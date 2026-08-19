@@ -11,6 +11,29 @@ function withTagSelection(tags, selectedIds) {
   });
 }
 
+function findCategory(categories, categoryId) {
+  return (categories || []).find(c => c.id === categoryId) || {
+    id: 'cat_other',
+    color: 'gray',
+    icon: icons.CATEGORY_BY_ID.cat_other
+  };
+}
+
+function syncPlaceholderDisplay(page) {
+  const { placeholder, placeholderColor, placeholderCustomized, categoryId, categories } = page.data;
+  const cat = findCategory(categories, categoryId);
+  const hasCustom = icons.isCustomPlaceholder({
+    placeholder,
+    placeholderCustomized,
+    color: placeholderColor
+  });
+
+  page.setData({
+    displayPlaceholder: hasCustom ? placeholder : (cat.icon || icons.categoryIconUrl(categoryId)),
+    displayPlaceholderColor: hasCustom ? (placeholderColor || cat.color) : (cat.color || 'gray')
+  });
+}
+
 Page({
   data: {
     themeClass: '',
@@ -18,8 +41,11 @@ Page({
     editId: '',
     step: 'pick', // pick / scan / edit
     image: '',
-    placeholder: icons.FUNC.tag,
+    placeholder: '',
     placeholderColor: 'yellow',
+    placeholderCustomized: false,
+    displayPlaceholder: icons.CATEGORY_BY_ID.cat_food,
+    displayPlaceholderColor: 'orange',
     merchant: '',
     amount: '',
     dateText: '',
@@ -64,7 +90,7 @@ Page({
       categoryId: cats.length > 0 ? cats[0].id : 'cat_other',
       dateTs: todayTs,
       dateText: todayText
-    });
+    }, () => syncPlaceholderDisplay(this));
 
     if (options.id) {
       const allReceipts = storage.getReceipts();
@@ -76,8 +102,9 @@ Page({
           editId: r.id,
           step: 'edit',
           image: r.image || '',
-          placeholder: r.placeholder || icons.FUNC.tag,
-          placeholderColor: r.color || 'yellow',
+          placeholder: r.placeholder || '',
+          placeholderColor: r.color || '',
+          placeholderCustomized: icons.isCustomPlaceholder(r),
           merchant: r.merchant || '',
           amount: String(r.amount !== undefined ? r.amount : ''),
           dateTs: r.date || todayTs,
@@ -87,7 +114,7 @@ Page({
           categoryId: r.categoryId || (cats.length > 0 ? cats[0].id : 'cat_other'),
           selectedTagIds,
           tags: withTagSelection(allTags, selectedTagIds)
-        });
+        }, () => syncPlaceholderDisplay(this));
         wx.setNavigationBarTitle({ title: '编辑小票' });
         return;
       }
@@ -249,14 +276,18 @@ Page({
 
   onPickCategory(e) {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
-    this.setData({ categoryId: e.currentTarget.dataset.id });
+    this.setData({ categoryId: e.currentTarget.dataset.id }, () => syncPlaceholderDisplay(this));
   },
 
   onPickPlaceholder(e) {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'light' }); } catch (err) {}
     const idx = e.currentTarget.dataset.idx;
     const opt = this.data.placeholderOptions[idx];
-    this.setData({ placeholder: opt.src, placeholderColor: opt.color });
+    this.setData({
+      placeholder: opt.src,
+      placeholderColor: opt.color,
+      placeholderCustomized: true
+    }, () => syncPlaceholderDisplay(this));
   },
 
   onToggleTag(e) {
@@ -315,7 +346,14 @@ Page({
   },
 
   onSave() {
-    const { isEdit, editId, merchant, amount, dateTs, items, note, categoryId, selectedTagIds, image, placeholder, placeholderColor } = this.data;
+    const { isEdit, editId, merchant, amount, dateTs, items, note, categoryId, selectedTagIds, image, placeholder, placeholderColor, placeholderCustomized } = this.data;
+    const customized = icons.isCustomPlaceholder({
+      placeholder,
+      placeholderCustomized,
+      color: placeholderColor
+    });
+    const savePlaceholder = customized ? placeholder : '';
+    const saveColor = customized ? placeholderColor : '';
     if (!merchant || !merchant.trim()) {
       wx.showToast({ title: '请填写商家名称', icon: 'none' });
       return;
@@ -338,8 +376,9 @@ Page({
         items: items || '',
         note: note || '',
         image: image || '',
-        placeholder,
-        color: placeholderColor
+        placeholder: savePlaceholder,
+        placeholderCustomized: customized,
+        color: saveColor
       });
       wx.showToast({ title: '已保存修改 🌿', icon: 'success', duration: 700 });
     } else {
@@ -353,8 +392,9 @@ Page({
         items: items || '',
         note: note || '',
         image: image || '',
-        placeholder,
-        color: placeholderColor
+        placeholder: savePlaceholder,
+        placeholderCustomized: customized,
+        color: saveColor
       };
       storage.addReceipt(receipt);
       wx.showToast({ title: '小票已入账 🌿', icon: 'success', duration: 700 });

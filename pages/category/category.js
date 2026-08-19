@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
 
 function decorateCategories(list) {
   return list.map(c =>
@@ -123,6 +124,8 @@ Page({
 
     const currentTotal = list.reduce((sum, r) => sum + format.safeAmount(r), 0);
     const currentPct = grandTotal > 0 ? ((currentTotal / grandTotal) * 100).toFixed(1) : '100.0';
+    const allTags = storage.getTags();
+    const decoratedList = receiptDisplay.decorateReceipts(list, this.data.categories, allTags);
 
     const currentSummary = {
       id,
@@ -136,7 +139,7 @@ Page({
     };
 
     // 按月分组展示
-    const groups = format.groupByMonth(list);
+    const groups = format.groupByMonth(decoratedList);
     this.setData({ list: groups, currentName: name, categorySummaries, currentSummary });
   },
 

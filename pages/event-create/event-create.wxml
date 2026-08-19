@@ -4,6 +4,7 @@
     <view class="nav-back-btn" bindtap="onCancel"></view>
     <view class="nav-page-title font-display">{{isEdit ? '编辑事件' : '新建事件故事'}}</view>
   </view>
+  <view class="nav-back-spacer"></view>
 
   <view class="ec-hero reveal-1">
     <view class="ec-cover icon-circle icon-circle-{{coverColor}}">
@@ -90,21 +91,21 @@
       <view
         wx:for="{{receipts}}"
         wx:key="id"
-        class="rec-row {{selectedIds.indexOf(item.id) >= 0 ? 'rec-row-active' : ''}}"
+        class="rec-row {{item._selected ? 'rec-row-active' : ''}}"
         bindtap="onToggleReceipt"
         data-id="{{item.id}}"
       >
-        <view class="rec-check {{selectedIds.indexOf(item.id) >= 0 ? 'rec-check-active' : ''}}">
-          {{selectedIds.indexOf(item.id) >= 0 ? '✓' : ''}}
+        <view class="rec-check {{item._selected ? 'rec-check-active' : ''}}">
+          {{item._selected ? '✓' : ''}}
         </view>
-        <view class="icon-circle icon-circle-{{item.color || 'coffee'}} rec-thumb-wrap">
-          <image class="rec-thumb" src="{{item._thumb}}" mode="aspectFit" />
+        <view class="icon-circle icon-circle-{{item.thumbColor || item.categoryColor || 'coffee'}} rec-thumb-wrap">
+          <image class="rec-thumb" src="{{item.thumbSrc}}" mode="aspectFit" />
         </view>
         <view class="rec-body">
           <view class="rec-merchant">{{item.merchant}}</view>
           <view class="rec-meta">{{item.items || item.note || '小票记录'}}</view>
         </view>
-        <view class="rec-amount font-number">¥{{item.amount.toFixed(2)}}</view>
+        <view class="rec-amount font-number">{{item._amountText}}</view>
       </view>
     </view>
   </view>

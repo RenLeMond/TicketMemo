@@ -2,6 +2,14 @@
 const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
+
+function withReceiptSelection(receipts, selectedIds) {
+  const set = new Set(selectedIds || []);
+  return (receipts || []).map(function (r) {
+    return Object.assign({}, r, { _selected: set.has(r.id) });
+  });
+}
 
 Page({
   data: {
@@ -22,19 +30,23 @@ Page({
 
   onLoad(options) {
     const today = format.formatDate(Date.now(), 'YYYY-MM-DD');
-    this.setData({
+    const cats = storage.getCategories();
+    const tags = storage.getTags();
+    const decorated = receiptDisplay.decorateReceipts(storage.getReceipts(), cats, tags).map(function (r) {
+      return Object.assign({}, r, { _amountText: format.formatMoney(r.amount) });
+    });
+    const patch = {
       themeClass: storage.getThemeClass(),
       startDate: today,
       endDate: today,
-      receipts: storage.getReceipts().map(r =>
-        Object.assign({}, r, { _thumb: icons.receiptThumbUrl(r) })
-      )
-    });
+      receipts: withReceiptSelection(decorated, [])
+    };
 
     if (options.id) {
       const ev = storage.getEvents().find(e => e.id === options.id);
       if (ev) {
-        this.setData({
+        const selectedIds = (ev.receiptIds || []).slice();
+        Object.assign(patch, {
           isEdit: true,
           eventId: ev.id,
           name: ev.name,
@@ -43,11 +55,14 @@ Page({
           endDate: format.formatDate(ev.endDate, 'YYYY-MM-DD'),
           cover: icons.normalizeEventCover(ev.cover),
           coverColor: ev.coverColor || 'green',
-          selectedIds: (ev.receiptIds || []).slice()
+          selectedIds,
+          receipts: withReceiptSelection(decorated, selectedIds)
         });
         wx.setNavigationBarTitle({ title: '编辑事件' });
       }
     }
+
+    this.setData(patch);
   },
 
   onNameInput(e) { this.setData({ name: e.detail.value }); },
@@ -68,7 +83,10 @@ Page({
     const list = this.data.selectedIds.slice();
     const i = list.indexOf(id);
     if (i >= 0) list.splice(i, 1); else list.push(id);
-    this.setData({ selectedIds: list });
+    this.setData({
+      selectedIds: list,
+      receipts: withReceiptSelection(this.data.receipts, list)
+    });
   },
 
   onSave() {

@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
 
 Page({
   data: {
@@ -61,15 +62,8 @@ Page({
       }
     });
 
-    const categoryMap = {};
-    allCats.forEach(c => { categoryMap[c.id] = c; });
-    const decoratedReceipts = allReceipts.map(r => {
-      const cat = categoryMap[r.categoryId] || { name: '其他', color: 'coffee' };
-      return Object.assign({}, r, {
-        categoryName: cat.name,
-        color: r.color || cat.color || 'coffee'
-      });
-    });
+    const allTags = storage.getTags();
+    const decoratedReceipts = receiptDisplay.decorateReceipts(allReceipts, allCats, allTags);
 
     const decorateCat = (c) => Object.assign({}, c, {
       _iconIsImg: !!(c.icon && (c.icon.startsWith('data:image/svg+xml') || c.icon.startsWith('/')))

@@ -465,12 +465,52 @@ function isAssetPath(s) {
 }
 
 /**
- * 小票列表缩略图获取
+ * 是否为用户主动选择的占位图标。
+ * 旧数据未写 placeholderCustomized，录入页默认把标签图写入 placeholder，
+ * 故仅把「非默认标签图」的有效占位图视为自定义。
  */
-function receiptThumbUrl(receipt) {
-  if (!receipt) return CATEGORY_BY_ID.cat_other;
-  if (receipt.placeholder && isAssetPath(receipt.placeholder)) return receipt.placeholder;
-  return categoryIconUrl(receipt.categoryId);
+function isCustomPlaceholder(receipt) {
+  if (!receipt || !receipt.placeholder || !isAssetPath(receipt.placeholder)) return false;
+  if (receipt.placeholderCustomized) return true;
+  return receipt.placeholder !== FUNC.tag;
+}
+
+/**
+ * 解析小票缩略图与圆圈色（列表 / 详情共用）
+ * - 有照片 → 照片
+ * - 用户主动选的占位图标 → 占位图 + 占位色
+ * - 否则 → 分类图标 + 分类色
+ */
+function resolveReceiptThumb(receipt, category) {
+  if (!receipt) {
+    return { thumbSrc: CATEGORY_BY_ID.cat_other, thumbColor: 'gray' };
+  }
+
+  const cat = category || {};
+  const categoryColor = cat.color || 'gray';
+  const categoryIcon = (cat.icon && isAssetPath(cat.icon))
+    ? cat.icon
+    : categoryIconUrl(receipt.categoryId);
+
+  if (receipt.image && isAssetPath(receipt.image)) {
+    return { thumbSrc: receipt.image, thumbColor: categoryColor };
+  }
+
+  if (isCustomPlaceholder(receipt)) {
+    return {
+      thumbSrc: receipt.placeholder,
+      thumbColor: receipt.color || categoryColor
+    };
+  }
+
+  return { thumbSrc: categoryIcon, thumbColor: categoryColor };
+}
+
+/**
+ * 小票列表缩略图 URL
+ */
+function receiptThumbUrl(receipt, category) {
+  return resolveReceiptThumb(receipt, category).thumbSrc;
 }
 
 /**
@@ -550,6 +590,8 @@ module.exports = {
   EVENT_COVERS,
   categoryIconUrl,
   isAssetPath,
+  isCustomPlaceholder,
+  resolveReceiptThumb,
   receiptThumbUrl,
   normalizeEventCover,
   NEW_CATEGORY_ICON_PICKS,

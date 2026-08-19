@@ -104,11 +104,11 @@
           <view wx:if="{{item.image}}" class="flip-img-wrap">
             <image class="flip-img" src="{{item.image}}" mode="aspectFill"></image>
           </view>
-          <view wx:else class="flip-placeholder-wrap icon-circle icon-circle-{{item.color || 'coffee'}}">
-            <image class="flip-placeholder-img" src="{{item._thumb}}" mode="aspectFit" />
+          <view wx:else class="flip-placeholder-wrap icon-circle icon-circle-{{item.thumbColor || item.categoryColor || 'coffee'}}">
+            <image class="flip-placeholder-img" src="{{item.thumbSrc}}" mode="aspectFit" />
           </view>
 
-          <view class="flip-amount font-number">¥{{item.amount.toFixed(2)}}</view>
+          <view class="flip-amount font-number">{{item._amountText}}</view>
           <view class="flip-note" wx:if="{{item.note}}">“{{item.note}}”</view>
           <view class="flip-index-badge">第 {{index + 1}} / {{flipReceipts.length}} 页</view>
         </view>

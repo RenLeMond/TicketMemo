@@ -2,6 +2,7 @@
 const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
 
 Page({
   data: {
@@ -12,6 +13,7 @@ Page({
     dateText: '',
     amountText: '',
     thumbSrc: '',
+    thumbColor: 'coffee',
     barcodeSrc: icons.FUNC.barcode,
     icons: {
       share: icons.FUNC.share,
@@ -51,19 +53,20 @@ Page({
     }
     const cats = storage.getCategories();
     const tagsAll = storage.getTags();
-    const cat0 = cats.find(c => c.id === r.categoryId) || { name: '其他', icon: icons.CATEGORY_BY_ID.cat_other, color: 'gray' };
-    const cat = icons.isAssetPath(cat0.icon)
-      ? cat0
-      : Object.assign({}, cat0, { icon: icons.categoryIconUrl(r.categoryId) });
-    const tags = (r.tags || []).map(tid => tagsAll.find(t => t.id === tid)).filter(Boolean);
+    const decorated = receiptDisplay.decorateReceipt(r, cats, tagsAll);
 
     this.setData({
       receipt: r,
-      category: cat,
-      tags,
+      category: {
+        name: decorated.categoryName,
+        color: decorated.categoryColor,
+        icon: decorated.categoryIcon
+      },
+      tags: decorated.tagItems,
       dateText: format.formatDate(r.date, 'YYYY年MM月DD日 HH:mm'),
       amountText: format.formatMoney(r.amount),
-      thumbSrc: icons.receiptThumbUrl(r)
+      thumbSrc: decorated.thumbSrc,
+      thumbColor: decorated.thumbColor
     });
   },
 

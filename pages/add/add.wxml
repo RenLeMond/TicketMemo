@@ -4,6 +4,7 @@
     <view class="nav-back-btn" bindtap="onCancel"></view>
     <view class="nav-page-title font-display">{{isEdit ? '编辑小票' : '录入新小票'}}</view>
   </view>
+  <view class="nav-back-spacer"></view>
 
   <!-- 步骤 1：选择来源 -->
   <block wx:if="{{step === 'pick'}}">
@@ -88,8 +89,8 @@
       </view>
       <view wx:else class="bezel-tray edit-placeholder-tray">
         <view class="bezel-core edit-placeholder-core">
-          <view class="icon-circle icon-circle-{{placeholderColor}} edit-placeholder-icon" bindtap="onChangeImage">
-            <image class="edit-ph-img" src="{{placeholder}}" mode="aspectFit" />
+          <view class="icon-circle icon-circle-{{displayPlaceholderColor}} edit-placeholder-icon" bindtap="onChangeImage">
+            <image class="edit-ph-img" src="{{displayPlaceholder}}" mode="aspectFit" />
           </view>
           <view class="edit-placeholder-tip">
             未选照片，可挑新手账图标或 <text class="edit-upload-btn" bindtap="onChangeImage">拍照/相册导入 📷</text>
@@ -98,7 +99,7 @@
             <view
               wx:for="{{placeholderOptions}}"
               wx:key="src"
-              class="placeholder-cell icon-circle-{{item.color}} {{placeholder === item.src ? 'placeholder-cell-active' : ''}}"
+              class="placeholder-cell icon-circle-{{item.color}} {{placeholderCustomized && placeholder === item.src ? 'placeholder-cell-active' : ''}}"
               bindtap="onPickPlaceholder"
               data-idx="{{index}}"
             >

@@ -4,6 +4,7 @@
     <view class="nav-back-btn" bindtap="goBack"></view>
     <view class="nav-page-title font-display">小票存根</view>
   </view>
+  <view class="nav-back-spacer"></view>
 
   <view wx:if="{{receipt}}" class="receipt-paper-container reveal-2">
     <view class="tape tape-center tape-green"></view>
@@ -22,7 +23,7 @@
 
           <!-- 商家与头像 -->
           <view class="paper-header">
-            <view class="icon-circle icon-circle-{{receipt.color || 'coffee'}} paper-mascot">
+            <view class="icon-circle icon-circle-{{thumbColor || category.color || 'coffee'}} paper-mascot">
               <image class="paper-mascot-img" src="{{thumbSrc}}" mode="aspectFit" />
             </view>
             <view class="paper-merchant">{{receipt.merchant}}</view>
@@ -47,7 +48,7 @@
 
           <!-- 详细信息清单 -->
           <view class="paper-info">
-            <view class="info-row">
+            <view class="info-row info-row-center">
               <view class="info-label">分类归属</view>
               <view class="info-value">
                 <view class="tag tag-{{category.color}}">
@@ -57,7 +58,7 @@
               </view>
             </view>
 
-            <view class="info-row" wx:if="{{tags.length > 0}}">
+            <view class="info-row info-row-center" wx:if="{{tags.length > 0}}">
               <view class="info-label">手账标签</view>
               <view class="info-value-tags">
                 <view wx:for="{{tags}}" wx:key="id" class="tag tag-{{item.color}}">#{{item.name}}</view>

@@ -4,6 +4,7 @@
     <view class="nav-back-btn" bindtap="goBack"></view>
     <view class="nav-page-title font-display">设置与偏好</view>
   </view>
+  <view class="nav-back-spacer"></view>
 
   <view class="st-hero reveal-1">
     <view class="st-cover icon-circle icon-circle-blue">

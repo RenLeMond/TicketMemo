@@ -4,6 +4,7 @@
     <view class="nav-back-btn" bindtap="goBack"></view>
     <view class="nav-page-title font-display">导出与数据备份</view>
   </view>
+  <view class="nav-back-spacer"></view>
 
   <view class="exp-hero reveal-1">
     <view class="exp-cover icon-circle icon-circle-orange">

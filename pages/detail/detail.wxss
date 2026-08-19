@@ -148,27 +148,36 @@
 }
 
 .info-row {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 140rpx 1fr;
+  column-gap: 16rpx;
+  align-items: start;
   font-size: 26rpx;
 }
 
+.info-row-center {
+  align-items: center;
+}
+
 .info-label {
-  width: 140rpx;
   color: var(--tm-text-muted);
-  flex-shrink: 0;
   font-weight: 600;
+  line-height: 1.4;
+}
+
+.info-row-center .info-label {
+  line-height: 52rpx;
 }
 
 .info-value {
-  flex: 1;
+  min-width: 0;
 }
 
 .info-value-tags {
-  flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 10rpx;
+  min-width: 0;
 }
 
 .tag-ico {
@@ -178,9 +187,9 @@
 }
 
 .info-value-text {
-  flex: 1;
   color: var(--tm-text-primary);
   line-height: 1.5;
+  min-width: 0;
 }
 
 .note-text {

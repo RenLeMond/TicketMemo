@@ -309,7 +309,14 @@ button::after { border: none !important; }
 
 /* 带自定义返回栏的子页：顶栏固定，内容下移避让 */
 .page-container.has-nav {
-  padding-top: calc(env(safe-area-inset-top, 44px) + 108rpx);
+  padding-top: 16rpx;
+}
+
+/* 固定顶栏占位，避免内容顶到返回按钮下方 */
+.nav-back-spacer {
+  height: calc(env(safe-area-inset-top, 44px) + 88rpx);
+  width: 100%;
+  flex-shrink: 0;
 }
 
 /* 顶部导航返回 (纯 CSS 精准居中 Chevron 箭头) */

@@ -147,8 +147,8 @@
 
     <scroll-view class="trash-scroll" scroll-y>
       <view wx:for="{{trashList}}" wx:key="id" class="trash-item">
-        <view class="icon-circle icon-circle-{{item.color || 'coffee'}} trash-thumb">
-          <image class="trash-thumb-img" src="{{item._thumb}}" mode="aspectFit" />
+        <view class="icon-circle icon-circle-{{item.thumbColor || item.categoryColor || 'coffee'}} trash-thumb">
+          <image class="trash-thumb-img" src="{{item.thumbSrc}}" mode="aspectFit" />
         </view>
         <view class="trash-info">
           <view class="trash-merchant">{{item.merchant}}</view>

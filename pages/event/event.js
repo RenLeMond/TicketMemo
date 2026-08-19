@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const tabbar = require('../../utils/tabbar.js');
 const icons = require('../../utils/icons.js');
+const receiptDisplay = require('../../utils/receipt-display.js');
 
 Page({
   data: {
@@ -24,7 +25,7 @@ Page({
     actionEvent: null,
     icons: {
       event: icons.TAB.event,
-      add: icons.FUNC.add,
+      add: icons.TAB.add,
       empty: icons.FUNC.empty,
       book: icons.FUNC.book,
       share: icons.FUNC.share,
@@ -152,9 +153,11 @@ Page({
 
   openFlipModalForEvent(cur) {
     try { if (wx.vibrateShort) wx.vibrateShort({ type: 'medium' }); } catch (err) {}
-    const receipts = (cur.receipts || []).map(r => Object.assign({}, r, {
-      _thumb: icons.receiptThumbUrl(r),
-      _dateText: format.formatDate(r.date, 'YYYY-MM-DD')
+    const cats = storage.getCategories();
+    const tags = storage.getTags();
+    const receipts = receiptDisplay.decorateReceipts(cur.receipts || [], cats, tags).map(r => Object.assign({}, r, {
+      _dateText: format.formatDate(r.date, 'YYYY-MM-DD'),
+      _amountText: format.formatMoney(r.amount)
     }));
 
     if (receipts.length === 0) {
