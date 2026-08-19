@@ -144,5 +144,7 @@ Page({
         wx.showToast({ title: '已恢复初始状态 🌿', icon: 'success' });
       }
     });
-  }
+  },
+
+  noop() {}
 });

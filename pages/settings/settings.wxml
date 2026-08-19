@@ -154,8 +154,8 @@
 </view>
 
 <!-- 设置密码弹窗 -->
-<view wx:if="{{showPwdModal}}" class="mask" catchtouchmove="">
-  <view class="sheet" catchtap="">
+<view wx:if="{{showPwdModal}}" class="mask" catchtouchmove="" bindtap="onCancelPassword">
+  <view class="sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="sheet-title">设置启动密码</view>
 
@@ -164,14 +164,14 @@
       <input class="input" type="password" placeholder="••••••" value="{{pwdInput}}" bindinput="onPwdInput" maxlength="16" />
     </view>
 
-    <view class="form-label">请再次确认密码</view>
+    <view class="form-label" style="margin-top: 20rpx;">请再次确认密码</view>
     <view class="input-wrap">
       <input class="input" type="password" placeholder="••••••" value="{{pwdConfirm}}" bindinput="onPwdConfirm" maxlength="16" />
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1" bindtap="onCancelPassword">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onSavePassword">确认开启</view>
+      <view class="btn btn-ghost flex-1" catchtap="onCancelPassword">取消</view>
+      <view class="btn btn-primary flex-1" catchtap="onSavePassword">确认开启</view>
     </view>
   </view>
 </view>

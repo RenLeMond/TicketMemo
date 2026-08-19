@@ -81,10 +81,10 @@
 
 <!-- 手账画册翻页浏览弹窗 (Swiper Flip-book Mode) -->
 <view wx:if="{{showFlipModal}}" class="mask" catchtouchmove="" bindtap="onCloseFlipModal">
-  <view class="flip-modal" catchtap="">
+  <view class="flip-modal" catchtap="noop">
     <view class="flip-header">
       <view class="flip-title font-display">{{activeFlipEvent.name}} · 手账画册</view>
-      <view class="flip-close" bindtap="onCloseFlipModal">×</view>
+      <view class="flip-close" catchtap="onCloseFlipModal">×</view>
     </view>
 
     <swiper
@@ -119,14 +119,14 @@
 
 <!-- 事件管理手账抽屉 (Custom Handcrafted Action Sheet) -->
 <view wx:if="{{showActionDrawer}}" class="mask" catchtouchmove="" bindtap="onCloseActionDrawer">
-  <view class="custom-sheet" catchtap="">
+  <view class="custom-sheet tab-sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="custom-sheet-header">
       <view class="sheet-title font-display" style="margin-bottom: 6rpx;">{{actionEvent.name}} · 故事管理</view>
       <view class="sheet-item-sub">{{actionEvent.count}} 张小票 · 共计 ¥{{actionEvent.totalAmount}}</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onDrawerFlip">
+    <view class="sheet-item-row" catchtap="onDrawerFlip">
       <view class="icon-circle icon-circle-green sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.book}}" mode="aspectFit" />
       </view>
@@ -137,7 +137,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onDrawerPoster">
+    <view class="sheet-item-row" catchtap="onDrawerPoster">
       <view class="icon-circle icon-circle-orange sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.share}}" mode="aspectFit" />
       </view>
@@ -148,7 +148,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onDrawerEdit">
+    <view class="sheet-item-row" catchtap="onDrawerEdit">
       <view class="icon-circle icon-circle-coffee sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.edit}}" mode="aspectFit" />
       </view>
@@ -159,7 +159,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onDrawerExport">
+    <view class="sheet-item-row" catchtap="onDrawerExport">
       <view class="icon-circle icon-circle-blue sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.export}}" mode="aspectFit" />
       </view>
@@ -170,7 +170,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row sheet-item-danger" bindtap="onDrawerDelete">
+    <view class="sheet-item-row sheet-item-danger" catchtap="onDrawerDelete">
       <view class="icon-circle icon-circle-pink sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.delete}}" mode="aspectFit" />
       </view>
@@ -182,22 +182,22 @@
     </view>
 
     <view class="sheet-actions" style="margin-top: 24rpx;">
-      <view class="btn btn-ghost btn-block" bindtap="onCloseActionDrawer">取消</view>
+      <view class="btn btn-ghost btn-block" catchtap="onCloseActionDrawer">取消</view>
     </view>
   </view>
 </view>
 
 <!-- 删除事件确认弹窗 (Double-Bezel Confirm Dialog) -->
 <view wx:if="{{showDeleteConfirm}}" class="dialog-mask" catchtouchmove="" bindtap="onCancelDeleteConfirm">
-  <view class="dialog-box" catchtap="">
+  <view class="dialog-box" catchtap="noop">
     <view class="bezel-tray">
       <view class="tape tape-center tape-pink"></view>
       <view class="bezel-core dialog-core">
         <view class="dialog-title font-display">删除故事</view>
         <view class="dialog-desc">确定删除事件「{{actionEvent.name}}」吗？\n事件下所有小票不会被删除，仅取消事件归类。</view>
         <view class="sheet-actions">
-          <view class="btn btn-ghost flex-1" bindtap="onCancelDeleteConfirm">取消</view>
-          <view class="btn btn-danger flex-1" bindtap="onConfirmDeleteEvent">确认删除</view>
+          <view class="btn btn-ghost flex-1" catchtap="onCancelDeleteConfirm">取消</view>
+          <view class="btn btn-danger flex-1" catchtap="onConfirmDeleteEvent">确认删除</view>
         </view>
       </view>
     </view>

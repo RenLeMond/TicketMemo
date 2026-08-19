@@ -292,5 +292,7 @@ Page({
     });
     this.loadList();
     wx.showToast({ title: '已删除分类', icon: 'none' });
-  }
+  },
+
+  noop() {}
 });

@@ -230,5 +230,7 @@ Page({
         showCancel: false
       });
     }
-  }
+  },
+
+  noop() {}
 });

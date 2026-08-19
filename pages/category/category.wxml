@@ -135,9 +135,9 @@
 
 <!-- 新建/编辑分类弹窗 -->
 <view wx:if="{{showAddModal}}" class="mask" catchtouchmove="" bindtap="onCloseModal">
-  <view class="sheet" catchtap="">
+  <view class="sheet tab-sheet" catchtap="noop">
     <view class="sheet-handle"></view>
-    <view class="sheet-title">{{editingCatId ? '编辑分类' : '新建分类'}}</view>
+    <view class="sheet-title font-display">{{editingCatId ? '编辑分类' : '新建分类'}}</view>
 
     <view class="form-label">分类名称</view>
     <view class="input-wrap">
@@ -151,13 +151,13 @@
       />
     </view>
 
-    <view class="form-label">选择手账图标</view>
+    <view class="form-label" style="margin-top: 20rpx;">选择手账图标</view>
     <view class="icon-picker-grid">
       <view
         wx:for="{{iconOptions}}"
         wx:key="*this"
         class="icon-cell {{newCatIcon === item ? 'icon-cell-active' : ''}}"
-        bindtap="onPickIcon"
+        catchtap="onPickIcon"
         data-idx="{{index}}"
       >
         <image class="icon-cell-img" src="{{item}}" mode="aspectFit" />
@@ -165,22 +165,22 @@
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1" bindtap="onCloseModal">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onSaveCategory">保存分类</view>
+      <view class="btn btn-ghost flex-1" catchtap="onCloseModal">取消</view>
+      <view class="btn btn-primary flex-1" catchtap="onSaveCategory">保存分类</view>
     </view>
   </view>
 </view>
 
 <!-- 分类长按手账抽屉 (Custom Handcrafted Action Sheet) -->
 <view wx:if="{{showCatActionSheet}}" class="mask" catchtouchmove="" bindtap="onCloseCatActionSheet">
-  <view class="custom-sheet" catchtap="">
+  <view class="custom-sheet tab-sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="custom-sheet-header">
       <view class="sheet-title font-display" style="margin-bottom: 6rpx;">{{actionCat.name}} · 分类管理</view>
       <view class="sheet-item-sub">自建手账分类管理</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onActionEditCat">
+    <view class="sheet-item-row" catchtap="onActionEditCat">
       <view class="icon-circle icon-circle-coffee sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{funcIcons.edit}}" mode="aspectFit" />
       </view>
@@ -191,7 +191,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row sheet-item-danger" bindtap="onActionDeleteCat">
+    <view class="sheet-item-row sheet-item-danger" catchtap="onActionDeleteCat">
       <view class="icon-circle icon-circle-pink sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{funcIcons.trash}}" mode="aspectFit" />
       </view>
@@ -203,22 +203,22 @@
     </view>
 
     <view class="sheet-actions" style="margin-top: 24rpx;">
-      <view class="btn btn-ghost btn-block" bindtap="onCloseCatActionSheet">取消</view>
+      <view class="btn btn-ghost btn-block" catchtap="onCloseCatActionSheet">取消</view>
     </view>
   </view>
 </view>
 
 <!-- 删除分类手账确认弹窗 (Double-Bezel Confirm Dialog) -->
 <view wx:if="{{showDeleteConfirm}}" class="dialog-mask" catchtouchmove="" bindtap="onCancelDeleteConfirm">
-  <view class="dialog-box" catchtap="">
+  <view class="dialog-box" catchtap="noop">
     <view class="bezel-tray">
       <view class="tape tape-center tape-pink"></view>
       <view class="bezel-core dialog-core">
         <view class="dialog-title font-display">删除分类</view>
         <view class="dialog-desc">确定删除「{{actionCat.name}}」吗？\n该分类下小票将自动归入「其他」分类，小票不会丢失。</view>
         <view class="sheet-actions">
-          <view class="btn btn-ghost flex-1" bindtap="onCancelDeleteConfirm">取消</view>
-          <view class="btn btn-danger flex-1" bindtap="onConfirmDeleteCat">确认删除</view>
+          <view class="btn btn-ghost flex-1" catchtap="onCancelDeleteConfirm">取消</view>
+          <view class="btn btn-danger flex-1" catchtap="onConfirmDeleteCat">确认删除</view>
         </view>
       </view>
     </view>

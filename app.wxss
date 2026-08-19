@@ -579,7 +579,7 @@ button::after { border: none !important; }
   background-color: var(--tm-bg-card);
   border-radius: 40rpx 40rpx 0 0;
   padding: 34rpx 32rpx calc(48rpx + env(safe-area-inset-bottom, 24px));
-  max-height: 88vh;
+  max-height: 85vh;
   overflow-y: auto;
   box-sizing: border-box;
   box-shadow: 0 -8rpx 40rpx rgba(0, 0, 0, 0.25);
@@ -698,6 +698,14 @@ button::after { border: none !important; }
   border-top: 1rpx solid var(--tm-border-light);
   animation: slideUp 0.28s var(--tm-spring-ease);
   box-sizing: border-box;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* TabBar 页面专用的底部留白安全垫，防止弹窗内容和操作按钮被底部 Tab 栏遮挡 */
+.sheet.tab-sheet,
+.custom-sheet.tab-sheet {
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom, 24px));
 }
 
 .custom-sheet-header {

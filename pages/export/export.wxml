@@ -174,8 +174,8 @@
 </view>
 
 <!-- 导入恢复弹窗 -->
-<view wx:if="{{showImportModal}}" class="mask" catchtouchmove="">
-  <view class="sheet" catchtap="">
+<view wx:if="{{showImportModal}}" class="mask" catchtouchmove="" bindtap="onCloseImport">
+  <view class="sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="sheet-title">从备份文本恢复数据</view>
 
@@ -196,8 +196,8 @@
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1" bindtap="onCloseImport">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onConfirmImport">确认恢复</view>
+      <view class="btn btn-ghost flex-1" catchtap="onCloseImport">取消</view>
+      <view class="btn btn-primary flex-1" catchtap="onConfirmImport">确认恢复</view>
     </view>
   </view>
 </view>

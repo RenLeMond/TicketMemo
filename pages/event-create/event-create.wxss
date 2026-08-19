@@ -1,7 +1,7 @@
 @import "../../styles/tokens.wxss";
 
 .ec-page {
-  padding-bottom: 200rpx;
+  padding-bottom: calc(260rpx + env(safe-area-inset-bottom, 24px));
 }
 
 .ec-hero {

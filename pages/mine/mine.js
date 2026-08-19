@@ -204,5 +204,7 @@ Page({
       updates.trashCount = trash.length;
     }
     this.setData(updates);
-  }
+  },
+
+  noop() {}
 });

@@ -300,8 +300,9 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 16rpx;
   margin: 12rpx 0 24rpx;
-  max-height: 340rpx;
+  max-height: 280rpx;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 16rpx 8rpx;
   box-sizing: border-box;
 }

@@ -234,7 +234,7 @@
 
 <!-- 新建标签弹窗 -->
 <view wx:if="{{showAddTagModal}}" class="mask" catchtouchmove="" bindtap="onCloseAddTag">
-  <view class="sheet" catchtap="">
+  <view class="sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="sheet-title">新建手账标签</view>
 
@@ -250,34 +250,34 @@
       />
     </view>
 
-    <view class="form-label">标签色彩</view>
+    <view class="form-label" style="margin-top: 20rpx;">标签色彩</view>
     <view class="color-row">
       <view
         wx:for="{{tagColorOptions}}"
         wx:key="*this"
         class="color-dot icon-circle-{{item}} {{newTagColor === item ? 'color-dot-active' : ''}}"
-        bindtap="onPickNewTagColor"
+        catchtap="onPickNewTagColor"
         data-color="{{item}}"
       ></view>
     </view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1" bindtap="onCloseAddTag">取消</view>
-      <view class="btn btn-primary flex-1" bindtap="onSaveNewTag">保存标签</view>
+      <view class="btn btn-ghost flex-1" catchtap="onCloseAddTag">取消</view>
+      <view class="btn btn-primary flex-1" catchtap="onSaveNewTag">保存标签</view>
     </view>
   </view>
 </view>
 
 <!-- 更换小票图片手账抽屉 (Custom Handcrafted Image Sheet) -->
 <view wx:if="{{showImageDrawer}}" class="mask" catchtouchmove="" bindtap="onCloseImageDrawer">
-  <view class="custom-sheet" catchtap="">
+  <view class="custom-sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="custom-sheet-header">
       <view class="sheet-title font-display" style="margin-bottom: 6rpx;">小票配图设置</view>
       <view class="sheet-item-sub">拍照拍摄、相册导入或使用手账矢量图标</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onImageDrawerCamera">
+    <view class="sheet-item-row" catchtap="onImageDrawerCamera">
       <view class="icon-circle icon-circle-green sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.camera}}" mode="aspectFit" />
       </view>
@@ -288,7 +288,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row" bindtap="onImageDrawerAlbum">
+    <view class="sheet-item-row" catchtap="onImageDrawerAlbum">
       <view class="icon-circle icon-circle-orange sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.album}}" mode="aspectFit" />
       </view>
@@ -299,7 +299,7 @@
       <view class="sheet-item-arrow">›</view>
     </view>
 
-    <view class="sheet-item-row sheet-item-danger" bindtap="onImageDrawerRemove" wx:if="{{image}}">
+    <view class="sheet-item-row sheet-item-danger" catchtap="onImageDrawerRemove" wx:if="{{image}}">
       <view class="icon-circle icon-circle-pink sheet-item-ico">
         <image class="sheet-item-ico-img" src="{{icons.trash}}" mode="aspectFit" />
       </view>
@@ -311,7 +311,7 @@
     </view>
 
     <view class="sheet-actions" style="margin-top: 24rpx;">
-      <view class="btn btn-ghost btn-block" bindtap="onCloseImageDrawer">取消</view>
+      <view class="btn btn-ghost btn-block" catchtap="onCloseImageDrawer">取消</view>
     </view>
   </view>
 </view>

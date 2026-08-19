@@ -1,7 +1,7 @@
 @import "../../styles/tokens.wxss";
 
 .add-page {
-  padding-bottom: 220rpx;
+  padding-bottom: calc(240rpx + env(safe-area-inset-bottom, 24px));
 }
 
 /* 步骤 1：来源选择 */

@@ -71,7 +71,7 @@
             wx:for="{{coverOptions}}"
             wx:key="src"
             class="cover-cell icon-circle-{{item.color}} {{cover === item.src ? 'cover-cell-active' : ''}}"
-            bindtap="onPickCover"
+            catchtap="onPickCover"
             data-idx="{{index}}"
           >
             <image class="cover-cell-img" src="{{item.src}}" mode="aspectFit" />
@@ -92,7 +92,7 @@
         wx:for="{{receipts}}"
         wx:key="id"
         class="rec-row {{item._selected ? 'rec-row-active' : ''}}"
-        bindtap="onToggleReceipt"
+        catchtap="onToggleReceipt"
         data-id="{{item.id}}"
       >
         <view class="rec-check {{item._selected ? 'rec-check-active' : ''}}">

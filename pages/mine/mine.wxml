@@ -136,12 +136,12 @@
 </view>
 
 <!-- 回收站管理弹窗 -->
-<view wx:if="{{showTrashModal}}" class="mask" catchtouchmove="">
-  <view class="sheet trash-sheet" catchtap="">
+<view wx:if="{{showTrashModal}}" class="mask" catchtouchmove="" bindtap="onCloseTrash">
+  <view class="sheet tab-sheet trash-sheet" catchtap="noop">
     <view class="sheet-handle"></view>
     <view class="trash-header">
       <view class="sheet-title" style="margin: 0;">小票回收站 ({{trashCount}})</view>
-      <view class="trash-clear-btn" bindtap="onClearAllTrash">清空回收站</view>
+      <view class="trash-clear-btn" catchtap="onClearAllTrash">清空回收站</view>
     </view>
     <view class="trash-tip">已删除的小票将保留在回收站中，可随时一键恢复</view>
 
@@ -155,30 +155,30 @@
           <view class="trash-meta">{{item._dateText}} · {{item._amountText}}</view>
         </view>
         <view class="trash-actions">
-          <view class="trash-btn-restore" bindtap="onRestoreItem" data-id="{{item.id}}">恢复</view>
-          <view class="trash-btn-delete" bindtap="onDeleteForever" data-id="{{item.id}}">删除</view>
+          <view class="trash-btn-restore" catchtap="onRestoreItem" data-id="{{item.id}}">恢复</view>
+          <view class="trash-btn-delete" catchtap="onDeleteForever" data-id="{{item.id}}">删除</view>
         </view>
       </view>
     </scroll-view>
 
     <view class="sheet-actions">
-      <view class="btn btn-ghost flex-1" bindtap="onCloseTrash">关闭</view>
-      <view class="btn btn-primary flex-1" bindtap="onRestoreAllTrash">全部恢复</view>
+      <view class="btn btn-ghost flex-1" catchtap="onCloseTrash">关闭</view>
+      <view class="btn btn-primary flex-1" catchtap="onRestoreAllTrash">全部恢复</view>
     </view>
   </view>
 </view>
 
 <!-- 我的页面通用手账确认与信息弹窗 (Double-Bezel Confirm Dialog) -->
 <view wx:if="{{showConfirmDialog}}" class="dialog-mask" catchtouchmove="" bindtap="onDialogCancel">
-  <view class="dialog-box" catchtap="">
+  <view class="dialog-box" catchtap="noop">
     <view class="bezel-tray">
       <view class="tape tape-center {{confirmDialog.isDanger ? 'tape-pink' : 'tape-green'}}"></view>
       <view class="bezel-core dialog-core">
         <view class="dialog-title font-display">{{confirmDialog.title}}</view>
         <view class="dialog-desc" style="white-space: pre-line; text-align: {{confirmDialog.isInfoOnly ? 'left' : 'center'}};">{{confirmDialog.desc}}</view>
         <view class="sheet-actions">
-          <view wx:if="{{!confirmDialog.isInfoOnly}}" class="btn btn-ghost flex-1" bindtap="onDialogCancel">取消</view>
-          <view class="btn {{confirmDialog.isDanger ? 'btn-danger' : 'btn-primary'}} flex-1" bindtap="onDialogConfirm">
+          <view wx:if="{{!confirmDialog.isInfoOnly}}" class="btn btn-ghost flex-1" catchtap="onDialogCancel">取消</view>
+          <view class="btn {{confirmDialog.isDanger ? 'btn-danger' : 'btn-primary'}} flex-1" catchtap="onDialogConfirm">
             {{confirmDialog.isInfoOnly ? '我知道了' : (confirmDialog.isDanger ? '确认删除' : '确定')}}
           </view>
         </view>

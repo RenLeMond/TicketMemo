@@ -149,5 +149,7 @@ Page({
 
   onCancel() {
     wx.navigateBack();
-  }
+  },
+
+  noop() {}
 });

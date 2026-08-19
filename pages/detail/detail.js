@@ -113,5 +113,7 @@ Page({
     this.setData({ showDeleteModal: false });
     wx.showToast({ title: '已移入回收站 🌿', icon: 'success', duration: 800 });
     setTimeout(() => wx.navigateBack(), 850);
-  }
+  },
+
+  noop() {}
 });
