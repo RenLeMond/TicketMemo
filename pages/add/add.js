@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const ocr = require('../../utils/ocr.js');
 const icons = require('../../utils/icons.js');
+const nav = require('../../utils/nav.js');
 
 function withTagSelection(tags, selectedIds) {
   const set = new Set(selectedIds || []);
@@ -36,6 +37,7 @@ function syncPlaceholderDisplay(page) {
 
 Page({
   data: {
+    navBarInfo: null,
     themeClass: '',
     isEdit: false,
     editId: '',
@@ -76,6 +78,7 @@ Page({
   },
 
   onLoad(options) {
+    const navBarInfo = nav.getNavBarInfo();
     const cats = storage.getCategories().map(c => Object.assign({}, c, {
       _iconIsImg: !!(c.icon && (c.icon.startsWith('data:image/svg+xml') || c.icon.startsWith('/')))
     }));
@@ -84,6 +87,7 @@ Page({
     const todayText = format.formatDate(todayTs, 'YYYY-MM-DD');
 
     this.setData({
+      navBarInfo,
       themeClass: storage.getThemeClass(),
       categories: cats,
       tags: withTagSelection(allTags, []),

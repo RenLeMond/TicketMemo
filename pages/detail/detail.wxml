@@ -1,10 +1,10 @@
 <view class="page-container detail-page has-nav {{themeClass}}">
 
-  <view class="nav-back-bar reveal-1">
+  <view class="nav-back-bar reveal-1" style="{{navBarInfo ? navBarInfo.navStyle : ''}}">
     <view class="nav-back-btn" bindtap="goBack"></view>
     <view class="nav-page-title font-display">小票存根</view>
   </view>
-  <view class="nav-back-spacer"></view>
+  <view class="nav-back-spacer" style="{{navBarInfo ? navBarInfo.spacerStyle : ''}}"></view>
 
   <view wx:if="{{receipt}}" class="receipt-paper-container reveal-2">
     <view class="tape tape-center tape-green"></view>

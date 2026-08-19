@@ -2,9 +2,11 @@
 const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
+const nav = require('../../utils/nav.js');
 
 Page({
   data: {
+    navBarInfo: null,
     themeClass: '',
     range: 'all', // all / month / event
     rangeLabel: '全部小票',
@@ -33,7 +35,9 @@ Page({
   },
 
   onLoad(options) {
+    const navBarInfo = nav.getNavBarInfo();
     this.setData({
+      navBarInfo,
       themeClass: storage.getThemeClass()
     });
 

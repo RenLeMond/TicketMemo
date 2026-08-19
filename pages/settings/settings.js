@@ -1,9 +1,11 @@
 // pages/settings/settings.js
 const storage = require('../../utils/storage.js');
 const icons = require('../../utils/icons.js');
+const nav = require('../../utils/nav.js');
 
 Page({
   data: {
+    navBarInfo: null,
     themeClass: '',
     settings: {
       passwordEnabled: false,
@@ -33,6 +35,7 @@ Page({
   refreshSettings() {
     const s = storage.getSettings();
     this.setData({
+      navBarInfo: nav.getNavBarInfo(),
       themeClass: storage.getThemeClass(),
       settings: s,
       lastBackupAt: storage.get('last_backup_at', '从未')

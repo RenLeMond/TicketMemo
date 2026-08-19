@@ -3,6 +3,7 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
 const receiptDisplay = require('../../utils/receipt-display.js');
+const nav = require('../../utils/nav.js');
 
 function withReceiptSelection(receipts, selectedIds) {
   const set = new Set(selectedIds || []);
@@ -13,6 +14,7 @@ function withReceiptSelection(receipts, selectedIds) {
 
 Page({
   data: {
+    navBarInfo: null,
     themeClass: '',
     isEdit: false,
     eventId: '',
@@ -29,6 +31,7 @@ Page({
   },
 
   onLoad(options) {
+    const navBarInfo = nav.getNavBarInfo();
     const today = format.formatDate(Date.now(), 'YYYY-MM-DD');
     const cats = storage.getCategories();
     const tags = storage.getTags();
@@ -36,6 +39,7 @@ Page({
       return Object.assign({}, r, { _amountText: format.formatMoney(r.amount) });
     });
     const patch = {
+      navBarInfo,
       themeClass: storage.getThemeClass(),
       startDate: today,
       endDate: today,

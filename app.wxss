@@ -309,17 +309,18 @@ button::after { border: none !important; }
 
 /* 带自定义返回栏的子页：顶栏固定，内容下移避让 */
 .page-container.has-nav {
-  padding-top: 16rpx;
+  padding-top: 0;
 }
 
 /* 固定顶栏占位，避免内容顶到返回按钮下方 */
 .nav-back-spacer {
-  height: calc(env(safe-area-inset-top, 44px) + 88rpx);
+  height: calc(env(safe-area-inset-top, 44px) + 100rpx);
   width: 100%;
   flex-shrink: 0;
+  margin-bottom: 12rpx;
 }
 
-/* 顶部导航返回 (纯 CSS 精准居中 Chevron 箭头) */
+/* 顶部导航返回 (纯 CSS 精准居中 Chevron 箭头，避让微信右上角胶囊) */
 .nav-back-bar {
   position: fixed;
   top: 0;
@@ -328,11 +329,13 @@ button::after { border: none !important; }
   z-index: var(--tm-z-nav);
   display: flex;
   align-items: center;
-  padding-top: calc(env(safe-area-inset-top, 44px) + 8rpx);
-  padding-bottom: 12rpx;
-  padding-left: 30rpx;
-  padding-right: 30rpx;
+  padding-top: calc(env(safe-area-inset-top, 44px) + 12rpx);
+  padding-bottom: 14rpx;
+  padding-left: 28rpx;
+  padding-right: calc(180rpx + 24rpx); /* 预留微信右上角胶囊安全宽度 */
   background: var(--tm-bg-page);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
   box-sizing: border-box;
 }
 

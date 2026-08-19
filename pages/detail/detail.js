@@ -3,9 +3,11 @@ const storage = require('../../utils/storage.js');
 const format = require('../../utils/format.js');
 const icons = require('../../utils/icons.js');
 const receiptDisplay = require('../../utils/receipt-display.js');
+const nav = require('../../utils/nav.js');
 
 Page({
   data: {
+    navBarInfo: null,
     themeClass: '',
     receipt: null,
     category: null,
@@ -24,12 +26,14 @@ Page({
   },
 
   onLoad(options) {
+    const navBarInfo = nav.getNavBarInfo();
     const id = options.id;
     if (!id) {
       wx.navigateBack();
       return;
     }
     this.id = id;
+    this.setData({ navBarInfo });
   },
 
   onShow() {

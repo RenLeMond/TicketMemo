@@ -1,10 +1,10 @@
 <view class="page-container add-page has-nav {{themeClass}}">
 
-  <view class="nav-back-bar reveal-1">
+  <view class="nav-back-bar reveal-1" style="{{navBarInfo ? navBarInfo.navStyle : ''}}">
     <view class="nav-back-btn" bindtap="onCancel"></view>
     <view class="nav-page-title font-display">{{isEdit ? '编辑小票' : '录入新小票'}}</view>
   </view>
-  <view class="nav-back-spacer"></view>
+  <view class="nav-back-spacer" style="{{navBarInfo ? navBarInfo.spacerStyle : ''}}"></view>
 
   <!-- 步骤 1：选择来源 -->
   <block wx:if="{{step === 'pick'}}">
